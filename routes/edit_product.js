@@ -40,25 +40,30 @@ router.post('/', function (req, res) {
     }
     var description = req.body.txtDescription;
 
-    //Image
-    var Images;
-    if (typeof req.files.product_image === 'undefined') {
-        Images = image;
-    } else {
-        Images = [];
-        req.files.product_image.forEach(function (file, i) {
-            var path = file.path;
-            var image = "public/images/" + file.name;
+    //Media
+    var count = req.body.txtCount;
+    var media = [];
+    for (i = 1; i <= count; i++) {
+        var media_name = req.body.txtMediaName + i;
+        //Nếu không upload hình:
+        if (req.files.ulfMedia === 'undefined' && req.body.txtMediaUrl != "") {
+            var media_url = req.body.txtMediaUrl + i;
+            media.push({Name: media_name, Url: media_url});
+        } else if (req.files.ulfMedia && req.body.txtMediaUrl == "") {
+            //Còn nếu có
+            var media_upload = req.files.ulfMedia + i;
+            var media_upload_path = media_upload.path;
+            var media_save_path = "public/images/" + media_upload.name;
             var im = require('imagemagick');
             im.resize({
-                srcPath: path,
-                dstPath: image,
-                width: 500
+                srcPath: media_upload_path,
+                dstPath: media_save_path,
+                width: 600
             }, function (err, stdout, stderr) {
-                console.log('Resize success.');
+                console.log('Resize product media success.');
             });
-            Images.push(".." + file.path.replace("public", ""));
-        });
+            media.push({Name: media_name, Url: ".." + media_save_path.replace("public", "")});
+        }
     }
 
     product_schema.product.update({_id: product_id}, {$set: {product_name: product_name, price: price, tags: tags, description: description, media: media}}, function (err, result) {

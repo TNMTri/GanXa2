@@ -7,5 +7,5 @@ var industry_schema = new schema({
     category_name: String
 });
 
-var product = mongoose.model('industry', industry_schema);
-module.exports = {product: product};
+var industry = mongoose.model('industrys', industry_schema);
+module.exports = {industry: industry};

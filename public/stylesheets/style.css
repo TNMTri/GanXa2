@@ -1,8 +1,27 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #F2F1EF;
 }
 
-a {
-  color: #00B7FF;
+/*nav bar*/
+.img-softer{
+    max-width: 45px;
+    margin-top: -14px;
+}
+.i-softer{
+    color: #3498db !important;
+}
+.i-menu{
+    border-right: 1px #ffffff groove;
+}
+.row-home{
+    margin-top: 3em;
+}
+.img-store{
+    max-height: 337px;
+    max-width: 337px;
+}
+.col-search{
+    margin-top: 3em;
 }

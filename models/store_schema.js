@@ -20,5 +20,5 @@ var store_schema = new schema({
     longitude: String
 });
 
-var store = mongoose.model('store', store_schema);
+var store = mongoose.model('stores', store_schema);
 module.exports = {store: store};

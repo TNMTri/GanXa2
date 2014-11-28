@@ -1,0 +1,9 @@
+{
+  "name": "GanXa2",
+  "version": "0.0.1",
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "Bootflat": "~2.0.4",
+    "fontawesome": "~4.2.0"
+  }
+}
