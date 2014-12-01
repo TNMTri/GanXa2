@@ -22,14 +22,16 @@ router.get('/', function (req, res) {
     //Update lên tầm cao mới. =))
     var query = store_schema.store.find({});
 
-    query.limit(10);
-
+    query.limit(8);
+    query.sort({date: -1});
     query.exec(function (store_error, store_array) {
         if (store_array && store_array.length > 0) {
             req.session.store_array = store_array;
 
             industry_schema.industry.find(function (industry_error, industry_array) {
                 if (industry_array && industry_array.length > 0) {
+                    req.session.store_array = store_array;
+                    req.session.industry_array = industry_array;
                     res.render('index', {store_array: store_array, industry_array: industry_array});
                 }else{
                     console.log(industry_error);

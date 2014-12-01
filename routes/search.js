@@ -4,7 +4,7 @@ var router = express.Router();
 var store_schema = require('../models/store_schema');
 
 router.get('/', function(req, res) {
-    res.render('search');
+    res.render('search', {industry_array: req.session.industry_array});
 });
 
 router.post('/', function(req, res) {
@@ -12,7 +12,7 @@ router.post('/', function(req, res) {
     var type = req.body.type;
     if (type == "store") {
         store_schema.store.find({store_name: {$regex: key, $options: 'i'}}, function (store_error, store_array) {
-            res.render('search', {store_array: store_array, notification: "Vừa search store."});
+            res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
         });
         //Fulltext search (để search không dấu)
         /*var mongoose = require('mongoose');
@@ -41,7 +41,7 @@ router.post('/', function(req, res) {
          });*/
     } else {
         product_schema.product.find({ProductName: {$regex: key, $options: 'i'}}, function (product_error, product_array) {
-            res.render('search', {product_array: product_array, notification: "Vừa search product."});
+            res.render('search', {product_array: product_array, industry_array: req.session.industry_array, notification: "Vừa search product."});
         });
     }
 });

@@ -14,7 +14,13 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
     var id_user_facebook = "id_user_facebook";
     var store_name = req.body.txtStoreName;
-    var address = req.body.txtAddress; //Phải chia nhỏ ra nữa.
+    //Xử lý address:
+    var city = req.body.txtCity;
+    var district = req.body.txtDistrict;
+    var address1 = req.body.txtAddress1;
+    var address2 = req.body.txtAddress2;
+    var address = [];
+    address.push({"city": city, "district": district, "address1": address1, "address2": address2});
     var latitude = req.body.txtLatitude;
     var longitude = req.body.txtLongitude;
     var phone = req.body.txtPhone;
@@ -25,33 +31,43 @@ router.post('/', function (req, res) {
     var fanpage = req.body.txtFanpage;
 
     //Lấy hình, resize và chỉnh path:
-    //2 path đầu tiên khi vừa upload:
+    var im = require('imagemagick');
+    //Path upload:
     var cover_upload_path = req.files.ulfCover.path;
     var logo_upload_path = req.files.ulfLogo.path;
-    //2 path muốn lưu lại:
+    //Path save:
     var cover_save_path = "public/images/" + req.files.ulfCover.name;
     var logo_save_path = "public/images/" + req.files.ulfLogo.name;
-    var im = require('imagemagick');
-    //Resize cover:
-    im.resize({
-        srcPath: cover_upload_path,
-        dstPath: cover_save_path,
-        width: 800
-    }, function (err, stdout, stderr) {
-        console.log('Resize success.');
-    });
-    //Resize logo:
-    im.resize({
-        srcPath: logo_upload_path,
-        dstPath: logo_save_path,
-        width: 250
-    }, function (err, stdout, stderr) {
-        console.log('Resize success.');
-    });
-    //Sửa lại path dùng để save:
-    cover_save_path = ".." + req.files.ulfCover.path.replace("public", "");
-    logo_save_path = ".." + req.files.ulfLogo.path.replace("public", "");
+    //Resize:
 
+    im.identify(cover_upload_path, function (error, cover_features) {
+        if (cover_features) {
+            im.resize({
+                srcPath: cover_upload_path,
+                dstPath: cover_save_path,
+                width: cover_features.width / 2,
+                height: cover_features.height / 2
+            }, function (err, stdout, stderr) {
+            });
+        }
+    });
+    im.identify(cover_upload_path, function (error, logo_features) {
+        if (logo_features) {
+            im.resize({
+                srcPath: logo_upload_path,
+                dstPath: logo_save_path,
+                width: logo_features.width / 2,
+                height: logo_features.height / 2
+            }, function (err, stdout, stderr) {
+            });
+        }
+    });
+
+    //Xử lý path save:
+    cover_save_path = ".." + cover_save_path.replace("public", "");
+    logo_save_path = ".." + logo_save_path.replace("public", "");
+
+    var date = new Date();
     new store_schema.store({
         _id: null,
         id_user_facebook: id_user_facebook,
@@ -61,24 +77,30 @@ router.post('/', function (req, res) {
         longitude: longitude,
         phone: phone,
         description: description,
-        industry : industry,
+        industry: industry,
         hours_of_work: hours_of_work,
         website: website,
         fanpage: fanpage,
-        store_category: cover_save_path,
-        cover_image: logo_save_path
-    }).save(function (err) {
-            if (!err) {
-                store_schema.store.find(function (err, arrStore) {
-                    if (arrStore && arrStore.length > 0) {
-                        req.session.store = arrStore;
-                        res.render('home', {store: req.session.store});
-                    } else {
-                        res.render('index');
-                    }
-                });
-            }
+        cover: cover_save_path,
+        logo: logo_save_path,
+        date: date
+    }).save(function (error) {
+            console.log("0");
+            /*store_schema.store.find(function (store_error, store_array) {
+                if (store_array && store_array.length > 0) {
+                    req.session.store_array = store_array;
+                    res.render('index', {store_array: store_array});
+                } else {
+                    console.log(store_error);
+                    res.render('index');
+                }
+            });*/
         });
+    console.log("1");
+    store_schema.store.find(function (store_error, store_array) {
+        console.log("2");
+        res.render('index', {store_array: store_array});
+    });
 });
 
 module.exports = router;

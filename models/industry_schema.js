@@ -4,7 +4,7 @@ var object_id = schema.ObjectId;
 
 var industry_schema = new schema({
     _id: object_id,
-    category_name: String
+    industry_name: String
 });
 
 var industry = mongoose.model('industrys', industry_schema);

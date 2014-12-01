@@ -5,22 +5,30 @@
     <% include ./partial/head %>
 </head>
 <body>
-<header><% include ./partial/header %></header>
+<header>
+    <% include ./partial/header %>
+</header>
 <div class="row row-home">
     <% store_array.forEach(function(store){ %>
     <div class="col-sm-6 col-md-3">
         <div class="thumbnail">
             <a href="#" class="thumbnail">
-                <img class="img-store" src="holder.js/100%x180" alt=" ">
+                <img class="img-store" src="<%= store.cover %>" alt=" ">
             </a>
+
             <div class="caption">
-                <center><h3><%=store.store_name%></h3></center>
-                <p><%=store.address%></p>
-                <p><a href="#" class="btn btn-primary btn-block" >View Details</a>
+                <center><h3><%= store.store_name %></h3></center>
+                <p>
+                    <% store.address.forEach(function (a) { %>
+                    <%= a.address1 + ", " + a.district + ", " + a.city %>
+                    <% }) %>
+                </p>
+
+                <p><a href="store_detail?id=<%= store._id %>" class="btn btn-primary btn-block">View Details</a>
             </div>
         </div>
     </div>
-    <%}) %>
+    <% }) %>
 </div>
 </body>
 </html>

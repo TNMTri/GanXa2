@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ./partial/head %>
+</head>
+<body>
+<header>
+    <% include ./partial/header %>
+</header>
+<div class="col-md-12 col-search">
+    <a href="insert_product?id=<%= store_id %>">Add product for store <%= store_id %></a>
+    <% product_array.forEach(function(product){ %>
+    <%= product.product_name %>
+    <% }) %>
+</div>
+</body>
+</html>

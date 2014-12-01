@@ -9,7 +9,6 @@ var store_schema = new schema({
     address: [],
     phone: String,
     industry: String,
-    tags: [],
     hours_of_work: String,
     website: String,
     fanpage: String,
@@ -17,7 +16,8 @@ var store_schema = new schema({
     cover: String,
     logo: String,
     latitude: String,
-    longitude: String
+    longitude: String,
+    date: Date
 });
 
 var store = mongoose.model('stores', store_schema);

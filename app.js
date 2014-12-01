@@ -14,6 +14,10 @@ mongoose.connect('mongodb://localhost/GanXa');
 //Routes
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var insert_store = require('./routes/insert_store');
+var industry = require('./routes/industry');
+var search = require('./routes/search');
+var store_detail = require('./routes/store_detail');
 
 var app = express();
 
@@ -33,7 +37,10 @@ app.use(multer({dest: './public/images/'}));
 
 app.use('/', routes);
 app.use('/users', users);
-
+app.use('/insert_store', insert_store);
+//app.use('/industry', industry);
+app.use('/search', search);
+app.use('/store_detail', store_detail);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
