@@ -7,11 +7,13 @@ router.get('/', function (req, res) {
 
     var tag = req.param("tag");
 
-    product_schema.product.find({Tags: {$in: [tag]}}, function (product_error, product_array) {
-        if (p && p.length > 0) {
+    product_schema.product.find({tags: {$in: [tag]}}, function (product_error, product_array) {
+        if (product_array && product_array.length > 0) {
             res.render('tags', {product_array: product_array});
         } else {
-            res.render('tags', {tags_notification: "Không có sản phẩm."});
+            product_array.product_array.find(function (product_error, product_array) {
+                res.render('tags', {product_array: product_array, tags_notification: "Không có sản phẩm."});
+            })
         }
     });
 });

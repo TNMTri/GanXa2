@@ -39,8 +39,7 @@ router.post('/', function (req, res) {
     var cover_save_path = "public/images/" + req.files.ulfCover.name;
     var logo_save_path = "public/images/" + req.files.ulfLogo.name;
     //Resize:
-
-    im.identify(cover_upload_path, function (error, cover_features) {
+    im.identify(cover_upload_path, function (cover_error, cover_features) {
         if (cover_features) {
             im.resize({
                 srcPath: cover_upload_path,
@@ -51,7 +50,7 @@ router.post('/', function (req, res) {
             });
         }
     });
-    im.identify(cover_upload_path, function (error, logo_features) {
+    im.identify(logo_upload_path, function (logo_error, logo_features) {
         if (logo_features) {
             im.resize({
                 srcPath: logo_upload_path,
@@ -62,7 +61,6 @@ router.post('/', function (req, res) {
             });
         }
     });
-
     //Xử lý path save:
     cover_save_path = ".." + cover_save_path.replace("public", "");
     logo_save_path = ".." + logo_save_path.replace("public", "");
@@ -85,22 +83,15 @@ router.post('/', function (req, res) {
         logo: logo_save_path,
         date: date
     }).save(function (error) {
-            console.log("0");
-            /*store_schema.store.find(function (store_error, store_array) {
+            store_schema.store.find(function (store_error, store_array) {
                 if (store_array && store_array.length > 0) {
                     req.session.store_array = store_array;
-                    res.render('index', {store_array: store_array});
+                    res.render('index', {store_array: store_array, industry_array: req.session.industry_array});
                 } else {
-                    console.log(store_error);
                     res.render('index');
                 }
-            });*/
+            });
         });
-    console.log("1");
-    store_schema.store.find(function (store_error, store_array) {
-        console.log("2");
-        res.render('index', {store_array: store_array});
-    });
 });
 
 module.exports = router;

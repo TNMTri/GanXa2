@@ -2,6 +2,7 @@ express = require('express');
 var router = express.Router();
 
 var product_schema = require('../models/product_schema');
+var store_schema = require('../models/product_schema');
 
 var store_id;
 
@@ -9,15 +10,14 @@ router.get('/', function (req, res) {
 
     store_id = req.param('id');
     req.session.store_id_recent = store_id;
-    product_schema.product.find({id_store: store_id}, function (error, product_array) {
-        req.session.recent_store_id = store_id;
-        res.render('product', {product_array: product_array, store_id: store_id});
+    product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
+        res.render('insert_product', {product_array: product_array, industry_array: req.session.industry_array, store_id: store_id, insert_product_notification: "Thêm sản phẩm thành công."});
     });
 });
 
 router.post('/', function (req, res) {
 
-    var id_store = store_id;
+    var id_store = req.session.store_id_recent;
     var product_name = req.body.txtProductName;
     var price = req.body.txtPrice;
     //Tags:
@@ -29,32 +29,40 @@ router.post('/', function (req, res) {
     var description = req.body.txtDescription;
 
     //Media
-    var count = req.body.txtCount;
+    address.push({"city": city, "district": district, "address1": address1, "address2": address2});
+
+
+    var count = req.body.txtCountMedia;
     var media = [];
     for (i = 1; i <= count; i++) {
         var media_name = req.body.txtMediaName + i;
         //Nếu không upload hình:
-        if (req.files.ulfMedia === 'undefined' && req.body.txtMediaUrl != "") {
+        if (req.files.ulfMedia + i === 'undefined' && req.body.txtMediaUrl + i != "") {
             var media_url = req.body.txtMediaUrl + i;
-            media.push({Name: media_name, Url: media_url});
-        } else if (req.files.ulfMedia && req.body.txtMediaUrl == "") {
+            media.push({"name": media_name, "url": media_url});
+        } else if (req.files.ulfMedia + i && req.body.txtMediaUrl +i == "") {
             //Còn nếu có
             var media_upload = req.files.ulfMedia + i;
             var media_upload_path = media_upload.path;
             var media_save_path = "public/images/" + media_upload.name;
             var im = require('imagemagick');
-            im.resize({
-                srcPath: media_upload_path,
-                dstPath: media_save_path,
-                width: 600
-            }, function (err, stdout, stderr) {
-                console.log('Resize product media success.');
+            im.identify(media_upload_path, function (error, media_features) {
+                if (media_features) {
+                    im.resize({
+                        srcPath: media_upload_path,
+                        dstPath: media_save_path,
+                        width: media_features.width / 2,
+                        height: media_features.height / 2
+                    }, function (err, stdout, stderr) {
+                    });
+                }
             });
-            media.push({Name: media_name, Url: ".." + media_save_path.replace("public", "")});
+            media.push({"name": media_name, "url": ".." + media_save_path.replace("public", "")});
         }
     }
+    var status = true;
 
-    new products_schema.product({
+    new product_schema.product({
         _id: null,
         id_store: id_store,
         product_name: product_name,
@@ -62,23 +70,24 @@ router.post('/', function (req, res) {
         tags: tags,
         description: description,
         media: media,
-        status: true,
+        status: status,
         rating: []
-    }).save(function (err) {
-            if (!err) {
-                stores_schema.store.find(function (err, arrStore) {
-                    if (arrStore && arrStore.length > 0) {
-                        req.session.store = arrStore;
-                        res.render('home', {store: req.session.store});
+    }).save(function (save_error) {
+            if (!save_error) {
+                store_schema.store.find(function (store_error, store_array) {
+                    if (store_array && store_array.length > 0) {
+                        req.session.store_array = store_array;
+                        product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
+                            res.render("store_detail", {store_id: req.session.store_id_recent, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array});
+                        });
                     } else {
-                        console.log(err);
+                        console.log(store_error);
                     }
                 });
             } else {
-                console.log(err);
+                console.log(save_error);
             }
         });
-})
-;
+});
 
 module.exports = router;

@@ -10,8 +10,8 @@ var product_schema = new schema({
     tags: [],
     description: String,
     media: [],
-    status: Boolean,
-    rating: []
+    status: String,
+    rating: [] //{"user_id": (id of user), "rate": int (0-5)}
 });
 
 var product = mongoose.model('products', product_schema);
