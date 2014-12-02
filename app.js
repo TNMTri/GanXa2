@@ -19,6 +19,7 @@ var search = require('./routes/search');
 var store_detail = require('./routes/store_detail');
 var insert_product = require('./routes/insert_product');
 var edit_product = require('./routes/edit_product');
+var edit_store =require('./routes/edit_store');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use('/search', search);
 app.use('/store_detail', store_detail);
 app.use('/insert_product', insert_product);
 app.use('/edit_product', edit_product);
+app.use('/edit_store',edit_store);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ./partial/head %>
+</head>
+<body>
+<header>
+    <% include ./partial/header %>
+</header>
+<div class="container insert_container">
+    <center>
+        <div class="col-md-12">
+            <div class="row">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="col-md-12 map-insertstore">
+                        <div id="map-canvas" class="map"></div>
+                    </div>
+                    <div class="col-md-6 input_insertstore">
+                        <input type="text" id="a" name="txtLatitude"
+                               class="form-control">
+                    </div>
+                    <div class="col-md-6 input_insertstore">
+                        <input type="text" id="o" name="txtLongtitude"
+                               class="form-control  ">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="button" value="Location"  onclick="codeAddress()"
+                               class="btn btn-primary btn-block input_insertstore ">
+                    </div>
+                    <input id="pac-input" type="text" value="" placeholder="Enter a location">
+
+
+                    <div class="col-md-12">
+                        <input type="text" required name="txtStoreName" placeholder="Tên cửa hàng"
+                               class="form-control  input_insertstore">
+                    </div>
+                    <div class="col-md-4 input_insertstore">
+                        <input type="file" required name="ulfCover" ONCHANGE="show_cover(this)" accept="image/*"
+                               alt="Cover image"
+                               class="form-control">
+                    </div>
+                    <div class="col-md-2 input_insertstore">
+                        <img class="img-thumbnil" id="thumbnil" src="" alt="Cover image">
+                    </div>
+
+                    <div class="col-md-4 input_insertstore">
+                        <input type="file" required name="ulflOGO" ONCHANGE="show_logo(this)" accept="image/*"
+                               alt="Cover image"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-2 input_insertstore">
+                        <img class="img-thumbnil" id="thumbnil2" src="" alt="Logo image">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" required name="txtWebsite" placeholder="Website"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" required name="txtFanpage" placeholder="Facebook fanpage url"
+                               class="form-control  input_insertstore">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" required name="txtCity" placeholder="Thành phố"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" required name="txtDistrict" placeholder="quận/huyện"
+                               class="form-control  input_insertstore">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" required name="txtAdrress1" placeholder="Địa chỉ 1"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" required name="txtAdrress2" placeholder="Địa chỉ 2"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" required name="txtPhone" placeholder="Số điện thoại"
+                               class="form-control  input_insertstore">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" required name="txtHouresOfWork" placeholder="Giờ làm việc"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-12">
+                        <select name="slcIndustry"  class="size-selcter form-control size-selcter selecter_1 input_insertstore">
+                            <% if(typeof industry_array != "undefined"){
+                            industry_array.forEach(function(industry){ %>
+                            <option  value="<%= industry.industry_name %>"><%= industry.industry_name %></option>
+                            <% })} %>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="submit" value="Thêm" class="btn btn-primary btn-block input_insertstore">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </center>
+
+</div>
+<footer>
+    <% include ./partial/footer %>
+</footer>
+</body>
+</html>
