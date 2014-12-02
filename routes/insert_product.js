@@ -32,15 +32,15 @@ router.post('/', function (req, res) {
     address.push({"city": city, "district": district, "address1": address1, "address2": address2});
 
 
-    var count = req.body.txtCountMedia;
+    var count_media = req.body.txtCountMedia;
     var media = [];
-    for (i = 1; i <= count; i++) {
+    for (var i = 1; i <= count_media; i++) {
         var media_name = req.body.txtMediaName + i;
         //Nếu không upload hình:
         if (req.files.ulfMedia + i === 'undefined' && req.body.txtMediaUrl + i != "") {
             var media_url = req.body.txtMediaUrl + i;
             media.push({"name": media_name, "url": media_url});
-        } else if (req.files.ulfMedia + i && req.body.txtMediaUrl +i == "") {
+        } else if (req.files.ulfMedia + i && req.body.txtMediaUrl + i == "") {
             //Còn nếu có
             var media_upload = req.files.ulfMedia + i;
             var media_upload_path = media_upload.path;

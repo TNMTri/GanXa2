@@ -15,12 +15,14 @@ router.post('/', function (req, res) {
     var id_user_facebook = "id_user_facebook";
     var store_name = req.body.txtStoreName;
     //Xử lý address:
-    var city = req.body.txtCity;
-    var district = req.body.txtDistrict;
-    var address1 = req.body.txtAddress1;
-    var address2 = req.body.txtAddress2;
+    var count_address = req.body.txtCountAddress;
     var address = [];
-    address.push({"city": city, "district": district, "address1": address1, "address2": address2});
+    for (var i = 1; i < count_address.length; i++) {
+        var city = req.body.txtCity + i;
+        var district = req.body.txtDistrict + i;
+        var street = req.body.txtStreet + i;
+        address.push({"city": city, "district": district, "street": street});
+    }
     var latitude = req.body.txtLatitude;
     var longitude = req.body.txtLongitude;
     var phone = req.body.txtPhone;
