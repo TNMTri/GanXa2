@@ -1,6 +1,5 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     background-color: #F2F1EF;
 }
 
@@ -16,7 +15,7 @@ body {
     border-right: 1px #ffffff groove;
 }
 .row-home{
-    margin-top: 3em;
+    margin-top: 5em;
 }
 .img-store{
     max-height: 337px;
@@ -24,4 +23,27 @@ body {
 }
 .col-search{
     margin-top: 3em;
+}
+.insert_container{
+    padding-top: 2em;
+}
+.input_insertstore{
+    margin-top: 2%;
+}
+.lblInsertstore{
+    float: left;
+    margin-top: 2%;
+    font-size: 16px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+.size-selcter{
+    font-size: 15px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+.img-thumbnil{
+    height: 100%;
+    width: 100%;
+}
+.map-insertstore{
+    padding-top: 5em;
 }

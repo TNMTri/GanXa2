@@ -1,390 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Insert Store</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-<script>
-var geocoder;
-var map;
-var lat;
-var long;
-var marker;
-//Chạy khi khởi tạo.
-function initialize() {
-    geocoder = new google.maps.Geocoder();
-    //Option.
-    var mapOptions = {
-        zoom: 20
-    };
-    //Tạo google map tại map-canvas cùng với option.
-    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-    // Try HTML5 geolocation
-    if (navigator.geolocation) {
-        //Lấy tọa độ hiện tại:
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            lat = new google.maps.LatLng(position.coords.latitude);
-            long = new google.maps.LatLng(position.coords.longitude);
-            marker = new google.maps.Marker({
-                draggable: true,
-                position: pos,
-                map: map,
-                title: 'Bạn đang ở đây?',
-                animation: google.maps.Animation.DROP,
-                anchor: new google.maps.Point(0, 49)
-
-            });
-            google.maps.event.addListener(marker, 'drag', function (a) {
-                var elem = document.getElementById("a");
-                elem.value = a.latLng.lat().toFixed(7);
-                var elem = document.getElementById("o");
-                elem.value = a.latLng.lng().toFixed(7);
-            });
-
-            map.setCenter(pos);
-        }, function () {
-            handleNoGeolocation(true);
-        });
-    } else {
-        handleNoGeolocation(false);
-    }
-    getLatLong();
-
-    google.maps.event.addListener(map, "click", function (event) {
-        var lat = event.latLng.lat();
-        var lng = event.latLng.lng();
-
-        marker.setMap(null);
-
-        var pos = new google.maps.LatLng(lat, lng);
-
-        marker = new google.maps.Marker({
-            draggable: true,
-            position: pos,
-            map: map,
-            title: "Bạn ở đây?",
-            raiseOnDrag: false,
-            animation: google.maps.Animation.DROP
-        });
-
-        google.maps.event.addListener(marker, 'drag', function (a) {
-            var elem = document.getElementById("a");
-            elem.value = a.latLng.lat().toFixed(7);
-            var elem = document.getElementById("o");
-            elem.value = a.latLng.lng().toFixed(7);
-        });
-
-        var elem = document.getElementById("a");
-        elem.value = lat.toFixed(7);
-        var elem = document.getElementById("o");
-        elem.value = lng.toFixed(7);
-    });
-
-    var input = (document.getElementById('pac-input'));
-    var click = (document.getElementById('search'));
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(click);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.bindTo('bounds', map);
-    var infowindow = new google.maps.InfoWindow();
-    marker = new google.maps.Marker({
-        map: map,
-        anchorPoint: new google.maps.Point(0, -29),
-        draggable: true,
-        position: pos,
-        title: "Bạn ở đây?",
-        raiseOnDrag: false,
-        animation: google.maps.Animation.DROP
-    });
-
-    //Event place_changed cho textbox autocomplete
-    google.maps.event.addListener(autocomplete, 'place_changed', function () {
-        alert("her");
-        infowindow.close();
-        marker.setVisible(false);
-        var place = autocomplete.getPlace();
-        if (!place.geometry) {
-            return;
-        }
-
-        // If the place has a geometry, then present it on a map.
-        if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-        } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(20);  // Why 17? Because it looks good.
-        }
-
-        marker = new google.maps.Marker({
-            draggable: true,
-            position: pos,
-            map: map,
-            title: "Bạn ở đây?",
-            raiseOnDrag: false,
-            animation: google.maps.Animation.DROP
-        });
-
-        /*google.maps.event.addListener(marker, 'drag', function(a) {
-         var elem = document.getElementById("a");
-         elem.value = a.latLng.lat().toFixed(7);
-         var elem = document.getElementById("o");
-         elem.value = a.latLng.lng().toFixed(7);
-         });*/
-
-        marker.setPosition(place.geometry.location);
-        var elem = document.getElementById("a");
-        elem.value = place.geometry.location.lat().toFixed(7);
-        var elem = document.getElementById("o");
-        elem.value = place.geometry.location.lng().toFixed(7);
-        marker.setVisible(true);
-
-        var address = '';
-        if (place.address_components) {
-            address = [
-                (place.address_components[0] && place.address_components[0].short_name || ''),
-                (place.address_components[1] && place.address_components[1].short_name || ''),
-                (place.address_components[2] && place.address_components[2].short_name || '')
-            ].join(' ');
-        }
-
-        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-        infowindow.open(map, marker);
-    });
-} //Hết init
-function toggleBounce() {
-
-    if (marker.getAnimation() != null) {
-        marker.setAnimation(null);
-    } else {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
-}
-//Kiểm tra xem trình duyệt có hỗ trợ geolocation không?
-function handleNoGeolocation(errorFlag) {
-    if (errorFlag) {
-        var content = 'Error: The Geolocation service failed.';
-    } else {
-        var content = 'Error: Your browser doesn\'t support geolocation.';
-    }
-    var options = {
-        map: map,
-        position: new google.maps.LatLng(60, 105),
-        content: content
-    };
-    var infowindow = new google.maps.InfoWindow(options);
-    map.setCenter(options.position);
-}
-
-//Lấy lat, lng.
-function getLatLong() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        alert("Geolocation is not supported by this browser.");
-    }
-}
-
-function showPosition(position) {
-    //Set lat và long xuống textbox.
-    var elem = document.getElementById("a");
-    elem.value = position.coords.latitude;
-    var elem = document.getElementById("o");
-    elem.value = position.coords.longitude;
-}
-
-function codeAddress() {
-    var address = document.getElementById('pac-input').value;
-    geocoder.geocode({ 'address': address}, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var elem = document.getElementById("a");
-            elem.value = results[0].geometry.location.lat().toFixed(7);
-            var elem = document.getElementById("o");
-            elem.value = results[0].geometry.location.lng().toFixed(7);
-
-            pos = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-
-            map.setCenter(results[0].geometry.location);
-            marker.setVisible(false);
-            marker = new google.maps.Marker({
-                draggable: true,
-                position: pos,
-                map: map,
-                title: "Bạn ở đây?",
-                raiseOnDrag: false,
-                animation: google.maps.Animation.DROP
-            });
-
-            google.maps.event.addListener(marker, 'drag', function (a) {
-                var elem = document.getElementById("a");
-                elem.value = a.latLng.lat().toFixed(7);
-                var elem = document.getElementById("o");
-                elem.value = a.latLng.lng().toFixed(7);
-            });
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
-}
-google.maps.event.addDomListener(window, 'load', initialize);
-
-function show_cover(fileInput) {
-    var files = fileInput.files;
-    for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var imageType = /image.*/;
-        if (!file.type.match(imageType)) {
-            continue;
-        }
-        var img = document.getElementById("thumbnil");
-        img.file = file;
-        var reader = new FileReader();
-        reader.onload = (function (aImg) {
-            return function (e) {
-                aImg.src = e.target.result;
-            };
-        })(img);
-        reader.readAsDataURL(file);
-    }
-}
-function show_logo(fileInput) {
-    var files = fileInput.files;
-    for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var imageType = /image.*/;
-        if (!file.type.match(imageType)) {
-            continue;
-        }
-        var img = document.getElementById("thumbnil2");
-        img.file = file;
-        var reader = new FileReader();
-        reader.onload = (function (aImg) {
-            return function (e) {
-                aImg.src = e.target.result;
-            };
-        })(img);
-        reader.readAsDataURL(file);
-    }
-}
-</script>
-<style>
-    #map-canvas {
-        float: left;
-        margin-top: 10px;
-        margin-left: 12%;
-        height: 400px;
-        width: 75%;
-    }
-
-    html, body {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-    }
-
-    .controls {
-        margin-top: 16px;
-        border: 1px solid transparent;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        height: 32px;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    #pac-input {
-        background-color: #fff;
-        padding: 0 11px 0 13px;
-        width: 400px;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        text-overflow: ellipsis;
-    }
-
-    #pac-input:focus {
-        border-color: #4d90fe;
-        margin-left: -1px;
-        padding-left: 14px; /* Regular padding-left + 1. */
-        width: 401px;
-    }
-
-    .pac-container {
-        font-family: Roboto;
-    }
-
-    #type-selector {
-        color: #fff;
-        background-color: #4d90fe;
-        padding: 5px 11px 0px 11px;
-    }
-
-    #type-selector label {
-        font-family: Roboto;
-        font-size: 13px;
-        font-weight: 300;
-    }
-
-</style>
+    <% include ./partial/head %>
 </head>
 <body>
-<form action="" method="post" enctype="multipart/form-data">
-    <div id="map-canvas" class="map"></div>
-    <br>
-    <input type="text" required name="txtStoreName" placeholder="Tên cửa hàng">
-    <br>
-    <input type="text" required name="txtWebsite" placeholder="Website">
-    <br>
-    <input type="text" required name="txtFanpage" placeholder="Facebook Fanpage URL">
-    <br>
-    Địa chỉ:
-    <br>
-    <input type="text" required name="txtCity" placeholder="City">
-    <input type="text" required name="txtDistrict" placeholder="District">
-    <input type="text" required name="txtAddress1" placeholder="Address1">
-    <input type="text" required name="txtAddress2" placeholder="Address2">
-    <br>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg"
-            style="width: 76%;height: 46px" onclick="codeAddress()">Location
-    </button>
-    <br>
-    <input id="pac-input" type="text" value="" placeholder="Enter a location"
-           class="controls">
-    <br>
-    <input id="a" name="txtLatitude">
-    <br>
-    <input id="o" name="txtLongitude">
-    <br>
-    <input type="text" required name="txtPhone" placeholder="Số điện thoại liên lạc">
-    <br>
-    <textarea required name="txtDescription" placeholder="Giới thiệu về cửa hàng"
-              style="float: left;margin-left: 12%;width: 76%;height: 15em; background-color: #13161B;"></textarea>
-    <br>
-    <select name="slcIndustry">
-        <% if(typeof industry_array != "undefined"){
-                industry_array.forEach(function(industry){ %>
-        <option value="<%= industry.industry_name %>"><%= industry.industry_name %></option>
-        <% })} %>
-    </select>
-    <br>
-    <input type=text required name="txtHoursOfWork" placeholder="Giờ làm việc">
-    <br>
-    <input type="file" required name="ulfCover" accept="image/*" onchange="show_cover(this)">
-    <br>
-    <img id="thumbnil" style="width:20%; margin-top:10px;" src="" alt="Cover image"/>
-    <br>
-    <input type="file" required name="ulfLogo" accept="image/*" onchange="show_logo(this)">
-    <br>
-    <img id="thumbnil2" style="width:20%; margin-top:10px;" src="" alt="Logo image"/>
-    <br>
+<header>
+    <% include ./partial/header %>
+</header>
+<div class="container insert_container">
+    <center>
+        <div class="col-md-12">
+            <div class="row">
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="col-md-12 map-insertstore">
+                        <div id="map-canvas" class="map"></div>
+                    </div>
+                    <div class="col-md-6 input_insertstore">
+                        <input type="text" id="a" name="txtLatitude"
+                               class="form-control">
+                    </div>
+                    <div class="col-md-6 input_insertstore">
+                        <input type="text" id="o" name="txtLongtitude"
+                               class="form-control  ">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="button" value="Location"  onclick="codeAddress()"
+                               class="btn btn-primary btn-block input_insertstore ">
+                    </div>
+                    <input id="pac-input" type="text" value="" placeholder="Enter a location">
 
-    <div class="Remember-me">
-        <div class="submit">
-            <input type="submit" value="Thêm -->">
+
+                    <div class="col-md-12">
+                        <input type="text" required name="txtStoreName" placeholder="Tên cửa hàng"
+                               class="form-control  input_insertstore">
+                    </div>
+                    <div class="col-md-4 input_insertstore">
+                        <input type="file" required name="ulfCover" ONCHANGE="show_cover(this)" accept="image/*"
+                               alt="Cover image"
+                               class="form-control">
+                    </div>
+                    <div class="col-md-2 input_insertstore">
+                        <img class="img-thumbnil" id="thumbnil" src="" alt="Cover image">
+                    </div>
+
+                    <div class="col-md-4 input_insertstore">
+                        <input type="file" required name="ulflOGO" ONCHANGE="show_logo(this)" accept="image/*"
+                               alt="Cover image"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-2 input_insertstore">
+                        <img class="img-thumbnil" id="thumbnil2" src="" alt="Logo image">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" required name="txtWebsite" placeholder="Website"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" required name="txtFanpage" placeholder="Facebook fanpage url"
+                               class="form-control  input_insertstore">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" required name="txtCity" placeholder="Thành phố"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" required name="txtDistrict" placeholder="quận/huyện"
+                               class="form-control  input_insertstore">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" required name="txtAdrress1" placeholder="Địa chỉ 1"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" required name="txtAdrress2" placeholder="Địa chỉ 2"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" required name="txtPhone" placeholder="Số điện thoại"
+                               class="form-control  input_insertstore">
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" required name="txtHouresOfWork" placeholder="Giờ làm việc"
+                               class="form-control input_insertstore">
+                    </div>
+                    <div class="col-md-12">
+                        <select name="slcIndustry"  class="size-selcter form-control size-selcter selecter_1 input_insertstore">
+                            <% if(typeof industry_array != "undefined"){
+                            industry_array.forEach(function(industry){ %>
+                            <option  value="<%= industry.industry_name %>"><%= industry.industry_name %></option>
+                            <% })} %>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="submit" value="Thêm" class="btn btn-primary btn-block input_insertstore">
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="clear"></div>
-    </div>
-</form>
+    </center>
+
+</div>
+<footer>
+    <% include ./partial/footer %>
+</footer>
 </body>
 </html>
