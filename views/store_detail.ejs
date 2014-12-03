@@ -9,6 +9,7 @@
 </header>
 <div class="col-md-12 col-search">
     <a href="insert_product?id=<%= store_id %>">Add product for store <%= store_id %></a>
+    <br>
     <% product_array.forEach(function(product){ %>
     <%= product.product_name %>
     <% }) %>

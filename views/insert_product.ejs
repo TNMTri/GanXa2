@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    Name: <input name="txtProductName" placeholder="Product Name">
+    <br>
+    Price: <input name="txtPrice" placeholder="Price">
+    <br>
+    Tags: <input name="txtTags" placeholder="Tags">
+    <br>
+    Description: <input name="txtDescription" placeholder="Description">
+    <br>
+    Media: (bắt buộc 1 ban đầu?)
+    <br>
+    Media Name: <input name="txtMediaName" placeholder="Media Name">
+    <br>
+    Url: (nhập url có sẵn hoặc upload từ máy ảnh)
+    <input name="txtMediaUrl" placeholder="Media Url"> hoặc
+    <input type="file" name="ulfMediaUrl" accept="image/*" alt="Product Image">
+    <br>
+    Loại:
+    <input type="radio" name="grpType" value="Image" checked> Image
+    <input type="radio" name="grpType" value="Video"> Video<br>
+    <br>
+    <input type="submit" value="Insert">
+</form>
+</body>
+</html>

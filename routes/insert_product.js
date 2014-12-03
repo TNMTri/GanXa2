@@ -1,8 +1,7 @@
-express = require('express');
+var express = require('express');
 var router = express.Router();
 
 var product_schema = require('../models/product_schema');
-var store_schema = require('../models/product_schema');
 
 var store_id;
 
@@ -17,7 +16,7 @@ router.get('/', function (req, res) {
 
 router.post('/', function (req, res) {
 
-    var id_store = req.session.store_id_recent;
+    var id_store = store_id;
     var product_name = req.body.txtProductName;
     var price = req.body.txtPrice;
     //Tags:
@@ -27,39 +26,35 @@ router.post('/', function (req, res) {
         tags[i] = tags[i].trim();
     }
     var description = req.body.txtDescription;
-
+    console.log(req.files.ulfMediaUrl.name);
     //Media
-    address.push({"city": city, "district": district, "address1": address1, "address2": address2});
-
-
-    var count_media = req.body.txtCountMedia;
+    //var count_media = req.body.txtCountMedia;
     var media = [];
-    for (var i = 1; i <= count_media; i++) {
-        var media_name = req.body.txtMediaName + i;
-        //Nếu không upload hình:
-        if (req.files.ulfMedia + i === 'undefined' && req.body.txtMediaUrl + i != "") {
-            var media_url = req.body.txtMediaUrl + i;
-            media.push({"name": media_name, "url": media_url});
-        } else if (req.files.ulfMedia + i && req.body.txtMediaUrl + i == "") {
-            //Còn nếu có
-            var media_upload = req.files.ulfMedia + i;
-            var media_upload_path = media_upload.path;
-            var media_save_path = "public/images/" + media_upload.name;
-            var im = require('imagemagick');
-            im.identify(media_upload_path, function (error, media_features) {
-                if (media_features) {
-                    im.resize({
-                        srcPath: media_upload_path,
-                        dstPath: media_save_path,
-                        width: media_features.width / 2,
-                        height: media_features.height / 2
-                    }, function (err, stdout, stderr) {
-                    });
-                }
-            });
-            media.push({"name": media_name, "url": ".." + media_save_path.replace("public", "")});
-        }
+    //for (var i = 1; i <= count_media; i++) {
+    var media_name = req.body.txtMediaName;
+    var media_url;
+    if (req.body.txtMediaUrl) {
+        media_url = req.body.txtMediaUrl;
+        media.push({"media_name": media_name, "media_url": media_url, "media_type": req.body.grpType});
+    } else {
+
+        var media_upload_path = req.files.ulfMediaUrl.path;
+        var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
+        var im = require('imagemagick');
+        im.identify(media_upload_path, function (error, media_features) {
+            if (media_features) {
+                im.resize({
+                    srcPath: media_upload_path,
+                    dstPath: media_save_path,
+                    width: media_features.width / 2,
+                    height: media_features.height / 2
+                }, function (err, stdout, stderr) {
+                });
+            }
+        });
+        media.push({"media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
     }
+    //}
     var status = true;
 
     new product_schema.product({
@@ -74,15 +69,8 @@ router.post('/', function (req, res) {
         rating: []
     }).save(function (save_error) {
             if (!save_error) {
-                store_schema.store.find(function (store_error, store_array) {
-                    if (store_array && store_array.length > 0) {
-                        req.session.store_array = store_array;
-                        product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
-                            res.render("store_detail", {store_id: req.session.store_id_recent, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array});
-                        });
-                    } else {
-                        console.log(store_error);
-                    }
+                product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
+                    res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, product_array: product_array});
                 });
             } else {
                 console.log(save_error);

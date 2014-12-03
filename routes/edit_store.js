@@ -54,16 +54,13 @@ router.post('/', function (req, res) {
     if (typeof req.files.ulfCover != 'undefined') {
         var cover_upload_path = req.files.ulfCover.path;
         var cover_save_path = "public/images/" + req.files.ulfCover.name;
-        im.identify(cover_upload_path, function (cover_error, cover_features) {
-            if (cover_features) {
-                im.resize({
-                    srcPath: cover_upload_path,
-                    dstPath: cover_save_path,
-                    width: cover_features.width / 2,
-                    height: cover_features.height / 2
-                }, function (err, stdout, stderr) {
-                });
-            }
+        im.resize({
+            srcPath: cover_upload_path,
+            dstPath: cover_save_path,
+            width: 800
+        }, function (err, stdout, stderr) {
+            if (err) throw err;
+            console.log('Resized cover successful.');
         });
         cover_save_path = ".." + req.files.ulfCover.path.replace("public", "");
         cover_new = cover_save_path;
@@ -74,16 +71,13 @@ router.post('/', function (req, res) {
     if (typeof req.files.ulfLogo != 'undefined') {
         var logo_upload_path = req.files.ulfLogo.path;
         var logo_save_path = "public/images/" + req.files.ulfLogo.name;
-        im.identify(logo_upload_path, function (logo_error, logo_features) {
-            if (logo_features) {
-                im.resize({
-                    srcPath: logo_upload_path,
-                    dstPath: logo_save_path,
-                    width: logo_features.width / 2,
-                    height: logo_features.height / 2
-                }, function (err, stdout, stderr) {
-                });
-            }
+        im.resize({
+            srcPath: logo_upload_path,
+            dstPath: logo_save_path,
+            width: 500
+        }, function (err, stdout, stderr) {
+            if (err) throw err;
+            console.log('Resized logo successful.');
         });
         logo_save_path = ".." + req.files.ulfLogo.path.replace("public", "");
         logo_new = logo_save_path;

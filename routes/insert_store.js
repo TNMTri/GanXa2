@@ -20,7 +20,7 @@ router.post('/', function (req, res) {
     //for (var i = 1; i <= count_address.length; i++) {
     var city = req.body.txtCity;
     var district = req.body.txtDistrict;
-     var street = req.body.txtStreet;
+    var street = req.body.txtStreet;
     address.push({"city": city, "district": district, "street": street});
     //}
     var latitude = req.body.txtLatitude;
@@ -41,27 +41,22 @@ router.post('/', function (req, res) {
     var cover_save_path = "public/images/" + req.files.ulfCover.name;
     var logo_save_path = "public/images/" + req.files.ulfLogo.name;
     //Resize:
-    im.identify(cover_upload_path, function (cover_error, cover_features) {
-        if (cover_features) {
-            im.resize({
-                srcPath: cover_upload_path,
-                dstPath: cover_save_path,
-                width: cover_features.width / 2,
-                height: cover_features.height / 2
-            }, function (err, stdout, stderr) {
-            });
-        }
+    im.resize({
+        srcPath: cover_upload_path,
+        dstPath: cover_save_path,
+        width: 800
+    }, function (err, stdout, stderr) {
+        if (err) throw err;
+        console.log('Resized cover successful.');
     });
-    im.identify(logo_upload_path, function (logo_error, logo_features) {
-        if (logo_features) {
-            im.resize({
-                srcPath: logo_upload_path,
-                dstPath: logo_save_path,
-                width: logo_features.width / 2,
-                height: logo_features.height / 2
-            }, function (err, stdout, stderr) {
-            });
-        }
+
+    im.resize({
+        srcPath: logo_upload_path,
+        dstPath: logo_save_path,
+        width: 500
+    }, function (err, stdout, stderr) {
+        if (err) throw err;
+        console.log('Resized logo successful.');
     });
     //Xử lý path save:
     cover_save_path = ".." + cover_save_path.replace("public", "");
