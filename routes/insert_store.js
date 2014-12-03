@@ -17,12 +17,12 @@ router.post('/', function (req, res) {
     //Xử lý address:
     var count_address = req.body.txtCountAddress;
     var address = [];
-    for (var i = 1; i < count_address.length; i++) {
-        var city = req.body.txtCity + i;
-        var district = req.body.txtDistrict + i;
-        var street = req.body.txtStreet + i;
-        address.push({"city": city, "district": district, "street": street});
-    }
+    //for (var i = 1; i <= count_address.length; i++) {
+    var city = req.body.txtCity1;
+    var district = req.body.txtDistrict1;
+     var street = req.body.txtStreet1;
+    address.push({"city": city, "district": district, "street": street});
+    //}
     var latitude = req.body.txtLatitude;
     var longitude = req.body.txtLongitude;
     var phone = req.body.txtPhone;
@@ -85,12 +85,24 @@ router.post('/', function (req, res) {
         logo: logo_save_path,
         date: date
     }).save(function (error) {
-            store_schema.store.find(function (store_error, store_array) {
+            var query_store = store_schema.store.find({});
+            query_store.limit(8);
+            query_store.sort({date: -1});
+            query_store.exec(function (store_error, store_array) {
                 if (store_array && store_array.length > 0) {
                     req.session.store_array = store_array;
-                    res.render('index', {store_array: store_array, industry_array: req.session.industry_array});
+
+                    industry_schema.industry.find(function (industry_error, industry_array) {
+                        if (industry_array && industry_array.length > 0) {
+                            req.session.store_array = store_array;
+                            req.session.industry_array = industry_array;
+                            res.render('index', {store_array: store_array, industry_array: industry_array});
+                        } else {
+                            console.log(industry_error);
+                        }
+                    });
                 } else {
-                    res.render('index');
+                    console.log(store_error);
                 }
             });
         });

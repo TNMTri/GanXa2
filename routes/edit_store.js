@@ -17,12 +17,9 @@ router.get('/', function (req, res) {
         if (!store_error && store_array && store_array.length > 0) {
             product_schema.product.find({IDStore: store_id}, function (product_error, product_array) {
                 store_array.forEach(function (store) {
-                    industry_schema.industry.find(function (industry_error, industry_array) {
-                        cover = store.cover;
-                        logo = store.logo;
-                        req.session.industry_array = industry_array;
-                        res.render('edit_store', {store_array: store_array, product_array: product_array, store_id: store_id, industry_array: industry_array});
-                    });
+                    cover = store.cover;
+                    logo = store.logo;
+                    res.render('edit_store', {store_array: store_array, product_array: product_array, store_id: store_id, industry_array: req.session.industry_array});
                 });
             })
         }
@@ -71,7 +68,7 @@ router.post('/', function (req, res) {
         cover_save_path = ".." + req.files.ulfCover.path.replace("public", "");
         cover_new = cover_save_path;
     }
-console.log(cover_new);
+    console.log(cover_new);
     //Logo:
     var logo_new = logo;
     if (typeof req.files.ulfLogo != 'undefined') {
@@ -96,7 +93,7 @@ console.log(cover_new);
     store_schema.store.update({_id: store_id}, {$set: {store_name: store_name, address: address, latitude: latitude, longitude: longitude, phone: phone, description: description, industry: industry, hours_of_work: hours_of_work, cover: cover_new, logo: logo_new, website: website, fanpage: fanpage}}, function (error, result) {
         if (!error && result) {
             store_schema.store.find(function (store_error, store_array) {
-                res.render('home', {store_array: store_array});
+                res.render('index', {store_array: store_array, industry_array: req.session.industry_array});
             })
         } else {
             console.log(error);
