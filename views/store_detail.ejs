@@ -12,6 +12,8 @@
     <br>
     <% product_array.forEach(function(product){ %>
     <%= product.product_name %>
+    <img src="<%= product.media[0].media_url%>">
+    <br>
     <% }) %>
 </div>
 </body>

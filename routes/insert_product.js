@@ -26,31 +26,26 @@ router.post('/', function (req, res) {
         tags[i] = tags[i].trim();
     }
     var description = req.body.txtDescription;
-    console.log(req.files.ulfMediaUrl.name);
     //Media
     //var count_media = req.body.txtCountMedia;
     var media = [];
     //for (var i = 1; i <= count_media; i++) {
     var media_name = req.body.txtMediaName;
     var media_url;
-    if (req.body.txtMediaUrl) {
+    if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined" ) {
         media_url = req.body.txtMediaUrl;
         media.push({"media_name": media_name, "media_url": media_url, "media_type": req.body.grpType});
     } else {
-
         var media_upload_path = req.files.ulfMediaUrl.path;
         var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
         var im = require('imagemagick');
-        im.identify(media_upload_path, function (error, media_features) {
-            if (media_features) {
-                im.resize({
-                    srcPath: media_upload_path,
-                    dstPath: media_save_path,
-                    width: media_features.width / 2,
-                    height: media_features.height / 2
-                }, function (err, stdout, stderr) {
-                });
-            }
+        im.resize({
+            srcPath: media_upload_path,
+            dstPath: media_save_path,
+            width: 600
+        }, function (err, stdout, stderr) {
+            if (err) throw err;
+            console.log('Resized media successful.');
         });
         media.push({"media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
     }
