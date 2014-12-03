@@ -11,7 +11,7 @@ router.get('/', function (req, res) {
         if (product_array && product_array.length > 0) {
             res.render('tags', {product_array: product_array});
         } else {
-            product_array.product_array.find(function (product_error, product_array) {
+            product_schema.product.find(function (product_error, product_array) {
                 res.render('tags', {product_array: product_array, tags_notification: "Không có sản phẩm."});
             })
         }
