@@ -1144,7 +1144,7 @@ img {
     vertical-align: middle
 }
 
-.img-responsive, .thumbnail > img, .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+.img-responsive, . .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img {
     display: block;
     max-width: 100%;
     height: auto
@@ -4978,10 +4978,10 @@ a.badge:hover, a.badge:focus {
     transition: border .2s ease-in-out
 }
 
-.thumbnail > img, .thumbnail a > img {
-    margin-right: auto;
-    margin-left: auto
-}
+/*.thumbnail > img, .thumbnail a > img {*/
+    /*margin-right: auto;*/
+    /*margin-left: auto*/
+/*}*/
 
 a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     border-color: #337ab7

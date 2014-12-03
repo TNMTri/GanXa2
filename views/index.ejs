@@ -8,28 +8,33 @@
 <header>
     <% include ./partial/header %>
 </header>
-<div class="row row-home">
-    <% store_array.forEach(function(store){ %>
-    <div class="col-sm-6 col-md-3">
-        <div class="thumbnail">
-            <a href="#" class="thumbnail">
+<div class="container">
+    <div class="row row-container">
+        <% store_array.forEach(function(store){ %>
+        <div class="row-home">
+            <div class="thumbnail">
                 <img class="img-store" src="<%= store.cover %>" alt=" ">
-            </a>
+                <img class="img-logo" src="<%= store.logo %>">
 
-            <div class="caption">
-                <center><h3><%= store.store_name %></h3></center>
+                <center><a href="store_detail?id=<%= store._id %>"><h3><%= store.store_name %></h3></a></center>
+
                 <p>
                     <% store.address.forEach(function (a) { %>
-                    <%= a.address1 + ", " + a.district + ", " + a.city %>
+                    <%= a.address + ", " + a.district + ", " + a.city %>
                     <% }) %>
                 </p>
 
-                <p><a href="store_detail?id=<%= store._id %>" class="btn btn-primary btn-block">View Details</a>
                 <p><a href="edit_store?id=<%= store._id %>" class="btn btn-primary btn-block">Edit store</a>
+
             </div>
+
+
         </div>
+        <% }) %>
     </div>
-    <% }) %>
 </div>
+<footer>
+    <% include ./partial/footer %>
+</footer>
 </body>
 </html>

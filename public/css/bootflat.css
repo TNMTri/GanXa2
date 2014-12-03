@@ -164,7 +164,8 @@ blockquote {
 }
 .btn-link, .btn-link:hover, .btn-link:focus, .btn-link:active, .btn-link.active, .btn-link.disabled, .btn-link[disabled] {
   color: #3bafda;
-  background-color: transparent;
+  background-color: transparent;
+
   border-color: transparent;
   -webkit-box-shadow: none;
      -moz-box-shadow: none;
@@ -318,7 +319,8 @@ blockquote {
 .label-default,
 .badge-default {
   color: #434a54;
-  background-color: white;
+  background-color: white;
+
   border: 1px solid #aab2bd;
 }
 
@@ -378,7 +380,8 @@ blockquote {
  * --------------------------------------------------
  */
 .popover {
-  color: white;
+  color: white;
+
   background-color: #434a54;
   border-color: #434a54;
 }
@@ -447,7 +450,8 @@ blockquote {
 }
 
 .breadcrumb-arrow {
-  height: 36px;
+  height: 36px;
+
   padding: 0;
   line-height: 36px;
   list-style: none;
@@ -474,7 +478,8 @@ blockquote {
   padding: 0 10px;
 }
 .breadcrumb-arrow li a, .breadcrumb-arrow li:not(:first-child) span {
-  height: 36px;
+  height: 36px;
+
   padding: 0 10px 0 25px;
   line-height: 36px;
 }
@@ -600,7 +605,8 @@ blockquote {
 
 .input-group-btn .btn + .btn {
   border-color: #96a0ad;
-  border-style: solid;
+  border-style: solid;
+
   border-width: 1px;
 }
 .input-group-btn .btn + .btn.btn-default {
@@ -770,7 +776,8 @@ blockquote {
   width: 20px;
   height: 50%;
   text-indent: -99999px;
-  cursor: pointer;
+  cursor: pointer;
+
   background-color: #3bafda;
 }
 .stepper .stepper-arrow:hover, .stepper .stepper-arrow:active {
@@ -794,7 +801,8 @@ blockquote {
 .stepper .up::before, .stepper .down::before {
   position: absolute;
   width: 0;
-  height: 0;
+  height: 0;
+
   content: "";
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
@@ -817,7 +825,8 @@ blockquote {
 
 .selecter {
   position: relative;
-  z-index: 1;
+  z-index: 1;
+
   display: block;
   max-width: 100%;
   outline: none;
@@ -854,7 +863,8 @@ blockquote {
   padding: 6px 10px;
   overflow: hidden;
   text-overflow: clip;
-  cursor: pointer;
+  cursor: pointer;
+
   background-color: white;
   border: 1px solid #aab2bd;
           border-radius: 4px;
@@ -883,7 +893,8 @@ blockquote {
   max-height: 260px;
   overflow: auto;
   overflow-x: hidden;
-  background-color: white;
+  background-color: white;
+
   border: 1px solid #aab2bd;
   border-width: 0 1px 1px;
           border-radius: 0 0 4px 4px;
@@ -901,7 +912,8 @@ blockquote {
   font-size: 11px;
   color: #aab2bd;
   text-transform: uppercase;
-  background-color: #f5f7fa;
+  background-color: #f5f7fa;
+
   border-bottom: 1px solid #e6e9ed;
 }
 .selecter .selecter-item {
@@ -911,7 +923,8 @@ blockquote {
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
+  cursor: pointer;
+
   background-color: white;
   border-bottom: 1px solid #e6e9ed;
 }
@@ -984,7 +997,8 @@ blockquote {
 }
 .selecter.bottom .selecter-options {
   top: auto;
-  bottom: 100%;
+  bottom: 100%;
+
   border-width: 1px 1px 0;
 }
 .selecter.bottom .selecter-item:last-child {
@@ -1134,7 +1148,8 @@ blockquote {
 .toggle .handle {
   position: relative;
   top: -20px;
-  left: 0;
+  left: 0;
+
   display: block;
   width: 50px;
   height: 32px;
@@ -1153,7 +1168,8 @@ blockquote {
   left: 1px;
   display: block;
   width: 30px;
-  height: 30px;
+  height: 30px;
+
   content: "";
   background-color: white;
           border-radius: 30px;
@@ -1169,7 +1185,8 @@ blockquote {
 }
 .toggle input[type="checkbox"]:disabled + .handle, .toggle input[type="radio"]:disabled + .handle, .toggle input[type="checkbox"]:disabled + .handle:before, .toggle input[type="radio"]:disabled + .handle:before, .toggle input[type="checkbox"]:disabled + .handle:after, .toggle input[type="radio"]:disabled + .handle:after {
   background-color: #e6e9ed;
-  filter: alpha(opacity=60);
+  filter: alpha(opacity=60);
+
   opacity: .6;
 }
 .toggle input[type="checkbox"]:checked + .handle:before, .toggle input[type="radio"]:checked + .handle:before {
@@ -1260,12 +1277,14 @@ blockquote {
   text-align: center;
 }
 .calendar .days {
-  padding-top: 15px;
+  padding-top: 15px;
+
   margin-top: 15px;
   border-top: 1px solid #ee7f6d;
 }
 .calendar .days .unit {
-  height: 34px;
+  height: 34px;
+
   margin-bottom: 3px;
   line-height: 34px;
   text-align: center;
@@ -1436,7 +1455,8 @@ blockquote {
   border: #a0d468;
 }
 .alert .alert-link {
-  text-decoration: underline;
+  text-decoration: underline;
+
   cursor: pointer;
   filter: alpha(opacity=65);
   opacity: .65;
@@ -1461,7 +1481,8 @@ blockquote {
  * --------------------------------------------------
  */
 .nav-tabs {
-  background-color: #e6e9ed;
+  background-color: #e6e9ed;
+
   border-bottom: none;
           border-radius: 4px 4px 0 0;
 
@@ -1960,7 +1981,8 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
  * --------------------------------------------------
  */
 .modal-content {
-  color: #434a54;
+  color: #434a54;
+
   border: none;
           border-radius: 4px;
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
@@ -2017,9 +2039,9 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
      -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
           box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 }
-.thumbnail a > img, .thumbnail > img {
-  width: 100%;
-}
+/*.thumbnail a > img, .thumbnail > img {*/
+  /*width: 100%;*/
+/*}*/
 .thumbnail .caption {
   font-size: 14px;
 }
@@ -2033,7 +2055,8 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
  * --------------------------------------------------
  */
 .jumbotron {
-  padding: 0;
+  padding: 0;
+
   margin-bottom: 20px;
   background-color: white;
           border-radius: 4px;
@@ -2274,7 +2297,8 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
 }
 
 .panel-group-lists .panel {
-  background-color: white;
+  background-color: white;
+
   border-bottom: 1px solid #e6e9ed;
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
      -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
@@ -2323,13 +2347,15 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
     margin-bottom: 20px;
   }
   .footer-logo, .footer-nav {
-    display: block;
+    display: block;
+
     float: none;
     width: 100%;
   }
 }
 .footer-logo {
-  height: 32px;
+  height: 32px;
+
   margin-top: -5px;
   line-height: 32px;
 }
@@ -2495,7 +2521,8 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
     left: 0;
   }
   .timeline dl dd.pos-left .time {
-    padding: 10px 0;
+    padding: 10px 0;
+
     margin-left: 0;
     text-align: left;
   }
@@ -2508,7 +2535,8 @@ a.list-group-item-danger.active, a.list-group-item-danger:hover, a.list-group-it
     border-color: transparent white transparent transparent;
   }
   .timeline dl dd.pos-right .time {
-    padding: 10px 0;
+    padding: 10px 0;
+
     margin-left: 0;
     text-align: left;
   }
