@@ -11,7 +11,7 @@
     <a href="insert_product?id=<%= store_id %>">Add product for store <%= store_id %></a>
     <br>
     <% product_array.forEach(function(product){ %>
-    <%= product.product_name %>
+    <a href=edit_product?id=<%= product._id %>><%= product.product_name %></a>
     <img src="<%= product.media[0].media_url%>">
     <br>
     <% }) %>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data">
+    <% product_array.forEach(function (product) { %>
+    Name: <input name="txtProductName" placeholder="Product Name" value="<%=product.product_name%>">
+    <br>
+    Price: <input name="txtPrice" placeholder="Price" value="<%=product.price%>">
+    <br>
+    Tags: <input name="txtTags" placeholder="Tags" value="<%=product.tags%>">
+    <br>
+    Description: <input name="txtDescription" placeholder="Description" value="<%=product.description%>">
+    <br>
+    Media:
+    <% product.media.forEach(function(media){ %>
+    <br>
+    Media Name: <input name="txtMediaName" placeholder="Media Name" value="<%=media.media_name%>">
+    <br>
+    Url: <%=media.media_url%>
+    <input name="txtMediaUrl" placeholder="Media Url"> hoặc
+    <input type="file" name="ulfMediaUrl" accept="image/*" alt="Product Image">
+    <br>
+    Loại:
+    <input type="radio" name="grpType" value="Image" checked> Image
+    <input type="radio" name="grpType" value="Video"> Video<br>
+    <br>
+    <% })}) %>
+    <input type="submit" value="Insert">
+</form>
+</body>
+</html>

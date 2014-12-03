@@ -10,7 +10,7 @@ router.get('/', function (req, res) {
     }else{
         store_id = req.session.store_id;
     }
-
+    req.session.store_id_recent = store_id;
     if (store_id) {
         store_schema.store.find({_id: store_id}, function (store_error, store_array) {
             product_schema.product.find({id_store: store_id}, function (product_error, product_array) {

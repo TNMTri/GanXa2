@@ -4,9 +4,29 @@
     <% include ./partial/head %>
 </head>
 <body>
-<header><% include ./partial/header %></header>
-<div class="col-md-12 col-search" >
-search
+<header>
+    <% include ./partial/header %>
+</header>
+<div class="col-md-12 col-search">
+    <form action="" method="post">
+        <input name="txtTextSearch" type="text" placeholder="Bạn muốn tìm gì?">
+        <input type="radio" name="type" value="store" checked>Store
+        <input type="radio" name="type" value="product">Product
+        <input type="submit" value="Search">
+    </form>
+
+    <br>
+    <% if(typeof store_array != 'undefined'){ %>
+    <%= notification %>
+    <% store_array.forEach(function(s){ %>
+    <p><a href="edit_store?id=<%= s._id %>"><%= s.store_name %></a></p>
+
+    <% })}else if(typeof product_array != 'undefined'){ %>
+
+    <%= notification %>
+    <% product_array.forEach(function(p){ %>
+    <p><a href="edit_product?id=<%= p._id %>"><%= p.product_name %></a></p>
+    <% })} %>
 </div>
 </body>
 </html>
