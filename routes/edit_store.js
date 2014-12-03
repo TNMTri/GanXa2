@@ -31,14 +31,14 @@ router.post('/', function (req, res) {
     var store_id = req.param('id');
     var store_name = req.body.txtStoreName;
 
-    var count_address = 1; //req.body.txtCountAddress;
+    //var count_address = 1; //req.body.txtCountAddress;
     var address = [];
-    for (var i = 1; i < count_address.length; i++) {
-        var city = req.body.txtCity + i;
-        var district = req.body.txtDistrict + i;
-        var street = req.body.txtStreet + i;
+    //for (var i = 1; i < count_address.length; i++) {
+        var city = req.body.txtCity;
+        var district = req.body.txtDistrict;
+        var street = req.body.txtStreet;
         address.push({"city": city, "district": district, "street": street});
-    }
+    //}
 
     var latitude = req.body.txtLatitude;
     var longitude = req.body.txtLongitude;
@@ -92,9 +92,17 @@ router.post('/', function (req, res) {
 
     store_schema.store.update({_id: store_id}, {$set: {store_name: store_name, address: address, latitude: latitude, longitude: longitude, phone: phone, description: description, industry: industry, hours_of_work: hours_of_work, cover: cover_new, logo: logo_new, website: website, fanpage: fanpage}}, function (error, result) {
         if (!error && result) {
-            store_schema.store.find(function (store_error, store_array) {
-                res.render('index', {store_array: store_array, industry_array: req.session.industry_array});
-            })
+            var query_store = store_schema.store.find({});
+            query_store.limit(8);
+            query_store.sort({date: -1});
+            query_store.exec(function (store_error, store_array) {
+                if (store_array && store_array.length > 0) {
+                    req.session.store_array = store_array;
+                    res.render('index', {store_array: store_array, industry_array: req.session.industry_array});
+                } else {
+                    console.log(store_error);
+                }
+            });
         } else {
             console.log(error);
         }
