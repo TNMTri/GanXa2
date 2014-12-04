@@ -66,7 +66,7 @@ var date = new Date();
     }).save(function (save_error) {
             if (!save_error) {
                 product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
-                    res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, product_array: product_array});
+                    res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, product_array: product_array, store_array: req.session.store_array});
                 });
             } else {
                 console.log(save_error);

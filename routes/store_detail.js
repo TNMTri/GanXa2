@@ -13,7 +13,8 @@ router.get('/', function (req, res) {
     req.session.store_id_recent = store_id;
     if (store_id) {
         store_schema.store.find({_id: store_id}, function (store_error, store_array) {
-            var query_product = product_schema.product.find({});
+            req.session.store_array = store_array;
+            var query_product = product_schema.product.find({"id_store": store_id});
             query_product.limit(10);
             query_product.sort({date: -1});
             query_product.exec(function (product_error, product_array) {
@@ -23,7 +24,6 @@ router.get('/', function (req, res) {
                     res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array, product_notification: "Không có sản phẩm tồn tại."});
                 }
             });
-
             /*product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
              res.render("store_detail", {industry_array: req.session.industry_array, store_array: store_array, product_array: product_array});
              });*/

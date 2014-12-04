@@ -8,16 +8,6 @@
     <% include ./partial/header %>
 </header>
 <div class="col-md-12 col-search">
-    <a href="insert_product?id=<%= store_id %>">Add product for store <%= store_id %></a>
-    <br>
-    <% product_array.forEach(function(product){ %>
-    <a href=edit_product?id=<%= product._id %>><%= product.product_name %></a>
-    <img src="<%= product.media[0].media_url %>" wid="100" height="100">
-    <% product.tags.forEach(function(tag){ %>
-    <a href="tags?tag=<%= tag %>"><%= tag %></a>
-    <% }) %>
-    <br>
-    <% }) %>
 </div>
 <div class="container">
     <% store_array.forEach(function (store) { %>
@@ -56,6 +46,7 @@
                     </div>
                 </a>
             </div>
+            <% product_array.forEach(function (product) { %>
             <div class="col-md-3 ">
                 <center>
                     <div class="items-div">
@@ -64,26 +55,19 @@
                             <tr>
                                 <td colspan="3">
                                     <center>
-                                        <img src="./images/template/c.jpg" class="img-up">
+                                        <img src="<%= product.media[0].media_url %>" class="img-up">
                                     </center>
                                 </td>
                             </tr>
                             <tr>
                                 <center>
-                                    <td class="tdDown"><a href="#"><img src="./images/template/d.jpg" class="img-prod"></a>
-                                    </td>
-                                    <td class="tdDown"><a href=""><img src="./images/template/e.jpg"
-                                                                       class="img-prod"></a>
-                                    </td>
-                                    <td class="tdDown"><a href=""><img src="./images/template/g.jpg"
-                                                                       class="img-prod"></a>
-                                    </td>
+                                    <%= product.media[0].media_name %>
                                 </center>
                             </tr>
                             <tr>
                                 <td colspan="3">
                                     <center>
-                                        <a href="edit_product?id=1" class="btn btn-primary"
+                                        <a href="edit_product?id=<%= product._id %>" class="btn btn-primary"
                                            style="width: 95% ; margin-top: 10px;">Edit
                                             Product
                                         </a>
@@ -95,6 +79,7 @@
                     </div>
                 </center>
             </div>
+            <% }) %>
         </div>
     </div>
 </div>
