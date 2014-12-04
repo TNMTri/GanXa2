@@ -20,7 +20,7 @@ a:hover{
 .row-home{
     /*margin-top: 3em;*/
     padding-top: 3em;
-    height: 800px;
+    /*height: 800px;*/
     width: 200px;
     float: left;
     margin-left: 50px;
@@ -63,4 +63,24 @@ a:hover{
 .img-thumbnil{
     height: 100%;
     width: 100%;
+}
+.thumbnail{
+    height: 320px;
+}
+.btn_index{
+    padding-bottom: 10px;
+    bottom: -10px;
+    position: relative;
+}
+.h4_index{
+    margin-top: 30px;
+}
+.dropdown-menu {
+    left: -69px;
+    padding: 25px 0;
+    margin: 2px 0 0;
+    background-color: #434a54;
+    border: none;
+    font-family: FontAwesome;
+    color: #ffffff;
 }

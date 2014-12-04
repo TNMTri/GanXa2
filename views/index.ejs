@@ -15,13 +15,13 @@
             <div class="thumbnail">
                 <img class="img-store" src="<%= store.cover %>" alt=" ">
                 <img class="img-logo" src="<%= store.logo %>">
-                <center><a href="store_detail?id=<%= store._id %>"><h4><%= store.store_name %></h4></a></center>
+                <center><a href="store_detail?id=<%= store._id %>"><h4 class="h4_index"><%= store.store_name %></h4></a></center>
                 <p>
                     <% store.address.forEach(function (a) { %>
                     <%= (a.street + ", " + a.district + ", " + a.city).substring(0, 50) %>... <a href="store_detail?id=<%= store._id %>">xem thêm</a>
                     <% }) %>
                 </p>
-                <p><a href="edit_store?id=<%= store._id %>" class="btn btn-primary btn-block">Edit store</a>
+                <a href="edit_store?id=<%= store._id %>"  class="btn btn-primary btn-block btn_index">Edit store</a>
             </div>
         </div>
         <% }) %>
