@@ -11,7 +11,8 @@ var product_schema = new schema({
     description: String,
     media: [],
     status: String,
-    rating: [] //{"user_id": (id of user), "rate": int (0-5)}
+    rating: [], //{"user_id": (id of user), "rate": int (0-5)}
+    date: Date
 });
 
 var product = mongoose.model('products', product_schema);

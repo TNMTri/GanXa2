@@ -51,7 +51,7 @@ router.post('/', function (req, res) {
     }
     //}
     var status = true;
-
+var date = new Date();
     new product_schema.product({
         _id: null,
         id_store: id_store,
@@ -61,7 +61,8 @@ router.post('/', function (req, res) {
         description: description,
         media: media,
         status: status,
-        rating: []
+        rating: [],
+        date: date
     }).save(function (save_error) {
             if (!save_error) {
                 product_schema.product.find({id_store: store_id}, function (product_error, product_array) {

@@ -19,7 +19,7 @@ router.post('/', function (req, res) {
     }
     var type = req.body.type;
     if (type == "store") {
-        store_schema.store.find({store_name: {$regex: key, $options: 'i'}}, function (store_error, store_array) {
+        store_schema.store.find({store_name: {$regex: key, $options: 'i, x'}}, function (store_error, store_array) {
             res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
         });
         //Fulltext search (để search không dấu)
@@ -48,7 +48,7 @@ router.post('/', function (req, res) {
          console.log(data.totalCount);
          });*/
     } else {
-        product_schema.product.find({product_name: {$regex: key, $options: 'i'}}, function (product_error, product_array) {
+        product_schema.product.find({product_name: {$regex: key, $options: 'i, x'}}, function (product_error, product_array) {
             res.render('search', {product_array: product_array, industry_array: req.session.industry_array, notification: "Vừa search product."});
         });
     }
