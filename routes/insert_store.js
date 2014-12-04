@@ -5,10 +5,7 @@ var store_schema = require('../models/store_schema');
 var industry_schema = require('../models/industry_schema');
 
 router.get('/', function (req, res) {
-    industry_schema.industry.find(function (err, industry_array) {
-        req.session.industry_array = industry_array;
-        res.render('insert_store', {industry_array: industry_array});
-    });
+    res.render('insert_store', {industry_array: req.session.industry_array});
 });
 
 router.post('/', function (req, res) {
