@@ -20,36 +20,39 @@
     <% }) %>
 </div>
 <div class="container">
+    <% store_array.forEach(function (store) { %>
     <div class="row row-storedetails">
         <div class="col-md-12 col-storedetails">
-            <img style="width: 100%;" src="./images/template/a.jpg">
-            <img class="avt-store" src="./images/template/b.jpg">
+            <img style="width: 100%;" src="<%= store.cover %>">
+            <img class="avt-store" src="<%= store.logo %>">
         </div>
         <div class="col-md-12 store-details">
             <center>
                 <p>
 
-                <h3>Store Name</h3></p>
-                <p>Số phone</p>
+                <h3><%= store.store_name %></h3></p>
+                <p><%= store.phone %></p>
 
-                <p>Địa chỉ</p>
+                <p><%= store.address[0].street + ", " + store.address[0].district + ", " + store.address[0].city %></p>
 
-                <p>Website</p>
+                <p><%= store.website %></p>
 
-                <p>Decription</p>
+                <p><%= store.description %></p>
 
-                <p>time of work</p>
+                <p><%= store.hours_of_work %></p>
             </center>
         </div>
-
     </div>
+    <% }) %>
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-3 ">
                 <a href="#" style="height: 300px;width: 220px;" data-toggle="modal" data-target=".bs-example-modal-lg">
                     <div class="items-div">
-                        <i style="padding-top: 55%;padding-left: 43%"
-                           class="fa fa-plus-square fa-4x"></i>
+                        <a href="insert_product?id=<%= store_id %>">
+                            <i style="padding-top: 55%;padding-left: 43%"
+                               class="fa fa-plus-square fa-4x"></i>
+                        </a>
                     </div>
                 </a>
             </div>
@@ -61,7 +64,7 @@
                             <tr>
                                 <td colspan="3">
                                     <center>
-                                        <a href="#"><img src="./images/template/c.jpg" class="img-up"></a>
+                                        <img src="./images/template/c.jpg" class="img-up">
                                     </center>
                                 </td>
                             </tr>
@@ -69,14 +72,15 @@
                                 <center>
                                     <td class="tdDown"><a href="#"><img src="./images/template/d.jpg" class="img-prod"></a>
                                     </td>
-                                    <td class="tdDown"><a href=""><img src="./images/template/e.jpg" class="img-prod"></a>
+                                    <td class="tdDown"><a href=""><img src="./images/template/e.jpg"
+                                                                       class="img-prod"></a>
                                     </td>
-                                    <td class="tdDown"><a href=""><img src="./images/template/g.jpg" class="img-prod"></a>
+                                    <td class="tdDown"><a href=""><img src="./images/template/g.jpg"
+                                                                       class="img-prod"></a>
                                     </td>
                                 </center>
                             </tr>
                             <tr>
-
                                 <td colspan="3">
                                     <center>
                                         <a href="edit_product?id=1" class="btn btn-primary"
@@ -92,9 +96,9 @@
                 </center>
             </div>
         </div>
-
     </div>
 </div>
+
 <footer>
     <% include ./partial/footer %>
 </footer>

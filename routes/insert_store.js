@@ -41,14 +41,30 @@ router.post('/', function (req, res) {
     var cover_save_path = "public/images/" + req.files.ulfCover.name;
     var logo_save_path = "public/images/" + req.files.ulfLogo.name;
     //Resize:
-    im.resize({
+    //Cũ
+    /*im.resize({
         srcPath: cover_upload_path,
         dstPath: cover_save_path,
         width: 800
     }, function (err, stdout, stderr) {
         if (err) throw err;
         console.log('Resized cover successful.');
+    });*/
+    //Crop
+    var option={
+        srcPath: cover_upload_path,
+        dstPath: cover_save_path,
+        width: 1100,
+        height: 350,
+        quality: 1,
+        gravity: "Center"
+    };
+    im.crop(option, function (err, stdout, stderr) {
+        if (err) throw err;
+        console.log('Resized cover successful.');
     });
+
+
 
     im.resize({
         srcPath: logo_upload_path,

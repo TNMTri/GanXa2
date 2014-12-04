@@ -294,15 +294,15 @@ google.maps.event.addDomListener(window, 'load', initialize);
                     </div>
 
                     <% store.address.forEach(function (address) { %>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <input type="text" required name="txtCity" placeholder="Thành Phố"
                                class="form-control input_insertstore" value="<%= address.city %>">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <input type="text" required name="txtDistrict" placeholder="Quận/Huyện"
                                class="form-control  input_insertstore" value="<%= address.district %>">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <input type="text" required name="txtStreet" placeholder="Số/Đường"
                                class="form-control input_insertstore" value="<%= address.street %>">
                     </div>
