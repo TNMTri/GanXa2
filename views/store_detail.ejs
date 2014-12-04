@@ -63,6 +63,11 @@
                                 <center>
                                     <%= product.media[0].media_name %>
                                 </center>
+                                <center>
+                                    <% product.tags.forEach(function(tag){ %>
+                                        <a href="tags?tag=<%=tag%>"><%=tag%> - </a>
+                                    <% }) %>
+                                </center>
                             </tr>
                             <tr>
                                 <td colspan="3">

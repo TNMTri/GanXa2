@@ -24,9 +24,6 @@ router.get('/', function (req, res) {
                     res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array, product_notification: "Không có sản phẩm tồn tại."});
                 }
             });
-            /*product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
-             res.render("store_detail", {industry_array: req.session.industry_array, store_array: store_array, product_array: product_array});
-             });*/
         });
     } else {
         res.render('index', {industry_array: req.session.industry_array, store_array: req.session.store_array});

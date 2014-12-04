@@ -7,8 +7,6 @@ var industry_schema = require('../models/industry_schema');
 
 var cover;
 var logo;
-var im = require('imagemagick');
-
 router.get('/', function (req, res) {
 
     var store_id = req.param('id');
@@ -49,16 +47,29 @@ router.post('/', function (req, res) {
     var website = req.body.txtWebsite;
     var fanpage = req.body.txtFanpage;
 
+    var im = require('imagemagick');
     //Cover:
     var cover_new = cover;
     if (typeof req.files.ulfCover != 'undefined') {
         var cover_upload_path = req.files.ulfCover.path;
         var cover_save_path = "public/images/" + req.files.ulfCover.name;
-        im.resize({
+        /*im.resize({
             srcPath: cover_upload_path,
             dstPath: cover_save_path,
             width: 800
         }, function (err, stdout, stderr) {
+            if (err) throw err;
+            console.log('Resized cover successful.');
+        });*/
+        var option={
+            srcPath: cover_upload_path,
+            dstPath: cover_save_path,
+            width: 1100,
+            height: 400,
+            quality: 1,
+            gravity: "Center"
+        };
+        im.crop(option, function (err, stdout, stderr) {
             if (err) throw err;
             console.log('Resized cover successful.');
         });
@@ -86,13 +97,21 @@ router.post('/', function (req, res) {
 
     store_schema.store.update({_id: store_id}, {$set: {store_name: store_name, address: address, latitude: latitude, longitude: longitude, phone: phone, description: description, industry: industry, hours_of_work: hours_of_work, cover: cover_new, logo: logo_new, website: website, fanpage: fanpage}}, function (error, result) {
         if (!error && result) {
-            var query_store = store_schema.store.find({});
+            var query_store = store_schema.store.find({"_id": store_id});
             query_store.limit(8);
             query_store.sort({date: -1});
             query_store.exec(function (store_error, store_array) {
                 if (store_array && store_array.length > 0) {
-                    req.session.store_array = store_array;
-                    res.render('index', {store_array: store_array, industry_array: req.session.industry_array});
+                    var query_product = product_schema.product.find({"id_store": store_id});
+                    query_product.limit(10);
+                    query_product.sort({date: -1});
+                    query_product.exec(function (product_error, product_array) {
+                        if (product_array && product_array.length > 0) {
+                            res.render('store_detail', {store_id: store_id, store_array: store_array, industry_array: req.session.industry_array, product_array: product_array});
+                        } else {
+                            res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array, product_notification: "Không có sản phẩm tồn tại."});
+                        }
+                    });
                 } else {
                     console.log(store_error);
                 }
