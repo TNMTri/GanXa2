@@ -5,12 +5,26 @@ var product_schema = require('../models/product_schema');
 
 var controllers = {
 
-    get_all: function (req, res) {
+    get_industry_array: function (req, res) {
         var query_industry = industry_schema.industry.find({});
-        query_industry.sort({date: -1});
+        query_industry.sort({industry_name: 1});
         query_industry.exec(function (industry_error, industry_array) {
             if (industry_array && industry_array.length > 0) {
                 req.session.industry_array = industry_array;
+                console.log("get all" + req.session.industry_array);
+            } else {
+                console.log(industry_error);
+            }
+        });
+    },
+
+    get_all: function (req, res) {
+        var query_industry = industry_schema.industry.find({});
+        query_industry.sort({industry_name: 1});
+        query_industry.exec(function (industry_error, industry_array) {
+            if (industry_array && industry_array.length > 0) {
+                req.session.industry_array = industry_array;
+                console.log("get all" + req.session.industry_array);
             } else {
                 console.log(industry_error);
             }
@@ -35,7 +49,8 @@ var controllers = {
             } else {
                 console.log(product_error);
             }
-        })
+        });
+        console.log("end get all" + req.session.industry_array);
     },
 
     find_store_by_id: function (req, res) {
@@ -119,7 +134,16 @@ var controllers = {
     },
 
     get_insert_store: function (req, res) {
-        res.render('insert_store', {industry_array: req.session.industry_array});
+        var query_industry = industry_schema.industry.find({});
+        query_industry.sort({industry_name: 1});
+        query_industry.exec(function (industry_error, industry_array) {
+            if (industry_array && industry_array.length > 0) {
+                req.session.industry_array = industry_array;
+                res.render('insert_store', {industry_array: req.session.industry_array});
+            } else {
+                console.log(industry_error);
+            }
+        });
     },
 
     post_insert_store: function (req, res) {
@@ -475,6 +499,29 @@ var controllers = {
         });
     },
 
+    get_insert_industry: function (req, res) {
+        var query_industry = industry_schema.industry.find({});
+        query_industry.sort({industry_name: 1});
+        query_industry.exec(function (industry_error, industry_array) {
+            if (industry_array && industry_array.length > 0) {
+                req.session.industry_array = industry_array;
+                res.render('insert_industry', {industry_array: req.session.industry_array});
+            } else {
+                console.log(industry_error);
+            }
+        });
+    },
+
+    post_insert_industry: function (req, res) {
+        var industry_name = req.body.txtIndustryName;
+        new product_schema.product({
+            _id: null,
+            industry_name: industry_name
+        }).save(function (save_error) {
+                res.render
+            });
+    },
+
     get_search: function (req, res) {
         /*var key = req.param("keyword");
          store_schema.store.find({store_name: {$regex: key, $options: 'i'}}, function (store_error, store_array) {
@@ -533,6 +580,9 @@ module.exports = function (router) {
     //edit product
     router.get('/edit_product', controllers.get_edit_product);
     router.post('/edit_product', controllers.post_edit_product);
+    //insert industry
+    router.get('/insert_industry', controllers.get_insert_industry);
+    router.post('/insert_industry', controllers.post_insert_industry);
     //search
     router.get('/search', controllers.get_search);
     router.post('/search', controllers.post_search);

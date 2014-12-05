@@ -55,7 +55,7 @@
                             <tr>
                                 <td>
                                     <center>
-                                       <p class="p-details"> <%= product.media[0].media_name %></p>
+                                       <p class="p-details"> <%= product.product_name %></p>
                                     </center>
                                 </td>
                             </tr>
@@ -70,9 +70,8 @@
                                 <td>
                                     <center>
                                         Tag :
-                                        <% product.tags.forEach(function(tag){ %>
-                                        <a href="tags?tag=<%=tag%>"><p class="label label-primary "><%=tag%></p></a>
-                                        <% }) %>
+                                        <a href="tags?tag=<%=product.tags[0]%>"><p class="label label-primary "><%=product.tags[0]%></p></a>
+                                        <a href="tags?tag=<%=product.tags[1]%>"><p class="label label-primary "><%=product.tags[1]%></p></a>
                                     </center>
                                 </td>
                             </tr>

@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: 'ganxa',resave: true, saveUninitialized: true}));
+app.use(session({secret: 'ganxa',resave: true, saveUninitialized: true, maxAge  : new Date(Date.now() + 3600000), expires : new Date(Date.now() + 3600000)}));
 app.use(multer({dest: './public/images/'}));
 
 app.use('/', controllers);
@@ -43,6 +43,7 @@ app.use('/insert_store', controllers);
 app.use('/edit_store', controllers);
 app.use('/insert_product', controllers);
 app.use('/edit_product', controllers);
+app.use('/insert_industry', controllers);
 app.use('/search', controllers);
 app.use('/tags', controllers);
 // catch 404 and forward to error handler
