@@ -103,7 +103,12 @@ a:hover{
     /*opacity: 0.5;*/
     /*height: 254px;*/
 }
+.p-details{
+    margin-top: 10px;
+    font-family: FontAwesome;
+    font-size: 20px;
 
+}
 .avt-store {
     width: 30%;
 
@@ -121,7 +126,7 @@ a:hover{
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
     box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
 
-    top: 64%;
+    top: 75%;
     left: 35%;
     position: absolute;
 

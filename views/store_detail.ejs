@@ -53,6 +53,13 @@
                         <table>
                             <tbody>
                             <tr>
+                                <td>
+                                    <center>
+                                       <p class="p-details"> <%= product.media[0].media_name %></p>
+                                    </center>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colspan="3">
                                     <center>
                                         <img src="<%= product.media[0].media_url %>" class="img-up">
@@ -60,14 +67,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <center>
-                                    <%= product.media[0].media_name %>
-                                </center>
-                                <center>
-                                    <% product.tags.forEach(function(tag){ %>
-                                        <a href="tags?tag=<%=tag%>"><%=tag%> - </a>
-                                    <% }) %>
-                                </center>
+                                <td>
+                                    <center>
+                                        Tag :
+                                        <% product.tags.forEach(function(tag){ %>
+                                        <a href="tags?tag=<%=tag%>"><p class="label label-primary "><%=tag%></p></a>
+                                        <% }) %>
+                                    </center>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="3">
