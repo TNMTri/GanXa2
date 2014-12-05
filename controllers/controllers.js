@@ -2,6 +2,7 @@ var industry_schema = require('../models/industry_schema');
 var store_schema = require('../models/store_schema');
 var product_schema = require('../models/product_schema');
 
+
 var controllers = {
 
     get_all: function (req, res) {
@@ -34,6 +35,34 @@ var controllers = {
             } else {
                 console.log(product_error);
             }
+        })
+    },
+
+    find_store_by_id: function (req, res) {
+        var store_id;
+        if (req.param("id")) {
+            store_id = req.param("id");
+        } else {
+            store_id = req.session.store_id;
+        }
+        var query_store = store_schema.store.find({_id: store_id});
+        query_store.sort({date: -1});
+        query_store.exec(function (store_error, store_array) {
+            return store_array;
+        })
+    },
+
+    find_product_by_id: function (req, res) {
+        var product_id;
+        if (req.param("id")) {
+            product_id = req.param("id");
+        } else {
+            product_id = req.session.product_id;
+        }
+        var query_product = product_schema.product.find({_id: product_id});
+        query_product.sort({date: -1});
+        query_product.exec(function (product_error, product_array) {
+            return product_array;
         })
     },
 
@@ -145,7 +174,6 @@ var controllers = {
             if (err) throw err;
             console.log('Resized cover successful.');
         });
-
 
         im.resize({
             srcPath: logo_upload_path,
