@@ -9,9 +9,15 @@
     <% include ./partial/header %>
 </header>
 <div class="container">
+
+
     <div class="row row-container">
+        <div class="col-md-11 col-xs-11 col-sm-11">
+            <span class="label label-primary label-index col-md-12 col-xs-12 col-sm-12"><h1>New Store</h1></span>
+        </div>
         <% store_array.forEach(function(store){ %>
         <div class="row-home">
+
             <div class="thumbnail">
                 <img class="img-store" src="<%= store.cover %>" alt=" ">
                 <img class="img-logo" src="<%= store.logo %>">
