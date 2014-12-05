@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
         });
     }
 
-    industry_schema.industry.find({}, function (industry_error, industry_array) {
+    //industry_schema.industry.find({}, function (industry_error, industry_array) {
 
     })
 });

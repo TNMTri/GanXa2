@@ -82,7 +82,6 @@ var controllers = {
     },
 
     get_index: function (req, res) {
-
         var query_store = store_schema.store.find({});
         query_store.limit(8);
         query_store.sort({date: -1});
@@ -93,7 +92,6 @@ var controllers = {
                 query_industry.sort({industry_name: 1});
                 query_industry.exec(function (industry_error, industry_array) {
                     if (industry_array && industry_array.length > 0) {
-                        req.session.store_array = store_array;
                         req.session.industry_array = industry_array;
                         res.render('index', {store_array: store_array, industry_array: industry_array});
                     } else {
@@ -113,7 +111,7 @@ var controllers = {
         } else {
             store_id = req.session.store_id;
         }
-        req.session.store_id_recent = store_id;
+        req.session.store_id = store_id;
         if (store_id) {
             store_schema.store.find({_id: store_id}, function (store_error, store_array) {
                 req.session.store_array = store_array;
@@ -149,15 +147,12 @@ var controllers = {
     post_insert_store: function (req, res) {
         var id_user_facebook = "id_user_facebook";
         var store_name = req.body.txtStoreName;
-        //Xử lý address:
-        //var count_address = req.body.txtCountAddress;
         var address = [];
-        //for (var i = 1; i <= count_address.length; i++) {
         var city = req.body.txtCity;
         var district = req.body.txtDistrict;
         var street = req.body.txtStreet;
-        address.push({"city": city, "district": district, "street": street});
-        //}
+        var room = req.body.txtRoom;
+        address.push({"city": city, "district": district, "street": street, "room": room});
         var latitude = req.body.txtLatitude;
         var longitude = req.body.txtLongitude;
         var phone = req.body.txtPhone;
@@ -271,16 +266,12 @@ var controllers = {
     post_edit_store: function (req, res) {
         var store_id = req.param('id');
         var store_name = req.body.txtStoreName;
-
-        //var count_address = 1; //req.body.txtCountAddress;
         var address = [];
-        //for (var i = 1; i < count_address.length; i++) {
         var city = req.body.txtCity;
         var district = req.body.txtDistrict;
         var street = req.body.txtStreet;
-        address.push({"city": city, "district": district, "street": street});
-        //}
-
+        var room = req.body.txtRoom;
+        address.push({"city": city, "district": district, "street": street, "room": street});
         var latitude = req.body.txtLatitude;
         var longitude = req.body.txtLongitude;
         var phone = req.body.txtPhone;
@@ -296,14 +287,6 @@ var controllers = {
         if (typeof req.files.ulfCover != 'undefined') {
             var cover_upload_path = req.files.ulfCover.path;
             var cover_save_path = "public/images/" + req.files.ulfCover.name;
-            /*im.resize({
-             srcPath: cover_upload_path,
-             dstPath: cover_save_path,
-             width: 800
-             }, function (err, stdout, stderr) {
-             if (err) throw err;
-             console.log('Resized cover successful.');
-             });*/
             var option = {
                 srcPath: cover_upload_path,
                 dstPath: cover_save_path,
@@ -319,7 +302,6 @@ var controllers = {
             cover_save_path = ".." + req.files.ulfCover.path.replace("public", "");
             cover_new = cover_save_path;
         }
-        console.log(cover_new);
         //Logo:
         var logo_new = logo;
         if (typeof req.files.ulfLogo != 'undefined') {
@@ -336,7 +318,6 @@ var controllers = {
             logo_save_path = ".." + req.files.ulfLogo.path.replace("public", "");
             logo_new = logo_save_path;
         }
-        console.log(logo_new);
 
         store_schema.store.update({_id: store_id}, {$set: {store_name: store_name, address: address, latitude: latitude, longitude: longitude, phone: phone, description: description, industry: industry, hours_of_work: hours_of_work, cover: cover_new, logo: logo_new, website: website, fanpage: fanpage}}, function (error, result) {
             if (!error && result) {
@@ -366,15 +347,30 @@ var controllers = {
     },
 
     get_insert_product: function (req, res) {
-        store_id = req.param('id');
-        req.session.store_id_recent = store_id;
-        product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
-            res.render('insert_product', {product_array: product_array, industry_array: req.session.industry_array, store_id: store_id, insert_product_notification: "Thêm sản phẩm thành công."});
-        });
+
+        var store_id;
+        if (req.param("id")) {
+            store_id = req.param('id');
+        } else {
+            store_id = req.session.store_id;
+        }
+        if (store_id) {
+            req.session.store_id_recent = store_id;
+            product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
+                res.render('insert_product', {product_array: product_array, industry_array: req.session.industry_array, store_id: store_id, insert_product_notification: "Thêm sản phẩm thành công."});
+            });
+        } else {
+            res.render('index', {industry_array: req.session.industry_array});
+        }
     },
 
     post_insert_product: function (req, res) {
-        var id_store = store_id;
+        var store_id;
+        if (req.param("id") == "") {
+            store_id = req.param('id');
+        } else {
+            store_id = req.session.store_id;
+        }
         var product_name = req.body.txtProductName;
         var price = req.body.txtPrice;
         //Tags:
@@ -412,7 +408,7 @@ var controllers = {
         var date = new Date();
         new product_schema.product({
             _id: null,
-            id_store: id_store,
+            id_store: store_id,
             product_name: product_name,
             price: price,
             tags: tags,
@@ -514,12 +510,33 @@ var controllers = {
 
     post_insert_industry: function (req, res) {
         var industry_name = req.body.txtIndustryName;
-        new product_schema.product({
+        new industry_schema.industry({
             _id: null,
             industry_name: industry_name
         }).save(function (save_error) {
-                res.render
+                if (!save_error) {
+                    res.render('index');
+                } else {
+                    console.log(save_error);
+                }
             });
+    },
+
+    get_industry: function(req, res){
+        var industry_name = req.param('type');
+        if (!req.param('type')) {
+            store_schema.store.find(function (store_error, store_array) {
+                industry_schema.industry.find(function (industry_error, industry_array) {
+                    req.session.store_array = store_array;
+                    req.session.industry_array = industry_array;
+                    res.render('industry', {store_array: store_array, industry_array: req.session.industry_array});
+                });
+            });
+        } else {
+            store_schema.store.find({industry: {$in: [req.param("type")]}}, function (store_error, store_array) {
+                res.render('industry', {industry_array: req.session.industry_array, store_array: store_array});
+            });
+        }
     },
 
     get_search: function (req, res) {
@@ -583,6 +600,8 @@ module.exports = function (router) {
     //insert industry
     router.get('/insert_industry', controllers.get_insert_industry);
     router.post('/insert_industry', controllers.post_insert_industry);
+    //industry
+    router.get('/industry', controllers.get_industry);
     //search
     router.get('/search', controllers.get_search);
     router.post('/search', controllers.post_search);

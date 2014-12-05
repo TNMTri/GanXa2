@@ -30,6 +30,8 @@
                 <p><%= store.description %></p>
 
                 <p><%= store.hours_of_work %></p>
+
+                <p><a href="industry?type=<%= store.industry%>"><%= store.industry%></a></p>
             </center>
         </div>
     </div>
@@ -39,7 +41,7 @@
             <div class="col-md-3 ">
                 <a href="#" style="height: 300px;width: 220px;" data-toggle="modal" data-target=".bs-example-modal-lg">
                     <div class="items-div">
-                        <a href="insert_product?id=<%= store_id %>">
+                        <a href="insert_product">
                             <i style="padding-top: 55%;padding-left: 43%"
                                class="fa fa-plus-square fa-4x"></i>
                         </a>
