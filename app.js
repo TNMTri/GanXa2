@@ -12,15 +12,15 @@ var multer = require('multer');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/GanXa');
 //Routes
-var index = require('./routes/index');
-var insert_store = require('./routes/insert_store');
+var controllers = require('./routes/controllers');
+/*var insert_store = require('./routes/insert_store');
 var edit_store = require('./routes/edit_store');
 var search = require('./routes/search');
 var store_detail = require('./routes/store_detail');
 var insert_product = require('./routes/insert_product');
 var edit_product = require('./routes/edit_product');
 var industry = require('./routes/industry');
-var tags = require('./routes/tags');
+var tags = require('./routes/tags');*/
 var app = express();
 
 // view engine setup
@@ -37,15 +37,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: 'ganxa',resave: true, saveUninitialized: true}));
 app.use(multer({dest: './public/images/'}));
 
-app.use('/', index);
-app.use('/insert_store', insert_store);
-app.use('/edit_store', edit_store);
-app.use('/search', search);
-app.use('/store_detail', store_detail);
-app.use('/insert_product', insert_product);
-app.use('/edit_product', edit_product);
-app.use('/edit_store',edit_store);
-app.use('/tags', tags);
+app.use('/', controllers);
+app.use('/store_detail', controllers);
+app.use('/insert_store', controllers);
+app.use('/edit_store', controllers);
+app.use('/insert_product', controllers);
+app.use('/edit_product', controllers);
+app.use('/search', controllers);
+app.use('/tags', controllers);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

@@ -12,6 +12,8 @@ router.get('/', function (req, res) {
     query_industry.exec(function (industry_error, industry_array) {
         if(industry_array && industry_array.length > 0){
             req.session.industry_array = industry_array;
+        }else{
+            console.log(industry_error);
         }
     });
 
@@ -24,16 +26,17 @@ router.get('/', function (req, res) {
         } else {
             console.log(store_error);
         }
-    })
+    });
 
     var query_product = product_schema.product.find({});
     query_product.sort({date: -1});
-    query_product.exec(function (product_error, peoduct_array) {
-        if(peoduct_array && peoduct_array.length > 0){
-            req.session.industry_array = peoduct_array;
+    query_product.exec(function (product_error, product_array) {
+        if(product_array && product_array.length > 0){
+            req.session.industry_array = product_array;
+        }else{
+            console.log(product_error);
         }
     })
-
 });
 
 module.exports = router;
