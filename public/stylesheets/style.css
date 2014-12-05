@@ -66,7 +66,7 @@ a:hover{
     width: 100%;
 }
 .thumbnail{
-    height: 350px;
+    height: 300px;
 }
 .btn_index{
     padding-bottom: 10px;
@@ -74,7 +74,7 @@ a:hover{
     position: relative;
 }
 .p-index{
-    height: 100px;
+    height: 60px;
 }
 .h4_index{
     margin-top: 40px;
