@@ -384,7 +384,6 @@ var controllers = {
         }
         var description = req.body.txtDescription;
         //Media
-        //var count_media = req.body.txtCountMedia;
         var media = [];
         //for (var i = 1; i <= count_media; i++) {
         var media_name = req.body.txtMediaName;
@@ -404,9 +403,10 @@ var controllers = {
                 if (err) throw err;
                 console.log('Resized media successful.');
             });
-            media.push({"media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
+            var mongoose = require('mongoose');
+            var id = new mongoose.Types.ObjectId;
+            media.push({"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
         }
-        //}
         var status = true;
         var date = new Date();
         new product_schema.product({
@@ -498,6 +498,14 @@ var controllers = {
         });
     },
 
+    get_insert_media: function(req, res){
+
+    },
+
+    post_insert_media: function(req, res){
+
+    },
+
     get_insert_industry: function (req, res) {
         var query_industry = industry_schema.industry.find({});
         query_industry.sort({industry_name: 1});
@@ -583,7 +591,6 @@ var controllers = {
     },
 
     get_test: function (req, res) {
-
         res.render('test');
     },
 
@@ -614,6 +621,9 @@ module.exports = function (router) {
     //edit product
     router.get('/edit_product', controllers.get_edit_product);
     router.post('/edit_product', controllers.post_edit_product);
+    //insert media in product
+    router.get('/insert_media', controllers.get_insert_media);
+    router.post('/insert_media', controllers.post_insert_media);
     //insert industry
     router.get('/insert_industry', controllers.get_insert_industry);
     router.post('/insert_industry', controllers.post_insert_industry);
