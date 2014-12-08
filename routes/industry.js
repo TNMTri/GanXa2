@@ -5,10 +5,10 @@ var industry_schema = require('../models/industry_schema');
 var product_schema = require('../models/product_schema');
 var store_schema = require('../models/store_schema');
 router.get('/', function (req, res) {
-    console.log("hehe");
     var type = req.param('type');
-    console.log(type);
-
+    /*var u = require('unidecode');
+    var x = u('ấ');
+    console.log(x);*/
     if (!req.param('type')) {
         store_schema.store.find(function (store_error, store_array) {
             industry_schema.industry.find(function (industry_error, industry_array) {
@@ -22,8 +22,4 @@ router.get('/', function (req, res) {
                 res.render('category', {category_array: req.session.category_array, store_array: store_array});
         });
     }
-
-    //industry_schema.industry.find({}, function (industry_error, industry_array) {
-
-    })
 });

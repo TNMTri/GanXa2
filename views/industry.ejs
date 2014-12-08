@@ -5,9 +5,13 @@
     <title></title>
 </head>
 <body>
-<% store_array.forEach(function(store){ %>
-<p><%= store.store_name %></p>
-
+<% industry_array.forEach(function(industry){ %>
+<P><a href="industry?type=<%= industry.industry_name %>"><%= industry.industry_name %></a></P>
 <% }) %>
+<% if(typeof store_array != 'undefined'){ %>
+<% store_array.forEach(function (store) { %>
+<a href="store_detail?id=<%= store._id %>"><%= store.store_name %></a>
+<% }) %>
+<% } %>
 </body>
 </html>

@@ -2,6 +2,7 @@ var industry_schema = require('../models/industry_schema');
 var store_schema = require('../models/store_schema');
 var product_schema = require('../models/product_schema');
 
+var S = require('string');
 
 var controllers = {
 
@@ -147,6 +148,7 @@ var controllers = {
     post_insert_store: function (req, res) {
         var id_user_facebook = "id_user_facebook";
         var store_name = req.body.txtStoreName;
+        var store_name_non_accented = s(store_name).latinise().s;
         var address = [];
         var city = req.body.txtCity;
         var district = req.body.txtDistrict;
@@ -211,6 +213,7 @@ var controllers = {
             _id: null,
             id_user_facebook: id_user_facebook,
             store_name: store_name,
+            store_name_non_accented: store_name_non_accented,
             address: address,
             latitude: latitude,
             longitude: longitude,
@@ -522,7 +525,7 @@ var controllers = {
             });
     },
 
-    get_industry: function(req, res){
+    get_industry: function (req, res) {
         var industry_name = req.param('type');
         if (!req.param('type')) {
             store_schema.store.find(function (store_error, store_array) {
@@ -555,11 +558,11 @@ var controllers = {
         }
         var type = req.body.type;
         if (type == "store") {
-            store_schema.store.find({store_name: {$regex: key, $options: 'i, x'}}, function (store_error, store_array) {
+            store_schema.store.find({$or: [{store_name: {$regex: key, $options: 'i'}}, {store_name_non_accented: {$regex: key, $options: 'i'}}]}, function (store_error, store_array) {
                 res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
             });
         } else {
-            product_schema.product.find({product_name: {$regex: key, $options: 'i, x'}}, function (product_error, product_array) {
+            product_schema.product.find({product_name: {$regex: key, $options: 'i'}}, function (product_error, product_array) {
                 res.render('search', {product_array: product_array, industry_array: req.session.industry_array, notification: "Vừa search product."});
             });
         }
@@ -577,7 +580,21 @@ var controllers = {
                 })
             }
         });
+    },
+
+    get_test: function (req, res) {
+
+        res.render('test');
+    },
+
+    post_test: function(req, res){
+        var y = req.body.txtTextTest;
+        var x = S(y).latinise().s;
+        console.log(x);
+        res.render('index', {industry_array: req.session.industry_array});
+
     }
+
 };
 
 module.exports = function (router) {
@@ -607,5 +624,8 @@ module.exports = function (router) {
     router.post('/search', controllers.post_search);
     //tags
     router.get('/tags', controllers.get_tag);
+    //test
+    router.get('/test', controllers.get_test);
+    router.post('/test', controllers.post_test);
     return router;
 };
