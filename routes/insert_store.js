@@ -18,7 +18,8 @@ router.post('/', function (req, res) {
     var city = req.body.txtCity;
     var district = req.body.txtDistrict;
     var street = req.body.txtStreet;
-    address.push({"city": city, "district": district, "street": street});
+    var room = req.body.txtRoom;
+    address.push({"city": city, "district": district, "street": street, "room":room});
     //}
     var latitude = req.body.txtLatitude;
     var longitude = req.body.txtLongitude;

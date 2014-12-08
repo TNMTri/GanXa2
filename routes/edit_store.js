@@ -29,14 +29,13 @@ router.post('/', function (req, res) {
     var store_id = req.param('id');
     var store_name = req.body.txtStoreName;
 
-    //var count_address = 1; //req.body.txtCountAddress;
     var address = [];
-    //for (var i = 1; i < count_address.length; i++) {
-        var city = req.body.txtCity;
-        var district = req.body.txtDistrict;
-        var street = req.body.txtStreet;
-        address.push({"city": city, "district": district, "street": street});
-    //}
+    var city = req.body.txtCity;
+    var district = req.body.txtDistrict;
+    var street = req.body.txtStreet;
+    var room = req.body.txtRoom;
+    address.push({"city": city, "district": district, "street": street, "room": room});
+
 
     var latitude = req.body.txtLatitude;
     var longitude = req.body.txtLongitude;
@@ -54,14 +53,14 @@ router.post('/', function (req, res) {
         var cover_upload_path = req.files.ulfCover.path;
         var cover_save_path = "public/images/" + req.files.ulfCover.name;
         /*im.resize({
-            srcPath: cover_upload_path,
-            dstPath: cover_save_path,
-            width: 800
-        }, function (err, stdout, stderr) {
-            if (err) throw err;
-            console.log('Resized cover successful.');
-        });*/
-        var option={
+         srcPath: cover_upload_path,
+         dstPath: cover_save_path,
+         width: 800
+         }, function (err, stdout, stderr) {
+         if (err) throw err;
+         console.log('Resized cover successful.');
+         });*/
+        var option = {
             srcPath: cover_upload_path,
             dstPath: cover_save_path,
             width: 1100,
