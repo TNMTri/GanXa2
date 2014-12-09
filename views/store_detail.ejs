@@ -57,14 +57,14 @@
                             <tr>
                                 <td>
                                     <center>
-                                       <p class="p-details"> <%= product.product_name %></p>
+                                       <p class="p-details"><a href="product_detail?id=<%=product._id%>"><%= product.product_name %></a></p>
                                     </center>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="3">
                                     <center>
-                                        <img src="<%= product.media[0].media_url %>" class="img-up">
+                                        <a href="product_detail?id=<%=product._id%>"><img src="<%= product.media[0].media_url %>" class="img-up"></a>
                                     </center>
                                 </td>
                             </tr>
