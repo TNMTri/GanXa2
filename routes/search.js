@@ -17,7 +17,7 @@ router.post('/', function (req, res) {
     if (!req.param("keyword")) {
         key = req.body.txtTextSearch;
     }
-    var type = req.body.type;
+    var type = req.body.val();
     if (type == "store") {
         store_schema.store.find({store_name: {$regex: key, $options: 'i, x'}}, function (store_error, store_array) {
             res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});

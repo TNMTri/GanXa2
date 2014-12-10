@@ -2,31 +2,126 @@
 <html lang="en">
 <head>
     <% include ./partial/head %>
+
 </head>
 <body>
 <header>
     <% include ./partial/header %>
-</header>
-<div class="col-md-12 col-search">
-    <form action="" method="post">
-        <input name="txtTextSearch" type="text" placeholder="Bạn muốn tìm gì?" autofocus>
-        <input type="radio" name="type" value="store" checked>Store
-        <input type="radio" name="type" value="product">Product
-        <input type="submit" value="Search">
-    </form>
+    <script>
 
-    <br>
+        $(function () {
+
+            $("#rdb1").click(function () {
+                $(".button_ss").attr("name", "1");
+            });
+            $("#rdb2").click(function () {
+                $(".button_ss").attr("name", "2");
+            });
+            $(".button_ss").click(function () {
+                $('.toHide').hide();
+                $("#blk-" + $(this).attr("name")).show('slow');
+            });
+        });
+
+    </script>
+</header>
+
+<div class="container row-search">
+    <form action="" method="post">
+        <div class="col-md-1"></div>
+        <div class="col-md-7">
+            <input name="txtTextSearch" type="text" placeholder="Bạn muốn tìm gì?" autofocus class="form-control">
+            <!--<input type="text" class="form-control">-->
+        </div>
+        <div class="col-md-2">
+            <!--<label><input id="rdb1" type="radio" name="toggler" value="1"/>Store</label>-->
+            <label><input type="radio" id="rdb1" class="store" name="type" value="store">Store    </label>
+            <!--<input type="radio" class="product" name="type" value="product">Product-->
+            <label><input id="rdb2" class="product " type="radio" name="type" value="product"/>Product</label>
+            <!--<input type="submit" name="button_s" class="button_ss" value="Search">-->
+        </div>
+        <div class="col-md-2">
+            <div class="input-group-btn">
+                <!--<button type="button" class="btn btn-primary" tabindex="-1">Search</button>-->
+                <input type="submit" name="button_s" class="button_ss btn btn-primary" tabindex="-1" value="Search">
+
+            </div>
+        </div>
+    </form>
     <% if(typeof store_array != 'undefined'){ %>
-    <%= notification %>
+    <!--<%= notification %>-->
     <% store_array.forEach(function(s){ %>
-    <p><a href="edit_store?id=<%= s._id %>"><%= s.store_name %></a></p>
+    <!--<p><a href="edit_store?id=<%= s._id %>"><%= s.store_name %></a></p>-->
+
+
+    <div class="col-md-3">
+        <div class="row-home">
+            <div class="thumbnail">
+                <img class="img-store" src="./images/a.jpg" alt=" ">
+                <img class="img-logo" src="./images/b.jpg">
+                <center><a href="store_detail?id=<%= s._id %>"><h4 class="h4_index"><%= s.store_name %></h4></a>
+                </center>
+                <p class="p-index">
+                    <% s.address.forEach(function (a) { %>
+                    <%= (a.street + ", " + a.district + ", " + a.city).substring(0, 50) %>... <a href="store_detail?id=<%= s._id %>">xem thêm</a>
+                    <% }) %>
+                </p>
+                <a href="edit_store?id=<%= s._id %>" class="btn btn-primary btn-block btn_index">Edit store</a>
+            </div>
+        </div>
+    </div>
 
     <% })}else if(typeof product_array != 'undefined'){ %>
-
-    <%= notification %>
+    <!--<%= notification %>-->
     <% product_array.forEach(function(p){ %>
-    <p><a href="edit_product?id=<%= p._id %>"><%= p.product_name %></a></p>
+    <!--<p><a href="edit_product?id=<%= p._id %>"><%= p.product_name %></a></p>-->
+
+    <div class="col-md-3 ">
+        <center>
+            <div class="items-div">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <center>
+                                <p class="p-details"> <%= p.product_name %></p>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <center>
+                                <img src="<%= p.media[0].media_url %>" class="img-up">
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <center>
+                                Tag :
+                                <a href="tags?tag=<%=p.tags[0]%>"><p class="label label-primary "><%=p.tags[0]%></p></a>
+                                <a href="tags?tag=<%=p.tags[1]%>"><p class="label label-primary "><%=p.tags[1]%></p></a>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <center>
+                                <a href="edit_product?id=tttt" class="btn btn-primary"
+                                   style="width: 95% ; margin-top: 10px;">Edit
+                                    Product
+                                </a>
+                            </center>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </center>
+    </div>
+
     <% })} %>
 </div>
+
 </body>
 </html>
