@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<% product_array.forEach(function(product){
+        product.media.forEach(function(media){ %>
+<a href="<%= media.media_id %>"><%= media.media_name %></a>
+<% })}) %>
+</body>
+</html>

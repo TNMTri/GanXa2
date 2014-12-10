@@ -38,7 +38,7 @@ app.use(session({secret: 'ganxa', resave: true, saveUninitialized: true, maxAge:
 app.use(multer({dest: './public/images/'}));
 
 app.use('/', controllers);
-app.use('/store_detail', controllers);
+/*app.use('/store_detail', controllers);
 app.use('/insert_store', controllers);
 app.use('/edit_store', controllers);
 app.use('/insert_product', controllers);
@@ -47,7 +47,7 @@ app.use('/insert_industry', controllers);
 app.use('/industry', controllers);
 app.use('/search', controllers);
 app.use('/tags', controllers);
-app.use('/test', controllers);
+app.use('/test', controllers);*/
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

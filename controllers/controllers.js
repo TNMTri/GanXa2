@@ -3,7 +3,7 @@ var store_schema = require('../models/store_schema');
 var product_schema = require('../models/product_schema');
 
 var S = require('string');
-
+var mongoose = require('mongoose');
 var controllers = {
 
         get_industry_array: function (req, res) {
@@ -109,8 +109,6 @@ var controllers = {
             var store_id;
             if (req.param("id")) {
                 store_id = req.param("id");
-            } else {
-                store_id = req.session.store_id_recent;
             }
             req.session.store_id_recent = store_id;
             if (store_id) {
@@ -149,7 +147,7 @@ var controllers = {
         post_insert_store: function (req, res) {
             var id_user_facebook = "id_user_facebook";
             var store_name = req.body.txtStoreName;
-            var store_name_non_accented = s(store_name).latinise().s;
+            var store_name_non_accented = S(store_name).latinise().s;
             var address = [];
             var city = req.body.txtCity;
             var district = req.body.txtDistrict;
@@ -209,7 +207,7 @@ var controllers = {
             cover_save_path = ".." + cover_save_path.replace("public", "");
             logo_save_path = ".." + logo_save_path.replace("public", "");
 
-            var date = new Date();
+            var date = new Date().dateTime;
             new store_schema.store({
                 _id: null,
                 id_user_facebook: id_user_facebook,
@@ -370,9 +368,7 @@ var controllers = {
         get_insert_product: function (req, res) {
 
             var store_id;
-            if (req.param("id")) {
-                store_id = req.param('id');
-            } else {
+            if (!req.param("id")) {
                 store_id = req.session.store_id_recent;
             }
             if (store_id) {
@@ -406,9 +402,11 @@ var controllers = {
             //for (var i = 1; i <= count_media; i++) {
             var media_name = req.body.txtMediaName;
             var media_url;
+            var mongoose = require('mongoose');
+            var id = new mongoose.Types.ObjectId;
             if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
                 media_url = req.body.txtMediaUrl;
-                media.push({"media_name": media_name, "media_url": media_url, "media_type": req.body.grpType});
+                media.push({"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType});
             } else {
                 var media_upload_path = req.files.ulfMediaUrl.path;
                 var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
@@ -421,8 +419,6 @@ var controllers = {
                     if (err) throw err;
                     console.log('Resized media successful.');
                 });
-                var mongoose = require('mongoose');
-                var id = new mongoose.Types.ObjectId;
                 media.push({"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
             }
             var status = true;
@@ -441,7 +437,7 @@ var controllers = {
             }).save(function (save_error) {
                     if (!save_error) {
                         product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
-                            res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, product_array: product_array, store_array: req.session.store_array});
+                            res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, product_array: product_array, store_array: req.session.store_array_recent});
                         });
                     } else {
                         console.log(save_error);
@@ -578,8 +574,11 @@ var controllers = {
             } else {
                 id = req.session.media_id_recent;
             }
-            product_schema.product.find({media: {$elemMatch: {media_id: id}}}, function (product_error, product_array) {
-                res.render('')
+            var ObjectId = mongoose.Types.ObjectId;
+            console.log(id);
+            product_schema.product.find({media: {$elemMatch: {media_id: new ObjectId(id)}}}, function (product_error, product_array) {
+                console.log(product_array);
+                res.render('edit_media', {product_array: product_array});
             })
         },
 
