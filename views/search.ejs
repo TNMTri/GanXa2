@@ -43,9 +43,20 @@
             <div class="input-group-btn">
                 <!--<button type="button" class="btn btn-primary" tabindex="-1">Search</button>-->
                 <input type="submit" name="button_s" class="button_ss btn btn-primary" tabindex="-1" value="Search">
-
             </div>
         </div>
+        Tìm theo quận:
+        <select name="optDistrict">
+            <option>-- Chọn Quận --</option>
+            <optgroup label="Hồ Chí Minh">
+                <option value="Quận 1">Quận 1</option>
+                <option value="Quận 2">Quận 2</option>
+            </optgroup>
+            <optgroup label="Hà Nội">
+                <option value="Ba Đình">Ba Đình</option>
+                <option value="Đống Đa">Đống Đa</option>
+            </optgroup>
+        </select>
     </form>
     <% if(typeof store_array != 'undefined'){ %>
     <!--<%= notification %>-->
@@ -118,9 +129,7 @@
             </div>
         </center>
     </div>
-
     <% })} %>
 </div>
-
 </body>
 </html>

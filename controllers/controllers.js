@@ -647,18 +647,38 @@ var controllers = {
                 key = req.body.txtTextSearch;
             }
             var type = req.body.type;
-            if (type == "store") {
+            var disrtict = req.body.optDistrict;
+            //chọn store, có chọn quận (quận khác cái mặc định)
+            if (type == "store" && key) {
+                console.log("1");
                 store_schema.store.find({$or: [
                     {store_name: {$regex: key, $options: 'xi'}},
                     {store_name_non_accented: {$regex: key, $options: 'xi'}}
                 ]}, function (store_error, store_array) {
                     res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
                 });
-            } else {
+            } else if (type == "store" && disrtict != '-- Chọn Quận --' && key != "") {
+                console.log("2");
+                store_schema.store.find({$or: [
+                    {store_name: {$regex: key, $options: 'xi'}},
+                    {store_name_non_accented: {$regex: key, $options: 'xi'}},
+                    {address: {$elemMatch: {district: disrtict}}}
+                ]}, function (store_error, store_array) {
+                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
+                });
+            } else if (key == "" && disrtict && disrtict != '-- Chọn Quận --') {
+                console.log("3");
+                store_schema.store.find({address: {$elemMatch: {district: disrtict}}}, function (store_error, store_array) {
+                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
+                });
+            } else if (type == "product") {
                 product_schema.product.find({product_name: {$regex: key, $options: 'xi'}}, function (product_error, product_array) {
                     res.render('search', {product_array: product_array, industry_array: req.session.industry_array, notification: "Vừa search product."});
                 });
             }
+            /*else if(key == '' && disrtict != '-- Chọn Quận --'){
+
+             }*/
         },
 
         get_tag: function (req, res) {
