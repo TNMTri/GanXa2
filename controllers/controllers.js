@@ -1,7 +1,7 @@
 var industry_schema = require('../models/industry_schema');
 var store_schema = require('../models/store_schema');
 var product_schema = require('../models/product_schema');
-
+var location_schema = require('../models/location_schema');
 var S = require('string');
 var mongoose = require('mongoose');
 var controllers = {
@@ -633,12 +633,12 @@ var controllers = {
         },
 
         get_search: function (req, res) {
-            /*var key = req.param("keyword");
-             store_schema.store.find({store_name: {$regex: key, $options: 'i'}}, function (store_error, store_array) {
-             console.log(store_array);
-             res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
-             });*/
-            res.render('search', {industry_array: req.session.industry_array});
+            location_schema.location.find(function (location_error, location_array) {
+                if (!location_error && location_array.length > 0) {
+                    req.session.location_array = location_array;
+                    res.render('search', {industry_array: req.session.industry_array, location_array: location_array});
+                }
+            });
         },
 
         post_search: function (req, res) {
@@ -653,27 +653,27 @@ var controllers = {
                 console.log("1");
                 store_schema.store.find({$or: [
                     {store_name: {$regex: key, $options: 'xi'}},
-                    {store_name_non_accented: {$regex: key, $options: 'xi'}}
+                    {store_name_non_accented: {$regex: key, $options: ' i'}}
                 ]}, function (store_error, store_array) {
-                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
+                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
                 });
-            } else if (type == "store" && disrtict != '-- Chọn Quận --' && key != "") {
+            } else if (type == "store" && disrtict != '-- Chọn Quận --' && key != "") { //tìm không dấu
                 console.log("2");
                 store_schema.store.find({$or: [
                     {store_name: {$regex: key, $options: 'xi'}},
                     {store_name_non_accented: {$regex: key, $options: 'xi'}},
                     {address: {$elemMatch: {district: disrtict}}}
                 ]}, function (store_error, store_array) {
-                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
+                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
                 });
             } else if (key == "" && disrtict && disrtict != '-- Chọn Quận --') {
                 console.log("3");
                 store_schema.store.find({address: {$elemMatch: {district: disrtict}}}, function (store_error, store_array) {
-                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
+                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
                 });
             } else if (type == "product") {
                 product_schema.product.find({product_name: {$regex: key, $options: 'xi'}}, function (product_error, product_array) {
-                    res.render('search', {product_array: product_array, industry_array: req.session.industry_array, notification: "Vừa search product."});
+                    res.render('search', {product_array: product_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
                 });
             }
             /*else if(key == '' && disrtict != '-- Chọn Quận --'){

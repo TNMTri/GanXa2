@@ -34,7 +34,7 @@
         </div>
         <div class="col-md-2">
             <!--<label><input id="rdb1" type="radio" name="toggler" value="1"/>Store</label>-->
-            <label><input type="radio" id="rdb1" class="store" name="type" value="store" checked>Store    </label>
+            <label><input type="radio" id="rdb1" class="store" name="type" value="store" checked>Store </label>
             <!--<input type="radio" class="product" name="type" value="product">Product-->
             <label><input id="rdb2" class="product " type="radio" name="type" value="product"/>Product</label>
             <!--<input type="submit" name="button_s" class="button_ss" value="Search">-->
@@ -48,18 +48,16 @@
         Tìm theo quận:
         <select name="optDistrict">
             <option>-- Chọn Quận --</option>
-            <optgroup label="Hồ Chí Minh">
-                <option value="Quận 1">Quận 1</option>
-                <option value="Quận 2">Quận 2</option>
+            <% location_array.forEach(function(location){ %>
+            <optgroup label="<%= location.city %>">
+                <% location.district.forEach(function(district){ %>
+                <option value="<%=district%>"><%=district%></option>
+                <% }) %>
             </optgroup>
-            <optgroup label="Hà Nội">
-                <option value="Ba Đình">Ba Đình</option>
-                <option value="Đống Đa">Đống Đa</option>
-            </optgroup>
+            <% }) %>
         </select>
     </form>
     <% if(typeof store_array != 'undefined'){ %>
-    <!--<%= notification %>-->
     <% store_array.forEach(function(s){ %>
     <!--<p><a href="edit_store?id=<%= s._id %>"><%= s.store_name %></a></p>-->
 
@@ -73,7 +71,8 @@
                 </center>
                 <p class="p-index">
                     <% s.address.forEach(function (a) { %>
-                    <%= (a.street + ", " + a.district + ", " + a.city).substring(0, 50) %>... <a href="store_detail?id=<%= s._id %>">xem thêm</a>
+                    <%= (a.street + ", " + a.district + ", " + a.city).substring(0, 50) %>... <a
+                            href="store_detail?id=<%= s._id %>">xem thêm</a>
                     <% }) %>
                 </p>
                 <a href="edit_store?id=<%= s._id %>" class="btn btn-primary btn-block btn_index">Edit store</a>
@@ -109,15 +108,17 @@
                         <td>
                             <center>
                                 Tag :
-                                <a href="tags?tag=<%=p.tags[0]%>"><p class="label label-primary "><%=p.tags[0]%></p></a>
-                                <a href="tags?tag=<%=p.tags[1]%>"><p class="label label-primary "><%=p.tags[1]%></p></a>
+                                <a href="tags?tag=<%= p.tags[0] %>"><p class="label label-primary "><%= p.tags[0] %></p>
+                                </a>
+                                <a href="tags?tag=<%= p.tags[1] %>"><p class="label label-primary "><%= p.tags[1] %></p>
+                                </a>
                             </center>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3">
                             <center>
-                                <a href="edit_product?id=<%=p._id%>" class="btn btn-primary"
+                                <a href="edit_product?id=<%= p._id %>" class="btn btn-primary"
                                    style="width: 95% ; margin-top: 10px;">Edit
                                     Product
                                 </a>
