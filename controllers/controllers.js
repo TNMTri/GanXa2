@@ -649,13 +649,13 @@ var controllers = {
             var type = req.body.type;
             if (type == "store") {
                 store_schema.store.find({$or: [
-                    {store_name: {$regex: key, $options: 'i'}},
-                    {store_name_non_accented: {$regex: key, $options: 'i'}}
+                    {store_name: {$regex: key, $options: 'xi'}},
+                    {store_name_non_accented: {$regex: key, $options: 'xi'}}
                 ]}, function (store_error, store_array) {
                     res.render('search', {store_array: store_array, industry_array: req.session.industry_array, notification: "Vừa search store."});
                 });
             } else {
-                product_schema.product.find({product_name: {$regex: key, $options: 'i'}}, function (product_error, product_array) {
+                product_schema.product.find({product_name: {$regex: key, $options: 'xi'}}, function (product_error, product_array) {
                     res.render('search', {product_array: product_array, industry_array: req.session.industry_array, notification: "Vừa search product."});
                 });
             }

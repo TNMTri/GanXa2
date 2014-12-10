@@ -57,7 +57,7 @@
                             <tr>
                                 <td>
                                     <center>
-                                       <p class="p-details"><a href="product_detail?id=<%=product._id%>"><%= product.product_name %></a></p>
+                                       <p class="p-details"><a href="product_detail?id=<%=product._id%>"><%= product.product_name.substring(0, 30) %><% if(product.product_name.length>30){%>...<%}%></a></p>
                                     </center>
                                 </td>
                             </tr>
