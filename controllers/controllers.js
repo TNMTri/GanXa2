@@ -359,6 +359,7 @@ var controllers = {
             if (product_array && product_array.length > 0) {
                 media_schema.media.find({product_id: id}, function (media_error, media_array) {
                     if (media_array && !media_error) {
+                        req.session.media_array = media_array;
                         res.render('product_detail', {product_array: product_array, industry_array: req.session.industry_array, media_array: media_array});
                     }
                 });
@@ -628,7 +629,16 @@ var controllers = {
     },
 
     post_edit_media: function (req, res) {
-
+        var id = req.param('id');
+        var media_name = req.body.txtMediaName;
+        var media_url = req.body.txtMediaUrl;
+        var media_type = req.body.grpType;
+        media_schema.media.findByIdAndUpdate(id, {media_name: media_name, media_type: media_type, media_url: media_url}, function (error, result) {
+            if (result) {
+                //Đang làm ở đây!
+                res.render('product_detail', {product_array: req.session.product_array, media_array: req.session.media_array});
+            }
+        });
     },
 
     get_insert_industry: function (req, res) {
