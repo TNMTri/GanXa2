@@ -9,187 +9,294 @@ var mongoose = require('mongoose');
 
 var controllers = {
 
-        get_industry_array: function (req, res) {
-            var query_industry = industry_schema.industry.find({});
-            query_industry.sort({industry_name: 1});
-            query_industry.exec(function (industry_error, industry_array) {
-                if (industry_array && industry_array.length > 0) {
-                    req.session.industry_array = industry_array;
-                    console.log("get all" + req.session.industry_array);
-                } else {
-                    console.log(industry_error);
-                }
-            });
-        },
-
-        get_all: function (req, res) {
-            var query_industry = industry_schema.industry.find({});
-            query_industry.sort({industry_name: 1});
-            query_industry.exec(function (industry_error, industry_array) {
-                if (industry_array && industry_array.length > 0) {
-                    req.session.industry_array = industry_array;
-                    console.log("get all" + req.session.industry_array);
-                } else {
-                    console.log(industry_error);
-                }
-            });
-
-            var query_store = store_schema.store.find({});
-            query_store.limit(8);
-            query_store.sort({date: -1});
-            query_store.exec(function (store_error, store_array) {
-                if (store_array && store_array.length > 0) {
-                    req.session.store_array = store_array;
-                } else {
-                    console.log(store_error);
-                }
-            });
-
-            var query_product = product_schema.product.find({});
-            query_product.sort({date: -1});
-            query_product.exec(function (product_error, product_array) {
-                if (product_array && product_array.length > 0) {
-                    req.session.industry_array = product_array;
-                } else {
-                    console.log(product_error);
-                }
-            });
-            console.log("end get all" + req.session.industry_array);
-        },
-
-        find_store_by_id: function (req, res) {
-            var store_id;
-            if (req.param("id")) {
-                store_id = req.param("id");
+    get_industry_array: function (req, res) {
+        var query_industry = industry_schema.industry.find({});
+        query_industry.sort({industry_name: 1});
+        query_industry.exec(function (industry_error, industry_array) {
+            if (industry_array && industry_array.length > 0) {
+                req.session.industry_array = industry_array;
+                console.log("get all" + req.session.industry_array);
             } else {
-                store_id = req.session.store_id_recent;
+                console.log(industry_error);
             }
-            var query_store = store_schema.store.find({_id: store_id});
-            query_store.sort({date: -1});
-            query_store.exec(function (store_error, store_array) {
-                return store_array;
-            })
-        },
+        });
+    },
 
-        find_product_by_id: function (req, res) {
-            var product_id;
-            if (req.param("id")) {
-                product_id = req.param("id");
+    get_all: function (req, res) {
+        var query_industry = industry_schema.industry.find({});
+        query_industry.sort({industry_name: 1});
+        query_industry.exec(function (industry_error, industry_array) {
+            if (industry_array && industry_array.length > 0) {
+                req.session.industry_array = industry_array;
+                console.log("get all" + req.session.industry_array);
             } else {
-                product_id = req.session.product_id;
+                console.log(industry_error);
             }
-            var query_product = product_schema.product.find({_id: product_id});
-            query_product.sort({date: -1});
-            query_product.exec(function (product_error, product_array) {
-                return product_array;
-            })
-        },
+        });
 
-        get_index: function (req, res) {
-            var query_store = store_schema.store.find({});
-            query_store.limit(8);
-            query_store.sort({date: -1});
-            query_store.exec(function (store_error, store_array) {
-                if (store_array && store_array.length > 0) {
-                    req.session.store_array = store_array;
-                    var query_industry = industry_schema.industry.find({});
-                    query_industry.sort({industry_name: 1});
-                    query_industry.exec(function (industry_error, industry_array) {
-                        if (industry_array && industry_array.length > 0) {
-                            req.session.industry_array = industry_array;
-                            res.render('index', {store_array: store_array, industry_array: industry_array});
-                        } else {
-                            console.log(industry_error);
-                        }
-                    });
-                } else {
-                    console.log(store_error);
-                }
-            })
-        },
-
-        get_store_detail: function (req, res) {
-            var store_id;
-            if (req.param("id")) {
-                store_id = req.param("id");
+        var query_store = store_schema.store.find({});
+        query_store.limit(8);
+        query_store.sort({date: -1});
+        query_store.exec(function (store_error, store_array) {
+            if (store_array && store_array.length > 0) {
+                req.session.store_array = store_array;
+            } else {
+                console.log(store_error);
             }
-            req.session.store_id_recent = store_id;
-            if (store_id) {
-                store_schema.store.find({_id: store_id}, function (store_error, store_array) {
-                    req.session.store_array_recent = store_array;
-                    var query_product = product_schema.product.find({"id_store": store_id});
-                    query_product.limit(10);
-                    query_product.sort({date: -1});
-                    query_product.exec(function (product_error, product_array) {
-                        if (product_array && product_array.length > 0) {
-                            req.session.product_array_recent = product_array;
-                            res.render('store_detail', {store_id_recent: store_id, store_array: store_array, industry_array: req.session.industry_array, product_array: product_array});
-                        } else {
-                            res.render("store_detail", {store_id_recent: store_id, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array, product_notification: "Không có sản phẩm tồn tại."});
-                        }
-                    });
+        });
+
+        var query_product = product_schema.product.find({});
+        query_product.sort({date: -1});
+        query_product.exec(function (product_error, product_array) {
+            if (product_array && product_array.length > 0) {
+                req.session.industry_array = product_array;
+            } else {
+                console.log(product_error);
+            }
+        });
+        console.log("end get all" + req.session.industry_array);
+    },
+
+    find_store_by_id: function (req, res) {
+        var store_id;
+        if (req.param("id")) {
+            store_id = req.param("id");
+        } else {
+            store_id = req.session.store_id_recent;
+        }
+        var query_store = store_schema.store.find({_id: store_id});
+        query_store.sort({date: -1});
+        query_store.exec(function (store_error, store_array) {
+            return store_array;
+        })
+    },
+
+    find_product_by_id: function (req, res) {
+        var product_id;
+        if (req.param("id")) {
+            product_id = req.param("id");
+        } else {
+            product_id = req.session.product_id;
+        }
+        var query_product = product_schema.product.find({_id: product_id});
+        query_product.sort({date: -1});
+        query_product.exec(function (product_error, product_array) {
+            return product_array;
+        })
+    },
+
+    get_index: function (req, res) {
+        var query_store = store_schema.store.find({});
+        query_store.limit(8);
+        query_store.sort({date: -1});
+        query_store.exec(function (store_error, store_array) {
+            if (store_array && store_array.length > 0) {
+                req.session.store_array = store_array;
+                var query_industry = industry_schema.industry.find({});
+                query_industry.sort({industry_name: 1});
+                query_industry.exec(function (industry_error, industry_array) {
+                    if (industry_array && industry_array.length > 0) {
+                        req.session.industry_array = industry_array;
+                        res.render('index', {store_array: store_array, industry_array: industry_array});
+                    } else {
+                        console.log(industry_error);
+                    }
                 });
             } else {
-                res.render('index', {industry_array: req.session.industry_array, store_array: req.session.store_array});
+                console.log(store_error);
             }
-        },
+        })
+    },
 
-        get_insert_store: function (req, res) {
-            var query_industry = industry_schema.industry.find({});
-            query_industry.sort({industry_name: 1});
-            query_industry.exec(function (industry_error, industry_array) {
-                if (industry_array && industry_array.length > 0) {
-                    req.session.industry_array = industry_array;
-                    res.render('insert_store', {industry_array: req.session.industry_array});
-                } else {
-                    console.log(industry_error);
-                }
+    get_store_detail: function (req, res) {
+        var store_id;
+        if (req.param("id")) {
+            store_id = req.param("id");
+        }
+        req.session.store_id_recent = store_id;
+        if (store_id) {
+            store_schema.store.find({_id: store_id}, function (store_error, store_array) {
+                req.session.store_array_recent = store_array;
+                var query_product = product_schema.product.find({"id_store": store_id});
+                query_product.limit(10);
+                query_product.sort({date: -1});
+                query_product.exec(function (product_error, product_array) {
+                    if (product_array && product_array.length > 0) {
+                        req.session.product_array_recent = product_array;
+                        res.render('store_detail', {store_id_recent: store_id, store_array: store_array, industry_array: req.session.industry_array, product_array: product_array});
+                    } else {
+                        res.render("store_detail", {store_id_recent: store_id, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array, product_notification: "Không có sản phẩm tồn tại."});
+                    }
+                });
             });
-        },
+        } else {
+            res.render('index', {industry_array: req.session.industry_array, store_array: req.session.store_array});
+        }
+    },
 
-        post_insert_store: function (req, res) {
-            var id_user_facebook = "id_user_facebook";
-            var store_name = req.body.txtStoreName;
-            var store_name_non_accented = S(store_name).latinise().s;
-            var address = [];
-            var city = req.body.txtCity;
-            var district = req.body.txtDistrict;
-            var street = req.body.txtStreet;
-            var room = req.body.txtRoom;
-            address.push({"city": city, "district": district, "street": street, "room": room});
-            var latitude = req.body.txtLatitude;
-            var longitude = req.body.txtLongitude;
-            var phone = req.body.txtPhone;
-            var description = req.body.txtDescription;
-            var industry = req.body.slcIndustry;
-            var hours_of_work = req.body.txtHoursOfWork;
-            var website = req.body.txtWebsite;
-            var fanpage = req.body.txtFanpage;
+    get_insert_store: function (req, res) {
+        var query_industry = industry_schema.industry.find({});
+        query_industry.sort({industry_name: 1});
+        query_industry.exec(function (industry_error, industry_array) {
+            if (industry_array && industry_array.length > 0) {
+                req.session.industry_array = industry_array;
+                res.render('insert_store', {industry_array: req.session.industry_array});
+            } else {
+                console.log(industry_error);
+            }
+        });
+    },
 
-            //Lấy hình, resize và chỉnh path:
-            var im = require('imagemagick');
-            //Path upload:
+    post_insert_store: function (req, res) {
+        var id_user_facebook = "id_user_facebook";
+        var store_name = req.body.txtStoreName;
+        var store_name_non_accented = S(store_name).latinise().s;
+        var address = [];
+        var city = req.body.txtCity;
+        var district = req.body.txtDistrict;
+        var street = req.body.txtStreet;
+        var room = req.body.txtRoom;
+        address.push({"city": city, "district": district, "street": street, "room": room});
+        var latitude = req.body.txtLatitude;
+        var longitude = req.body.txtLongitude;
+        var phone = req.body.txtPhone;
+        var description = req.body.txtDescription;
+        var industry = req.body.slcIndustry;
+        var hours_of_work = req.body.txtHoursOfWork;
+        var website = req.body.txtWebsite;
+        var fanpage = req.body.txtFanpage;
+
+        //Lấy hình, resize và chỉnh path:
+        var im = require('imagemagick');
+        //Path upload:
+        var cover_upload_path = req.files.ulfCover.path;
+        var logo_upload_path = req.files.ulfLogo.path;
+        //Path save:
+        var cover_save_path = "public/images/" + req.files.ulfCover.name;
+        var logo_save_path = "public/images/" + req.files.ulfLogo.name;
+        //Resize:
+        //Cũ
+        /*im.resize({
+         srcPath: cover_upload_path,
+         dstPath: cover_save_path,
+         width: 800
+         }, function (err, stdout, stderr) {
+         if (err) throw err;
+         console.log('Resized cover successful.');
+         });*/
+        //Crop
+        var option = {
+            srcPath: cover_upload_path,
+            dstPath: cover_save_path,
+            width: 1100,
+            height: 350,
+            quality: 1,
+            gravity: "Center"
+        };
+        im.crop(option, function (err, stdout, stderr) {
+            if (err) throw err;
+            console.log('Resized cover successful.');
+        });
+
+        im.resize({
+            srcPath: logo_upload_path,
+            dstPath: logo_save_path,
+            width: 500
+        }, function (err, stdout, stderr) {
+            if (err) throw err;
+            console.log('Resized logo successful.');
+        });
+        //Xử lý path save:
+        cover_save_path = ".." + cover_save_path.replace("public", "");
+        logo_save_path = ".." + logo_save_path.replace("public", "");
+
+        var date = new Date().dateTime;
+        new store_schema.store({
+            _id: null,
+            id_user_facebook: id_user_facebook,
+            store_name: store_name,
+            store_name_non_accented: store_name_non_accented,
+            address: address,
+            latitude: latitude,
+            longitude: longitude,
+            phone: phone,
+            description: description,
+            industry: industry,
+            hours_of_work: hours_of_work,
+            website: website,
+            fanpage: fanpage,
+            cover: cover_save_path,
+            logo: logo_save_path,
+            date: date
+        }).save(function (error) {
+                var query_store = store_schema.store.find({});
+                query_store.limit(8);
+                query_store.sort({date: -1});
+                query_store.exec(function (store_error, store_array) {
+                    if (store_array && store_array.length > 0) {
+                        req.session.store_array = store_array;
+
+                        industry_schema.industry.find(function (industry_error, industry_array) {
+                            if (industry_array && industry_array.length > 0) {
+                                req.session.store_array = store_array;
+                                req.session.industry_array = industry_array;
+                                res.render('index', {store_array: store_array, industry_array: industry_array});
+                            } else {
+                                console.log(industry_error);
+                            }
+                        });
+                    } else {
+                        console.log(store_error);
+                    }
+                });
+            });
+    },
+
+    get_edit_store: function (req, res) {
+        var store_id = req.param('id');
+
+        store_schema.store.find({_id: store_id}, function (store_error, store_array) {
+            if (!store_error && store_array && store_array.length > 0) {
+                product_schema.product.find({IDStore: store_id}, function (product_error, product_array) {
+                    store_array.forEach(function (store) {
+                        cover = store.cover;
+                        logo = store.logo;
+                        res.render('edit_store', {store_array: store_array, product_array: product_array, store_id: store_id, industry_array: req.session.industry_array});
+                    });
+                })
+            }
+        });
+    },
+
+    post_edit_store: function (req, res) {
+        var store_id = req.param('id');
+        var store_name = req.body.txtStoreName;
+        var address = [];
+        var city = req.body.txtCity;
+        var district = req.body.txtDistrict;
+        var street = req.body.txtStreet;
+        var room = req.body.txtRoom;
+        address.push({"city": city, "district": district, "street": street, "room": street});
+        var latitude = req.body.txtLatitude;
+        var longitude = req.body.txtLongitude;
+        var phone = req.body.txtPhone;
+        var description = req.body.txtDescription;
+        var industry = req.body.slcIndustry;
+        var hours_of_work = req.body.txtHoursOfWork;
+        var website = req.body.txtWebsite;
+        var fanpage = req.body.txtFanpage;
+
+        var im = require('imagemagick');
+        //Cover:
+        var cover_new = cover;
+        if (typeof req.files.ulfCover != 'undefined') {
             var cover_upload_path = req.files.ulfCover.path;
-            var logo_upload_path = req.files.ulfLogo.path;
-            //Path save:
             var cover_save_path = "public/images/" + req.files.ulfCover.name;
-            var logo_save_path = "public/images/" + req.files.ulfLogo.name;
-            //Resize:
-            //Cũ
-            /*im.resize({
-             srcPath: cover_upload_path,
-             dstPath: cover_save_path,
-             width: 800
-             }, function (err, stdout, stderr) {
-             if (err) throw err;
-             console.log('Resized cover successful.');
-             });*/
-            //Crop
             var option = {
                 srcPath: cover_upload_path,
                 dstPath: cover_save_path,
                 width: 1100,
-                height: 350,
+                height: 400,
                 quality: 1,
                 gravity: "Center"
             };
@@ -197,7 +304,14 @@ var controllers = {
                 if (err) throw err;
                 console.log('Resized cover successful.');
             });
-
+            cover_save_path = ".." + req.files.ulfCover.path.replace("public", "");
+            cover_new = cover_save_path;
+        }
+        //Logo:
+        var logo_new = logo;
+        if (typeof req.files.ulfLogo != 'undefined') {
+            var logo_upload_path = req.files.ulfLogo.path;
+            var logo_save_path = "public/images/" + req.files.ulfLogo.name;
             im.resize({
                 srcPath: logo_upload_path,
                 dstPath: logo_save_path,
@@ -206,210 +320,222 @@ var controllers = {
                 if (err) throw err;
                 console.log('Resized logo successful.');
             });
-            //Xử lý path save:
-            cover_save_path = ".." + cover_save_path.replace("public", "");
-            logo_save_path = ".." + logo_save_path.replace("public", "");
+            logo_save_path = ".." + req.files.ulfLogo.path.replace("public", "");
+            logo_new = logo_save_path;
+        }
 
-            var date = new Date().dateTime;
-            new store_schema.store({
-                _id: null,
-                id_user_facebook: id_user_facebook,
-                store_name: store_name,
-                store_name_non_accented: store_name_non_accented,
-                address: address,
-                latitude: latitude,
-                longitude: longitude,
-                phone: phone,
-                description: description,
-                industry: industry,
-                hours_of_work: hours_of_work,
-                website: website,
-                fanpage: fanpage,
-                cover: cover_save_path,
-                logo: logo_save_path,
-                date: date
-            }).save(function (error) {
-                    var query_store = store_schema.store.find({});
-                    query_store.limit(8);
-                    query_store.sort({date: -1});
-                    query_store.exec(function (store_error, store_array) {
-                        if (store_array && store_array.length > 0) {
-                            req.session.store_array = store_array;
-
-                            industry_schema.industry.find(function (industry_error, industry_array) {
-                                if (industry_array && industry_array.length > 0) {
-                                    req.session.store_array = store_array;
-                                    req.session.industry_array = industry_array;
-                                    res.render('index', {store_array: store_array, industry_array: industry_array});
-                                } else {
-                                    console.log(industry_error);
-                                }
-                            });
-                        } else {
-                            console.log(store_error);
-                        }
-                    });
-                });
-        },
-
-        get_edit_store: function (req, res) {
-            var store_id = req.param('id');
-
-            store_schema.store.find({_id: store_id}, function (store_error, store_array) {
-                if (!store_error && store_array && store_array.length > 0) {
-                    product_schema.product.find({IDStore: store_id}, function (product_error, product_array) {
-                        store_array.forEach(function (store) {
-                            cover = store.cover;
-                            logo = store.logo;
-                            res.render('edit_store', {store_array: store_array, product_array: product_array, store_id: store_id, industry_array: req.session.industry_array});
+        store_schema.store.update({_id: store_id}, {$set: {store_name: store_name, address: address, latitude: latitude, longitude: longitude, phone: phone, description: description, industry: industry, hours_of_work: hours_of_work, cover: cover_new, logo: logo_new, website: website, fanpage: fanpage}}, function (error, result) {
+            if (!error && result) {
+                var query_store = store_schema.store.find({"_id": store_id});
+                query_store.limit(8);
+                query_store.sort({date: -1});
+                query_store.exec(function (store_error, store_array) {
+                    if (store_array && store_array.length > 0) {
+                        var query_product = product_schema.product.find({"id_store": store_id});
+                        query_product.limit(10);
+                        query_product.sort({date: -1});
+                        query_product.exec(function (product_error, product_array) {
+                            if (product_array && product_array.length > 0) {
+                                res.render('store_detail', {store_id: store_id, store_array: store_array, industry_array: req.session.industry_array, product_array: product_array});
+                            } else {
+                                res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array, product_notification: "Không có sản phẩm tồn tại."});
+                            }
                         });
-                    })
-                }
+                    } else {
+                        console.log(store_error);
+                    }
+                });
+            } else {
+                console.log(error);
+            }
+        });
+    },
+
+    get_product_detail: function (req, res) {
+        var id;
+        id = req.param('id');
+        req.session.product_id_recent = id;
+        product_schema.product.find({_id: id}, function (product_error, product_array) {
+            if (product_array && product_array.length > 0) {
+                res.render('product_detail', {product_array: product_array, industry_array: req.session.industry_array});
+            } else {
+                res.render('store_detail', {store_array: req.session.store_array_recent, product_array: req.session.product_array_recent, industry_array: req.session.industry_array});
+            }
+        })
+    },
+
+    post_product_detail: function (req, res) {
+
+    },
+
+    get_insert_product: function (req, res) {
+
+        var store_id;
+        if (!req.param("id")) {
+            store_id = req.session.store_id_recent;
+        }
+        if (store_id) {
+            req.session.store_id_recent = store_id;
+            product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
+                res.render('insert_product', {product_array: product_array, industry_array: req.session.industry_array, store_id: store_id, insert_product_notification: "Thêm sản phẩm thành công."});
             });
-        },
+        } else {
+            res.render('index', {industry_array: req.session.industry_array});
+        }
+    },
 
-        post_edit_store: function (req, res) {
-            var store_id = req.param('id');
-            var store_name = req.body.txtStoreName;
-            var address = [];
-            var city = req.body.txtCity;
-            var district = req.body.txtDistrict;
-            var street = req.body.txtStreet;
-            var room = req.body.txtRoom;
-            address.push({"city": city, "district": district, "street": street, "room": street});
-            var latitude = req.body.txtLatitude;
-            var longitude = req.body.txtLongitude;
-            var phone = req.body.txtPhone;
-            var description = req.body.txtDescription;
-            var industry = req.body.slcIndustry;
-            var hours_of_work = req.body.txtHoursOfWork;
-            var website = req.body.txtWebsite;
-            var fanpage = req.body.txtFanpage;
-
+    post_insert_product: function (req, res) {
+        var store_id;
+        if (req.param("id") == "") {
+            store_id = req.param('id');
+        } else {
+            store_id = req.session.store_id_recent;
+        }
+        var product_name = req.body.txtProductName;
+        var product_name_non_accented = S(product_name).latinise().s;
+        var price = req.body.txtPrice;
+        //Tags:
+        var string_tags = req.body.txtTags;
+        var tags = string_tags.split(",");
+        for (i = 0; i < tags.length; i++) {
+            tags[i] = tags[i].trim();
+        }
+        var description = req.body.txtDescription;
+        //Media
+        var media = [];
+        //for (var i = 1; i <= count_media; i++) {
+        var media_name = req.body.txtMediaName;
+        var media_url;
+        var mongoose = require('mongoose');
+        var id = new mongoose.Types.ObjectId;
+        if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
+            media_url = req.body.txtMediaUrl;
+            media.push({"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType});
+        } else {
+            var media_upload_path = req.files.ulfMediaUrl.path;
+            var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
             var im = require('imagemagick');
-            //Cover:
-            var cover_new = cover;
-            if (typeof req.files.ulfCover != 'undefined') {
-                var cover_upload_path = req.files.ulfCover.path;
-                var cover_save_path = "public/images/" + req.files.ulfCover.name;
-                var option = {
-                    srcPath: cover_upload_path,
-                    dstPath: cover_save_path,
-                    width: 1100,
-                    height: 400,
-                    quality: 1,
-                    gravity: "Center"
-                };
-                im.crop(option, function (err, stdout, stderr) {
-                    if (err) throw err;
-                    console.log('Resized cover successful.');
-                });
-                cover_save_path = ".." + req.files.ulfCover.path.replace("public", "");
-                cover_new = cover_save_path;
-            }
-            //Logo:
-            var logo_new = logo;
-            if (typeof req.files.ulfLogo != 'undefined') {
-                var logo_upload_path = req.files.ulfLogo.path;
-                var logo_save_path = "public/images/" + req.files.ulfLogo.name;
-                im.resize({
-                    srcPath: logo_upload_path,
-                    dstPath: logo_save_path,
-                    width: 500
-                }, function (err, stdout, stderr) {
-                    if (err) throw err;
-                    console.log('Resized logo successful.');
-                });
-                logo_save_path = ".." + req.files.ulfLogo.path.replace("public", "");
-                logo_new = logo_save_path;
-            }
-
-            store_schema.store.update({_id: store_id}, {$set: {store_name: store_name, address: address, latitude: latitude, longitude: longitude, phone: phone, description: description, industry: industry, hours_of_work: hours_of_work, cover: cover_new, logo: logo_new, website: website, fanpage: fanpage}}, function (error, result) {
-                if (!error && result) {
-                    var query_store = store_schema.store.find({"_id": store_id});
-                    query_store.limit(8);
-                    query_store.sort({date: -1});
-                    query_store.exec(function (store_error, store_array) {
-                        if (store_array && store_array.length > 0) {
-                            var query_product = product_schema.product.find({"id_store": store_id});
-                            query_product.limit(10);
-                            query_product.sort({date: -1});
-                            query_product.exec(function (product_error, product_array) {
-                                if (product_array && product_array.length > 0) {
-                                    res.render('store_detail', {store_id: store_id, store_array: store_array, industry_array: req.session.industry_array, product_array: product_array});
-                                } else {
-                                    res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, store_array: store_array, product_array: product_array, product_notification: "Không có sản phẩm tồn tại."});
-                                }
-                            });
-                        } else {
-                            console.log(store_error);
-                        }
+            im.resize({
+                srcPath: media_upload_path,
+                dstPath: media_save_path,
+                width: 600
+            }, function (err, stdout, stderr) {
+                if (err) throw err;
+                console.log('Resized media successful.');
+            });
+            media.push({"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
+        }
+        var status = true;
+        var date = new Date();
+        new product_schema.product({
+            _id: null,
+            id_store: store_id,
+            product_name: product_name,
+            product_name_non_accented: product_name_non_accented,
+            price: price,
+            tags: tags,
+            description: description,
+            media: media,
+            status: status,
+            rating: [],
+            date: date
+        }).save(function (save_error) {
+                if (!save_error) {
+                    product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
+                        res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, product_array: product_array, store_array: req.session.store_array_recent});
                     });
                 } else {
-                    console.log(error);
+                    console.log(save_error);
                 }
             });
-        },
+    },
 
-        get_product_detail: function (req, res) {
-            var id;
-            id = req.param('id');
-            req.session.product_id_recent = id;
+    get_edit_product: function (req, res) {
+        if (req.param('id')) {
+            var id = req.param('id');
             product_schema.product.find({_id: id}, function (product_error, product_array) {
                 if (product_array && product_array.length > 0) {
-                    res.render('product_detail', {product_array: product_array, industry_array: req.session.industry_array});
+                    res.render('edit_product', {product_array: product_array, industry_array: req.session.industry_array});
+                    product_array.forEach(function (p) {
+                        media = product_array.media;
+                    });
                 } else {
-                    res.render('store_detail', {store_array: req.session.store_array_recent, product_array: req.session.product_array_recent, industry_array: req.session.industry_array});
+                    console.log(product_error);
                 }
-            })
-        },
+            });
+        } else {
+            res.render('index');
+        }
+    },
 
-        post_product_detail: function (req, res) {
+    post_edit_product: function (req, res) {
+        var product_id = req.param('id');
+        var product_name = req.body.txtProductName;
+        var price = req.body.txtPrice;
+        //Tags
+        var strTags = req.body.txtTags;
+        var tags = strTags.split(",");
+        for (i = 0; i < tags.length; i++) {
+            tags[i] = tags[i].trim();
+        }
+        var description = req.body.txtDescription;
 
-        },
+        //Media
+        /*var count = req.body.txtCount;
+         var media = [];
+         for (i = 1; i <= count; i++) {
+         var media_name = req.body.txtMediaName + i;
+         //Nếu không upload hình:
+         if (req.files.ulfMedia === 'undefined' && req.body.txtMediaUrl != "") {
+         var media_url = req.body.txtMediaUrl + i;
+         media.push({Name: media_name, Url: media_url});
+         } else if (req.files.ulfMedia && req.body.txtMediaUrl == "") {
+         //Còn nếu có
+         var media_upload = req.files.ulfMedia + i;
+         var media_upload_path = media_upload.path;
+         var media_save_path = "public/images/" + media_upload.name;
+         var im = require('imagemagick');
+         im.resize({
+         srcPath: media_upload_path,
+         dstPath: media_save_path,
+         width: 600
+         }, function (err, stdout, stderr) {
+         console.log('Resize product media success.');
+         });
+         media.push({Name: media_name, Url: ".." + media_save_path.replace("public", "")});
+         }
+         }*/
 
-        get_insert_product: function (req, res) {
-
-            var store_id;
-            if (!req.param("id")) {
-                store_id = req.session.store_id_recent;
-            }
-            if (store_id) {
-                req.session.store_id_recent = store_id;
-                product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
-                    res.render('insert_product', {product_array: product_array, industry_array: req.session.industry_array, store_id: store_id, insert_product_notification: "Thêm sản phẩm thành công."});
+        product_schema.product.update({_id: product_id}, {$set: {product_name: product_name, price: price, tags: tags, description: description}}, function (err, result) {
+            if (!err && result) {
+                product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
+                    res.render('store_detail', {product_array: product_array, industry_array: req.session.industry_array, store_id: req.session.store_id_recent});
                 });
             } else {
-                res.render('index', {industry_array: req.session.industry_array});
+                console.log(err);
             }
-        },
+        });
+    },
 
-        post_insert_product: function (req, res) {
-            var store_id;
-            if (req.param("id") == "") {
-                store_id = req.param('id');
-            } else {
-                store_id = req.session.store_id_recent;
-            }
-            var product_name = req.body.txtProductName;
-            var price = req.body.txtPrice;
-            //Tags:
-            var string_tags = req.body.txtTags;
-            var tags = string_tags.split(",");
-            for (i = 0; i < tags.length; i++) {
-                tags[i] = tags[i].trim();
-            }
-            var description = req.body.txtDescription;
-            //Media
-            var media = [];
-            //for (var i = 1; i <= count_media; i++) {
+    get_insert_media: function (req, res) {
+
+        res.render('insert_media', {industry_array: req.session.industry_array});
+    },
+
+    post_insert_media: function (req, res) {
+        var id;
+        var id_product;
+        if (req.param('id')) {
+            id_product = req.param('id');
+        } else {
+            id_product = req.session.product_id_recent;
+        }
+        if (id_product) {
+            var product_id = id_product;
             var media_name = req.body.txtMediaName;
             var media_url;
-            var mongoose = require('mongoose');
-            var id = new mongoose.Types.ObjectId;
             if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
                 media_url = req.body.txtMediaUrl;
-                media.push({"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType});
             } else {
                 var media_upload_path = req.files.ulfMediaUrl.path;
                 var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
@@ -422,297 +548,197 @@ var controllers = {
                     if (err) throw err;
                     console.log('Resized media successful.');
                 });
-                media.push({"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
+                media_url = ".." + media_save_path.replace("public", "")
             }
-            var status = true;
-            var date = new Date();
-            new product_schema.product({
+            new media_schema.media({
                 _id: null,
-                id_store: store_id,
-                product_name: product_name,
-                price: price,
-                tags: tags,
-                description: description,
-                media: media,
-                status: status,
-                rating: [],
-                date: date
-            }).save(function (save_error) {
-                    if (!save_error) {
-                        product_schema.product.find({id_store: store_id}, function (product_error, product_array) {
-                            res.render("store_detail", {store_id: store_id, industry_array: req.session.industry_array, product_array: product_array, store_array: req.session.store_array_recent});
-                        });
+                product_id: product_id,
+                media_name: media_name,
+                media_type: req.body.grpType,
+                media_url: media_url
+            }).save(function (error) {
+                    if (error) {
+                        console.log("lỗi save media");
                     } else {
-                        console.log(save_error);
-                    }
-                });
-        },
-
-        get_edit_product: function (req, res) {
-            if (req.param('id')) {
-                var id = req.param('id');
-                product_schema.product.find({_id: id}, function (product_error, product_array) {
-                    if (product_array && product_array.length > 0) {
-                        res.render('edit_product', {product_array: product_array, industry_array: req.session.industry_array});
-                        product_array.forEach(function (p) {
-                            media = product_array.media;
-                        });
-                    } else {
-                        console.log(product_error);
-                    }
-                });
-            } else {
-                res.render('index');
-            }
-        },
-
-        post_edit_product: function (req, res) {
-            var product_id = req.param('id');
-            var product_name = req.body.txtProductName;
-            var price = req.body.txtPrice;
-            //Tags
-            var strTags = req.body.txtTags;
-            var tags = strTags.split(",");
-            for (i = 0; i < tags.length; i++) {
-                tags[i] = tags[i].trim();
-            }
-            var description = req.body.txtDescription;
-
-            //Media
-            /*var count = req.body.txtCount;
-             var media = [];
-             for (i = 1; i <= count; i++) {
-             var media_name = req.body.txtMediaName + i;
-             //Nếu không upload hình:
-             if (req.files.ulfMedia === 'undefined' && req.body.txtMediaUrl != "") {
-             var media_url = req.body.txtMediaUrl + i;
-             media.push({Name: media_name, Url: media_url});
-             } else if (req.files.ulfMedia && req.body.txtMediaUrl == "") {
-             //Còn nếu có
-             var media_upload = req.files.ulfMedia + i;
-             var media_upload_path = media_upload.path;
-             var media_save_path = "public/images/" + media_upload.name;
-             var im = require('imagemagick');
-             im.resize({
-             srcPath: media_upload_path,
-             dstPath: media_save_path,
-             width: 600
-             }, function (err, stdout, stderr) {
-             console.log('Resize product media success.');
-             });
-             media.push({Name: media_name, Url: ".." + media_save_path.replace("public", "")});
-             }
-             }*/
-
-            product_schema.product.update({_id: product_id}, {$set: {product_name: product_name, price: price, tags: tags, description: description}}, function (err, result) {
-                if (!err && result) {
-                    product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
-                        res.render('store_detail', {product_array: product_array, industry_array: req.session.industry_array, store_id: req.session.store_id_recent});
-                    });
-                } else {
-                    console.log(err);
-                }
-            });
-        },
-
-        get_insert_media: function (req, res) {
-
-            res.render('insert_media', {industry_array: req.session.industry_array});
-        },
-
-        post_insert_media: function (req, res) {
-            var id;
-            var id_product;
-            if (req.param('id')) {
-                id_product = req.param('id');
-            } else {
-                id_product = req.session.product_id_recent;
-            }
-            if (id_product) {
-                var media = [];
-                var media_name = req.body.txtMediaName;
-                var media_url;
-                var mongoose = require('mongoose');
-                if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
-                    media_url = req.body.txtMediaUrl;
-                    id = new mongoose.Types.ObjectId;
-                    media = {"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType};
-                } else {
-                    var media_upload_path = req.files.ulfMediaUrl.path;
-                    var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
-                    var im = require('imagemagick');
-                    im.resize({
-                        srcPath: media_upload_path,
-                        dstPath: media_save_path,
-                        width: 600
-                    }, function (err, stdout, stderr) {
-                        if (err) throw err;
-                        console.log('Resized media successful.');
-                    });
-                    id = new mongoose.Types.ObjectId;
-                    media = {"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType};
-                }
-                console.log(media);
-                product_schema.product.findByIdAndUpdate(id_product, {$push: {media: media}}, {safe: true, upsert: true}, function (err, result) {
-                    if (!err && result) {
                         product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
                             console.log('ok');
                             res.render('store_detail', {product_array: product_array, industry_array: req.session.industry_array, store_id: req.session.store_id_recent, store_array: req.session.store_array_recent});
                         });
-                    } else {
-                        console.log("lỗi nè " + err);
                     }
-                });
-            }
-            else {
-                console.log("Lỗi - get_insert_media.");
-                res.render('index', {industry_array: req.session.industry_array});
-            }
-        },
 
-        get_edit_media: function (req, res) {
-            var id;
-            if (req.param('id')) {
-                id = req.param('id');
+                })
+        } else {
+            console.log("Không có id_product.");
+        }
+        /*if (id_product) {
+            var media = [];
+            var media_name = req.body.txtMediaName;
+            var media_url;
+            var mongoose = require('mongoose');
+            if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
+                media_url = req.body.txtMediaUrl;
+                id = new mongoose.Types.ObjectId;
+                media = {"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType};
             } else {
-                id = req.session.media_id_recent;
-            }
-            var ObjectId = mongoose.Types.ObjectId;
-            console.log(id);
-            product_schema.product.find({media: {$elemMatch: {media_id: new ObjectId(id)}}}, function (product_error, product_array) {
-                console.log(product_array);
-                res.render('edit_media', {product_array: product_array});
-            })
-        },
-
-        post_edit_media: function (req, res) {
-
-        },
-
-        get_insert_industry: function (req, res) {
-            var query_industry = industry_schema.industry.find({});
-            query_industry.sort({industry_name: 1});
-            query_industry.exec(function (industry_error, industry_array) {
-                if (industry_array && industry_array.length > 0) {
-                    req.session.industry_array = industry_array;
-                    res.render('insert_industry', {industry_array: req.session.industry_array});
-                } else {
-                    console.log(industry_error);
-                }
-            });
-        },
-
-        post_insert_industry: function (req, res) {
-            var industry_name = req.body.txtIndustryName;
-            var industry_image = req.body.txtIndustryImage;
-            new industry_schema.industry({
-                _id: null,
-                industry_name: industry_name,
-                industry_image: industry_image
-            }).save(function (save_error) {
-                    if (!save_error) {
-                        res.render('index');
-                    } else {
-                        console.log(save_error);
-                    }
+                var media_upload_path = req.files.ulfMediaUrl.path;
+                var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
+                var im = require('imagemagick');
+                im.resize({
+                    srcPath: media_upload_path,
+                    dstPath: media_save_path,
+                    width: 600
+                }, function (err, stdout, stderr) {
+                    if (err) throw err;
+                    console.log('Resized media successful.');
                 });
-        },
-
-        get_industry: function (req, res) {
-            var industry_name = req.param('type');
-            if (!req.param('type')) {
-                store_schema.store.find(function (store_error, store_array) {
-                    industry_schema.industry.find(function (industry_error, industry_array) {
-                        req.session.store_array = store_array;
-                        req.session.industry_array = industry_array;
-                        res.render('industry', {store_array: store_array, industry_array: req.session.industry_array});
+                id = new mongoose.Types.ObjectId;
+                media = {"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType};
+            }
+            console.log(media);
+            product_schema.product.findByIdAndUpdate(id_product, {$push: {media: media}}, {safe: true, upsert: true}, function (err, result) {
+                if (!err && result) {
+                    product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
+                        console.log('ok');
+                        res.render('store_detail', {product_array: product_array, industry_array: req.session.industry_array, store_id: req.session.store_id_recent, store_array: req.session.store_array_recent});
                     });
-                });
-            } else {
-                store_schema.store.find({industry: {$in: [req.param("type")]}}, function (store_error, store_array) {
-                    res.render('industry', {industry_array: req.session.industry_array, store_array: store_array});
-                });
-            }
-        },
-
-        get_search: function (req, res) {
-            location_schema.location.find(function (location_error, location_array) {
-                if (!location_error && location_array.length > 0) {
-                    req.session.location_array = location_array;
-                    res.render('search', {industry_array: req.session.industry_array, location_array: location_array});
+                } else {
+                    console.log("lỗi nè " + err);
                 }
             });
-        },
+        } else {
+            console.log("Lỗi - get_insert_media.");
+            res.render('index', {industry_array: req.session.industry_array});
+        }*/
+    },
 
-        post_search: function (req, res) {
-            var key;
-            if (!req.param("keyword")) {
-                key = req.body.txtTextSearch;
+    get_edit_media: function (req, res) {
+        var id;
+        if (req.param('id')) {
+            id = req.param('id');
+        } else {
+            id = req.session.media_id_recent;
+        }
+        var ObjectId = mongoose.Types.ObjectId;
+        console.log(id);
+        product_schema.product.find({media: {$elemMatch: {media_id: new ObjectId(id)}}}, function (product_error, product_array) {
+            console.log(product_array);
+            res.render('edit_media', {product_array: product_array});
+        })
+    },
+
+    post_edit_media: function (req, res) {
+
+    },
+
+    get_insert_industry: function (req, res) {
+        var query_industry = industry_schema.industry.find({});
+        query_industry.sort({industry_name: 1});
+        query_industry.exec(function (industry_error, industry_array) {
+            if (industry_array && industry_array.length > 0) {
+                req.session.industry_array = industry_array;
+                res.render('insert_industry', {industry_array: req.session.industry_array});
+            } else {
+                console.log(industry_error);
             }
-            var type = req.body.type;
-            var disrtict = req.body.optDistrict;
-            //chọn store, có chọn quận (quận khác cái mặc định)
-            if (type == "store" && key) {
-                console.log("1");
-                store_schema.store.find({$or: [
-                    {store_name: {$regex: key, $options: 'xi'}},
-                    {store_name_non_accented: {$regex: key, $options: ' i'}}
-                ]}, function (store_error, store_array) {
-                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
-                });
-            } else if (type == "store" && disrtict != '-- Chọn Quận --' && key != "") { //tìm không dấu
-                console.log("2");
-                store_schema.store.find({$or: [
-                    {store_name: {$regex: key, $options: 'xi'}},
-                    {store_name_non_accented: {$regex: key, $options: 'xi'}},
-                    {address: {$elemMatch: {district: disrtict}}}
-                ]}, function (store_error, store_array) {
-                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
-                });
-            } else if (key == "" && disrtict && disrtict != '-- Chọn Quận --') {
-                console.log("3");
-                store_schema.store.find({address: {$elemMatch: {district: disrtict}}}, function (store_error, store_array) {
-                    res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
-                });
-            } else if (type == "product") {
-                product_schema.product.find({product_name: {$regex: key, $options: 'xi'}}, function (product_error, product_array) {
-                    res.render('search', {product_array: product_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
-                });
-            }
-            /*else if(key == '' && disrtict != '-- Chọn Quận --'){
+        });
+    },
 
-             }*/
-        },
-
-        get_tag: function (req, res) {
-            var tag = req.param("tag");
-
-            product_schema.product.find({tags: {$in: [tag]}}, function (product_error, product_array) {
-                if (product_array && product_array.length > 0) {
-                    res.render('tags', {product_array: product_array});
+    post_insert_industry: function (req, res) {
+        var industry_name = req.body.txtIndustryName;
+        var industry_image = req.body.txtIndustryImage;
+        new industry_schema.industry({
+            _id: null,
+            industry_name: industry_name,
+            industry_image: industry_image
+        }).save(function (save_error) {
+                if (!save_error) {
+                    res.render('index');
                 } else {
-                    product_schema.product.find(function (product_error, product_array) {
-                        res.render('tags', {product_array: product_array, tags_notification: "Không có sản phẩm."});
-                    })
+                    console.log(save_error);
                 }
+            });
+    },
+
+    get_industry: function (req, res) {
+        var industry_name = req.param('type');
+        if (!req.param('type')) {
+            store_schema.store.find(function (store_error, store_array) {
+                industry_schema.industry.find(function (industry_error, industry_array) {
+                    req.session.store_array = store_array;
+                    req.session.industry_array = industry_array;
+                    res.render('industry', {store_array: store_array, industry_array: req.session.industry_array});
+                });
+            });
+        } else {
+            store_schema.store.find({industry: {$in: [req.param("type")]}}, function (store_error, store_array) {
+                res.render('industry', {industry_array: req.session.industry_array, store_array: store_array});
             });
         }
-        /*,
+    },
 
-         get_test: function (req, res) {
-         res.render('test');
-         },
+    get_search: function (req, res) {
+        location_schema.location.find(function (location_error, location_array) {
+            if (!location_error && location_array.length > 0) {
+                req.session.location_array = location_array;
+                res.render('search', {industry_array: req.session.industry_array, location_array: location_array});
+            }
+        });
+    },
 
-         post_test: function (req, res) {
-         var y = req.body.txtTextTest;
-         var x = S(y).latinise().s;
-         console.log(x);
-         res.render('index', {industry_array: req.session.industry_array});
+    post_search: function (req, res) {
+        var key;
+        if (!req.param("keyword")) {
+            key = req.body.txtTextSearch;
+        }
+        var type = req.body.type;
+        var disrtict = req.body.optDistrict;
+        //chọn store, có chọn quận (quận khác cái mặc định)
+        if (type == "store" && key) {
+            console.log("1");
+            store_schema.store.find({$or: [
+                {store_name: {$regex: key, $options: 'xi'}},
+                {store_name_non_accented: {$regex: key, $options: ' i'}}
+            ]}, function (store_error, store_array) {
+                res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
+            });
+        } else if (type == "store" && disrtict != '-- Chọn Quận --' && key != "") { //tìm không dấu
+            console.log("2");
+            store_schema.store.find({$or: [
+                {store_name: {$regex: key, $options: 'xi'}},
+                {store_name_non_accented: {$regex: key, $options: 'xi'}},
+                {address: {$elemMatch: {district: disrtict}}}
+            ]}, function (store_error, store_array) {
+                res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
+            });
+        } else if (key == "" && disrtict && disrtict != '-- Chọn Quận --') {
+            console.log("3");
+            store_schema.store.find({address: {$elemMatch: {district: disrtict}}}, function (store_error, store_array) {
+                res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
+            });
+        } else if (type == "product") {
+            product_schema.product.find({product_name: {$regex: key, $options: 'xi'}}, function (product_error, product_array) {
+                res.render('search', {product_array: product_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
+            });
+        }
+        /*else if(key == '' && disrtict != '-- Chọn Quận --'){
 
          }*/
+    },
 
+    get_tag: function (req, res) {
+        var tag = req.param("tag");
+
+        product_schema.product.find({tags: {$in: [tag]}}, function (product_error, product_array) {
+            if (product_array && product_array.length > 0) {
+                res.render('tags', {product_array: product_array});
+            } else {
+                product_schema.product.find(function (product_error, product_array) {
+                    res.render('tags', {product_array: product_array, tags_notification: "Không có sản phẩm."});
+                })
+            }
+        });
     }
-    ;
+};
 
 module.exports = function (router) {
     //index
