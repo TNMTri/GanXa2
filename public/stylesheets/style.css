@@ -107,6 +107,7 @@ a:hover{
     margin-top: 10px;
     font-family: FontAwesome;
     font-size: 20px;
+    height: 40px;
 
 }
 .avt-store {
@@ -181,7 +182,7 @@ a:hover{
     margin: 10% 5% 10% 5%;
     float: left;
     width: 220px;
-    height: 300px;
+    height: 315px;
     background-color: #E6E9ED;
     border: 2px #bbb;
 
