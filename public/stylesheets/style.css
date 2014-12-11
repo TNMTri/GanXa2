@@ -216,3 +216,22 @@ a:hover{
 .row-search{
     margin-top: 20px;
 }
+.quan-search{
+    margin-top: 20px;
+}
+.dropdown-industry{
+    margin-top: 20px;
+}
+.dropdown-menu-industry{
+    left: 0px;
+    padding: 25px 0;
+    margin: 2px 0 0;
+    background-color: #434a54;
+    border: none;
+    font-family: FontAwesome;
+    color: #ffffff;
+    width: 100%;
+}
+.form-control-industry{
+    width: 50%;
+}

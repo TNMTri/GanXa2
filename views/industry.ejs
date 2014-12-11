@@ -1,17 +1,88 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<html lang="en">
+<head>
+    <% include ./partial/head %>
 </head>
 <body>
-<% industry_array.forEach(function(industry){ %>
-<P><a href="industry?type=<%= industry.industry_name %>"><%= industry.industry_name %></a></P>
-<% }) %>
-<% if(typeof store_array != 'undefined'){ %>
-<% store_array.forEach(function (store) { %>
-<a href="store_detail?id=<%= store._id %>"><%= store.store_name %></a>
-<% }) %>
-<% } %>
+<header>
+    <% include ./partial/header %>
+</header>
+<div class="container">
+    <div class="row dropdown-industry">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="input-group-btn ">
+                <button type="button" class="btn btn-primary dropdown-toggle form-control" data-toggle="dropdown"
+                        tabindex="-1">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-industry">
+                    <% industry_array.forEach(function(industry){ %>
+                    <center>
+                        <P><a href="industry?type=<%= industry.industry_name %>"
+                              class="form-control form-control-industry"><%=
+                            industry.industry_name %></a></P>
+                    </center>
+
+                    <% }) %>
+                    <hr>
+                    <center><P><a href="#" class="form-control form-control-industry" data-toggle="modal" data-target="#myModal">
+                                                    Thêm industry</a></P></center>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title" id="myModalLabel">Thêm industry</h3>
+                </div>
+
+                    <form method="post">
+                        <div class="modal-body">
+                        <input type="text" class="form-control" name="txtIndustryName">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary"></button>
+                        </div>
+                    </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <% if(typeof store_array != 'undefined'){ %>
+        <% store_array.forEach(function (s) { %>
+        <center>
+            <div class="col-md-3">
+                <div class="row-home">
+                    <div class="thumbnail">
+                        <img class="img-store" src="<%= s.cover %>" alt=" ">
+                        <img class="img-logo" src="<%= s.logo %>">
+                        <center><a href="store_detail?id=<%= s._id %>"><h4 class="h4_index"><%= s.store_name %></h4></a>
+                        </center>
+                        <p class="p-index">
+                            <% s.address.forEach(function (a) { %>
+                            <%= (a.street + ", " + a.district + ", " + a.city).substring(0, 50) %>... <a
+                                href="store_detail?id=<%= s._id %>">xem thêm</a>
+                            <% }) %>
+                        </p>
+                        <a href="edit_store?id=<%= s._id %>" class="btn btn-primary btn-block btn_index">Edit store</a>
+                    </div>
+                </div>
+            </div>
+            <% })%>
+
+            <% } %>
+        </center>
+
+
+    </div>
+</div>
+
 </body>
 </html>

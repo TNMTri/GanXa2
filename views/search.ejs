@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +37,8 @@
         <div class="col-md-2 ">
             <div class="col-md-12 form-control">
                 <!--<label><input id="rdb1" type="radio" name="toggler" value="1"/>Store</label>-->
-                <label style="margin-right: 12px;"><input type="radio" id="rdb1" class="store" name="type" value="store" checked >Store</label>
+                <label style="margin-right: 12px;"><input type="radio" id="rdb1" class="store" name="type" value="store"
+                                                          checked>Store</label>
                 <!--<input type="radio" class="product" name="type" value="product">Product-->
                 <label><input id="rdb2" class="product " type="radio" name="type" value="product"/>Product</label>
                 <!--<input type="submit" name="button_s" class="button_ss" value="Search">-->
@@ -55,24 +54,34 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <% industry_array.forEach(function(industry){ %>
-                    <li><a href="search?type=<%=industry.industry_name%>"><%=industry.industry_name%></a></li>
+                    <% industry_array.forEach(function(i){ %>
+                    <li><a href="industry?type=<%=i.industry_name%>"><%=i.industry_name%></a></li>
                     <%})%>
                     <li class="divider"></li>
+
                 </ul>
             </div>
         </div>
-        Tìm theo quận:
-        <select name="optDistrict">
-            <option>-- Chọn Quận --</option>
-            <% location_array.forEach(function(location){ %>
-            <optgroup label="<%= location.city %>">
-                <% location.district.forEach(function(district){ %>
-                <option value="<%=district%>"><%=district%></option>
-                <% }) %>
-            </optgroup>
-            <% }) %>
-        </select>
+
+        <div class="col-md-12 quan-search">
+            <div class="col-md-1"><label></label></div>
+            <div class="col-md-2 "><label class="form-control">Tìm theo quận:</label></div>
+            <div class="col-md-8 ">
+
+                <select name="optDistrict" class="form-control  ">
+                    <option>-- Chọn Quận --</option>
+                    <% location_array.forEach(function(location){ %>
+                    <optgroup label="<%= location.city %>">
+                        <% location.district.forEach(function(district){ %>
+                        <option value="<%=district%>"><%=district%></option>
+                        <% }) %>
+                    </optgroup>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+
+
     </form>
     <% if(typeof store_array != 'undefined'){ %>
     <% store_array.forEach(function(s){ %>
@@ -82,8 +91,8 @@
     <div class="col-md-3">
         <div class="row-home">
             <div class="thumbnail">
-                <img class="img-store" src="./images/a.jpg" alt=" ">
-                <img class="img-logo" src="./images/b.jpg">
+                <img class="img-store" src="<%= s.cover %>" alt=" ">
+                <img class="img-logo" src="<%= s.logo %>">
                 <center><a href="store_detail?id=<%= s._id %>"><h4 class="h4_index"><%= s.store_name %></h4></a>
                 </center>
                 <p class="p-index">
@@ -148,6 +157,7 @@
         </center>
     </div>
     <% })} %>
+
 </div>
 </body>
 </html>
