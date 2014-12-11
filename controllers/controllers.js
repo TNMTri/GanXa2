@@ -622,12 +622,9 @@ var controllers = {
         } else {
             id = req.session.media_id_recent;
         }
-        var ObjectId = mongoose.Types.ObjectId;
-        console.log(id);
-        product_schema.product.find({media: {$elemMatch: {media_id: new ObjectId(id)}}}, function (product_error, product_array) {
-            console.log(product_array);
-            res.render('edit_media', {product_array: product_array});
-        })
+        media_schema.media.find({_id: id}, function (media_error, media_array) {
+            res.render('edit_media', {media_array: media_array});
+        });
     },
 
     post_edit_media: function (req, res) {
