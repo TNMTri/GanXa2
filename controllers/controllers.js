@@ -2,8 +2,11 @@ var industry_schema = require('../models/industry_schema');
 var store_schema = require('../models/store_schema');
 var product_schema = require('../models/product_schema');
 var location_schema = require('../models/location_schema');
+var media_schema = require('../models/media_schema');
+
 var S = require('string');
 var mongoose = require('mongoose');
+
 var controllers = {
 
         get_industry_array: function (req, res) {
