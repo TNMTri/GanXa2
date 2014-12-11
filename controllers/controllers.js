@@ -357,7 +357,11 @@ var controllers = {
         req.session.product_id_recent = id;
         product_schema.product.find({_id: id}, function (product_error, product_array) {
             if (product_array && product_array.length > 0) {
-                res.render('product_detail', {product_array: product_array, industry_array: req.session.industry_array});
+                media_schema.media.find({product_id: id}, function (media_error, media_array) {
+                    if (media_array && !media_error) {
+                        res.render('product_detail', {product_array: product_array, industry_array: req.session.industry_array, media_array: media_array});
+                    }
+                });
             } else {
                 res.render('store_detail', {store_array: req.session.store_array_recent, product_array: req.session.product_array_recent, industry_array: req.session.industry_array});
             }
@@ -571,44 +575,44 @@ var controllers = {
             console.log("Không có id_product.");
         }
         /*if (id_product) {
-            var media = [];
-            var media_name = req.body.txtMediaName;
-            var media_url;
-            var mongoose = require('mongoose');
-            if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
-                media_url = req.body.txtMediaUrl;
-                id = new mongoose.Types.ObjectId;
-                media = {"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType};
-            } else {
-                var media_upload_path = req.files.ulfMediaUrl.path;
-                var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
-                var im = require('imagemagick');
-                im.resize({
-                    srcPath: media_upload_path,
-                    dstPath: media_save_path,
-                    width: 600
-                }, function (err, stdout, stderr) {
-                    if (err) throw err;
-                    console.log('Resized media successful.');
-                });
-                id = new mongoose.Types.ObjectId;
-                media = {"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType};
-            }
-            console.log(media);
-            product_schema.product.findByIdAndUpdate(id_product, {$push: {media: media}}, {safe: true, upsert: true}, function (err, result) {
-                if (!err && result) {
-                    product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
-                        console.log('ok');
-                        res.render('store_detail', {product_array: product_array, industry_array: req.session.industry_array, store_id: req.session.store_id_recent, store_array: req.session.store_array_recent});
-                    });
-                } else {
-                    console.log("lỗi nè " + err);
-                }
-            });
-        } else {
-            console.log("Lỗi - get_insert_media.");
-            res.render('index', {industry_array: req.session.industry_array});
-        }*/
+         var media = [];
+         var media_name = req.body.txtMediaName;
+         var media_url;
+         var mongoose = require('mongoose');
+         if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
+         media_url = req.body.txtMediaUrl;
+         id = new mongoose.Types.ObjectId;
+         media = {"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType};
+         } else {
+         var media_upload_path = req.files.ulfMediaUrl.path;
+         var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
+         var im = require('imagemagick');
+         im.resize({
+         srcPath: media_upload_path,
+         dstPath: media_save_path,
+         width: 600
+         }, function (err, stdout, stderr) {
+         if (err) throw err;
+         console.log('Resized media successful.');
+         });
+         id = new mongoose.Types.ObjectId;
+         media = {"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType};
+         }
+         console.log(media);
+         product_schema.product.findByIdAndUpdate(id_product, {$push: {media: media}}, {safe: true, upsert: true}, function (err, result) {
+         if (!err && result) {
+         product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
+         console.log('ok');
+         res.render('store_detail', {product_array: product_array, industry_array: req.session.industry_array, store_id: req.session.store_id_recent, store_array: req.session.store_array_recent});
+         });
+         } else {
+         console.log("lỗi nè " + err);
+         }
+         });
+         } else {
+         console.log("Lỗi - get_insert_media.");
+         res.render('index', {industry_array: req.session.industry_array});
+         }*/
     },
 
     get_edit_media: function (req, res) {
