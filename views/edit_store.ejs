@@ -217,6 +217,9 @@ function codeAddress() {
                 animation: google.maps.Animation.DROP
             });
 
+
+
+
             google.maps.event.addListener(marker, 'drag', function (a) {
                 var elem = document.getElementById("a");
                 elem.value = a.latLng.lat().toFixed(7);
