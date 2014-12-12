@@ -306,11 +306,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
                             <% location_array.forEach(function(location){ %>
                             <optgroup label="<%= location.city %>">
                                 <% location.district.forEach(function(district){ %>
-                                <% if(address.district == district){%>
-                                <option value="<%=district%>" selected><%=district%></option>
-                                <%}else{%>
-                                <option value="<%=district%>"><%=district%></option>
-                                <% }}) %>
+                                <option value="<%=district%>" <% if(address.district == district){%>selected<%}%>><%=district%></option>
+                                <% }) %>
                             </optgroup>
                             <% }) %>
                         </select>
@@ -321,7 +318,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
                     </div>
                     <div class="col-md-4">
                         <input type="text" name="txtRoom" placeholder="Phòng"
-                               class="form-control input_insertstore" value="<%= address.room %>">
+                               class="form-control input_insertstore" value="<% if(address.room){ address.room }else{}%>">
                     </div>
                     <% }) %>
                     <div class=" col-md-12">

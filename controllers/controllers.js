@@ -54,38 +54,22 @@ var controllers = {
                 console.log(product_error);
             }
         });
-        console.log("end get all" + req.session.industry_array);
-    },
 
-    find_store_by_id: function (req, res) {
-        var store_id;
-        if (req.param("id")) {
-            store_id = req.param("id");
-        } else {
-            store_id = req.session.store_id_recent;
-        }
-        var query_store = store_schema.store.find({_id: store_id});
-        query_store.sort({date: -1});
-        query_store.exec(function (store_error, store_array) {
-            return store_array;
-        })
-    },
+        var query_media = media_schema.media.find({});
+        query_media.exec(function (media_error, media_array) {
+            if (media_array && media_array.length > 0) {
+                req.session.media_array = media_array;
+            } else {
+                console.log(media_array);
+            }
+        });
 
-    find_product_by_id: function (req, res) {
-        var product_id;
-        if (req.param("id")) {
-            product_id = req.param("id");
-        } else {
-            product_id = req.session.product_id;
-        }
-        var query_product = product_schema.product.find({_id: product_id});
-        query_product.sort({date: -1});
-        query_product.exec(function (product_error, product_array) {
-            return product_array;
-        })
+        console.log("end get all");
     },
 
     get_index: function (req, res) {
+        //controllers.get_all(req, res);
+        //setTimeout(function(){console.log("hi");}, 10000);
         var query_store = store_schema.store.find({});
         query_store.limit(8);
         query_store.sort({date: 1});
