@@ -71,8 +71,16 @@
                                class="form-control input_insertstore">
                     </div>
                     <div class="col-md-4">
-                        <input type="text" required name="txtDistrict" placeholder="Quận/Huyện"
-                               class="form-control  input_insertstore">
+                        <select name="optDistrict" class="form-control">
+                            <option>-- Chọn Quận --</option>
+                            <% location_array.forEach(function(location){ %>
+                            <optgroup label="<%= location.city %>">
+                                <% location.district.forEach(function(district){ %>
+                                <option value="<%=district%>"><%=district%></option>
+                                <% }) %>
+                            </optgroup>
+                            <% }) %>
+                        </select>
                     </div>
                     <div class="col-md-4">
                         <input type="text" required name="txtStreet" placeholder="Số/Đường"

@@ -140,7 +140,12 @@ var controllers = {
         query_industry.exec(function (industry_error, industry_array) {
             if (industry_array && industry_array.length > 0) {
                 req.session.industry_array = industry_array;
-                res.render('insert_store', {industry_array: req.session.industry_array});
+                location_schema.location.find(function (location_error, location_array) {
+                    if (!location_error && location_array.length > 0) {
+                        req.session.location_array = location_array;
+                        res.render('insert_store', {industry_array: req.session.industry_array, location_array: location_array});
+                    }
+                });
             } else {
                 console.log(industry_error);
             }
@@ -153,7 +158,7 @@ var controllers = {
         var store_name_non_accented = S(store_name).latinise().s;
         var address = [];
         var city = req.body.txtCity;
-        var district = req.body.txtDistrict;
+        var district = req.body.optDistrict;
         var street = req.body.txtStreet;
         var room = req.body.txtRoom;
         address.push({"city": city, "district": district, "street": street, "room": room});
@@ -261,7 +266,12 @@ var controllers = {
                     store_array.forEach(function (store) {
                         cover = store.cover;
                         logo = store.logo;
-                        res.render('edit_store', {store_array: store_array, product_array: product_array, store_id: store_id, industry_array: req.session.industry_array});
+                        location_schema.location.find(function (location_error, location_array) {
+                            if (!location_error && location_array.length > 0) {
+                                req.session.location_array = location_array;
+                                res.render('edit_store', {store_array: store_array, product_array: product_array, industry_array: req.session.industry_array, location_array: location_array});
+                            }
+                        });
                     });
                 })
             }
@@ -273,7 +283,7 @@ var controllers = {
         var store_name = req.body.txtStoreName;
         var address = [];
         var city = req.body.txtCity;
-        var district = req.body.txtDistrict;
+        var district = req.body.optDistrict;
         var street = req.body.txtStreet;
         var room = req.body.txtRoom;
         address.push({"city": city, "district": district, "street": street, "room": street});
@@ -357,6 +367,7 @@ var controllers = {
         req.session.product_id_recent = id;
         product_schema.product.find({_id: id}, function (product_error, product_array) {
             if (product_array && product_array.length > 0) {
+                req.session.product_array = product_array;
                 media_schema.media.find({product_id: id}, function (media_error, media_array) {
                     if (media_array && !media_error) {
                         req.session.media_array = media_array;
@@ -631,12 +642,35 @@ var controllers = {
     post_edit_media: function (req, res) {
         var id = req.param('id');
         var media_name = req.body.txtMediaName;
-        var media_url = req.body.txtMediaUrl;
+        var media_url;
+        if (typeof req.files.ulfMediaUrl == "undefined") {
+            media_url = req.body.txtMediaUrl;
+        } else {
+            var media_upload_path = req.files.ulfMediaUrl.path;
+            var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
+            var im = require('imagemagick');
+            im.resize({
+                srcPath: media_upload_path,
+                dstPath: media_save_path,
+                width: 600
+            }, function (err, stdout, stderr) {
+                if (err) throw err;
+                console.log('Resized media successful.');
+            });
+            media_url = ".." + media_save_path.replace("public", "")
+        }
         var media_type = req.body.grpType;
         media_schema.media.findByIdAndUpdate(id, {media_name: media_name, media_type: media_type, media_url: media_url}, function (error, result) {
             if (result) {
-                //Đang làm ở đây!
-                res.render('product_detail', {product_array: req.session.product_array, media_array: req.session.media_array});
+                product_schema.product.find({_id: req.session.product_id_recent}, function (product_error, product_array) {
+                    if (product_array.length > 0) {
+                        media_schema.media.find({product_id: req.session.product_id_recent}, function (media_error, media_array) {
+                            res.render('product_detail', {product_array: product_array, media_array: media_array});
+                        });
+                    }else{
+                        console.log(product_array);
+                    }
+                })
             }
         });
     },
