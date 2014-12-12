@@ -8,7 +8,7 @@ var S = require('string');
 var mongoose = require('mongoose');
 
 var controllers = {
-
+//yeah
     get_industry_array: function (req, res) {
         var query_industry = industry_schema.industry.find({});
         query_industry.sort({industry_name: 1});
