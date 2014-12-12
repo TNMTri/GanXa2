@@ -257,7 +257,8 @@
                 <p class="label-store">Địa chỉ </p>
                 <a href="#" data-toggle="modal" data-target="#myModal">
                     <p>
-                        <%= store.address[0].street + ", " + store.address[0].district + ", " + store.address[0].city + ", " + store.address[0].room%>
+                        <%= store.address[0].street + ", " + store.address[0].district + ", " + store.address[0].city%>
+                        <% if(store.address[0].room){%><%=store.address[0].room%><%}%>
                     </p>
                 </a>
 
