@@ -88,7 +88,7 @@ var controllers = {
     get_index: function (req, res) {
         var query_store = store_schema.store.find({});
         query_store.limit(8);
-        query_store.sort({date: -1});
+        query_store.sort({date: 1});
         query_store.exec(function (store_error, store_array) {
             if (store_array && store_array.length > 0) {
                 req.session.store_array = store_array;
@@ -161,7 +161,11 @@ var controllers = {
         var district = req.body.optDistrict;
         var street = req.body.txtStreet;
         var room = req.body.txtRoom;
-        address.push({"city": city, "district": district, "street": street, "room": room});
+        if (room == "") {
+            address.push({city: city, district: district, street: street});
+        }else{
+            address.push({city: city, district: district, street: street, room: room});
+        }
         var latitude = req.body.txtLatitude;
         var longitude = req.body.txtLongitude;
         var phone = req.body.txtPhone;
@@ -179,16 +183,6 @@ var controllers = {
         //Path save:
         var cover_save_path = "public/images/" + req.files.ulfCover.name;
         var logo_save_path = "public/images/" + req.files.ulfLogo.name;
-        //Resize:
-        //Cũ
-        /*im.resize({
-         srcPath: cover_upload_path,
-         dstPath: cover_save_path,
-         width: 800
-         }, function (err, stdout, stderr) {
-         if (err) throw err;
-         console.log('Resized cover successful.');
-         });*/
         //Crop
         var option = {
             srcPath: cover_upload_path,
@@ -236,7 +230,7 @@ var controllers = {
         }).save(function (error) {
                 var query_store = store_schema.store.find({});
                 query_store.limit(8);
-                query_store.sort({date: -1});
+                query_store.sort({date: 1});
                 query_store.exec(function (store_error, store_array) {
                     if (store_array && store_array.length > 0) {
                         req.session.store_array = store_array;
@@ -286,7 +280,11 @@ var controllers = {
         var district = req.body.optDistrict;
         var street = req.body.txtStreet;
         var room = req.body.txtRoom;
-        address.push({"city": city, "district": district, "street": street, "room": street});
+        if(room){
+        address.push({"city": city, "district": district, "street": street, "room": room});
+        }else{
+            address.push({"city": city, "district": district, "street": street});
+        }
         var latitude = req.body.txtLatitude;
         var longitude = req.body.txtLongitude;
         var phone = req.body.txtPhone;
@@ -667,7 +665,7 @@ var controllers = {
                         media_schema.media.find({product_id: req.session.product_id_recent}, function (media_error, media_array) {
                             res.render('product_detail', {product_array: product_array, media_array: media_array});
                         });
-                    }else{
+                    } else {
                         console.log(product_array);
                     }
                 })
