@@ -345,8 +345,12 @@
                             <tr>
                                 <td colspan="3">
                                     <center>
-                                        <a href="product_detail?id=<%=product._id%>"><img
-                                                src="<%= product.media[0].media_url %>" class="img-up"></a>
+                                        <a href="product_detail?id=<%=product._id%>">
+                                            <% if (product.media[0].type == "Image"){%>
+                                            <img src="<%= product.media[0].media_url %>" class="img-up"></a>
+                                        <%}else{%>
+                                        //Video
+                                        <%}%>
                                     </center>
                                 </td>
                             </tr>
