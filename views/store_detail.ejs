@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <% include ./partial/head %>
+    <script src="./js/map.js"></script>
 </head>
 <body>
 <header>
@@ -18,18 +19,55 @@
         </div>
         <div class="col-md-12 store-details">
             <center>
-                <p>
+                <label class="label-store" style="margin-bottom: 30px;"><%= store.store_name %></label>
 
-                <h3><%= store.store_name %></h3></p>
+                <p class="label-store">Số điện thoại </p>
+
                 <p><%= store.phone %></p>
 
-                <p><%= store.address[0].street + ", " + store.address[0].district + ", " + store.address[0].city + ", " + store.address[0].room%></p>
+                <p class="label-store">Địa chỉ </p>
+                <a href="#" data-toggle="modal" data-target="#myModal">
+                    <p>
+                        <%= store.address[0].street + ", " + store.address[0].district + ", " + store.address[0].city + ", " + store.address[0].room%>
+                    </p>
+                </a>
+    <!--popup-->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h3 class="modal-title" id="myModalLabel">Map</h3>
+                            </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="map-canvas" class="map"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--end popup-->
+                <p class="label-store">Website </p>
 
                 <p><%= store.website %></p>
 
+                <p class="label-store">Mô tả </p>
+
                 <p><%= store.description %></p>
 
+                <p class="label-store">Thời gian mở cửa </p>
+
                 <p><%= store.hours_of_work %></p>
+
+                <p class="label-store">Indystry </p>
 
                 <p><a href="industry?type=<%= store.industry%>"><%= store.industry%></a></p>
             </center>
@@ -57,7 +95,9 @@
                             <tr>
                                 <td>
                                     <center>
-                                       <p class="p-details"><a href="product_detail?id=<%=product._id%>"><%= product.product_name.substring(0, 30) %><% if(product.product_name.length>30){%>...<%}%></a></p>
+                                        <p class="p-details"><a href="product_detail?id=<%=product._id%>"><%=
+                                            product.product_name.substring(0, 30) %><%
+                                            if(product.product_name.length>30){%>...<%}%></a></p>
                                     </center>
                                 </td>
                             </tr>
@@ -66,7 +106,8 @@
                             <tr>
                                 <td colspan="3">
                                     <center>
-                                        <a href="product_detail?id=<%=product._id%>"><img src="<%= product.media[0].media_url %>" class="img-up"></a>
+                                        <a href="product_detail?id=<%=product._id%>"><img
+                                                src="<%= product.media[0].media_url %>" class="img-up"></a>
                                     </center>
                                 </td>
                             </tr>
@@ -74,8 +115,10 @@
                                 <td>
                                     <center>
                                         Tag :
-                                        <a href="tags?tag=<%=product.tags[0]%>"><p class="label label-primary "><%=product.tags[0]%></p></a>
-                                        <a href="tags?tag=<%=product.tags[1]%>"><p class="label label-primary "><%=product.tags[1]%></p></a>
+                                        <a href="tags?tag=<%=product.tags[0]%>"><p class="label label-primary ">
+                                            <%=product.tags[0]%></p></a>
+                                        <a href="tags?tag=<%=product.tags[1]%>"><p class="label label-primary ">
+                                            <%=product.tags[1]%></p></a>
                                     </center>
                                 </td>
                             </tr>

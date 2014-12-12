@@ -135,10 +135,12 @@ a:hover{
 
 .store-details {
     margin-top: 15%;
-    font-size: 14px;
+    font-size: 18px;
     font-family: FontAwesome;
 }
-
+.label-store{
+    font-size: 25px;
+}
 .row-storedetails {
     margin-top: 5%;
     border: 1px;
