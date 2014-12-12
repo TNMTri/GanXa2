@@ -8,9 +8,17 @@
 <a href="insert_media">Thêm Media</a>
 <br>
 <% product_array.forEach(function(product){ %>
-<% product.media.forEach(function(media){ %>
-    <a href="edit_media?id=<%=media.media_id%>"><%=media.media_name%></a>
+<%= product.product_name %>
+<%= product.price %>
+<% }) %>
+<br><br>Media nè:<br>
+<% media_array.forEach(function(media){ %>
+Tên: <%= media.media_name %>
 <br>
-<% })}) %>
+URL: <%= media.media_url %>
+<br>
+<a href="edit_media?id=<%=media._id%>">Edit</a>
+<br>
+<% }) %>
 </body>
 </html>

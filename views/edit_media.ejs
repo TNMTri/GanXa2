@@ -5,14 +5,13 @@
     <title></title>
 </head>
 <body>
-<% product_array.forEach(function(product){
-        product.media.forEach(function(media){ %>
+<% media_array.forEach(function(media){ %>
 <form method="post" enctype="multipart/form-data">
     <input type="text" placeholder="Media Name" name=txtMediaName value="<%=media.media_name%>">
     <br>
-    <input type="radio" name="grpType" value="Image" checked
+    <input type="radio" name="grpType" value="Image" <% if (media.media_type == "Image"){ %> checked <% } %>
            class="form-control input_insertstore"> Image
-    <input type="radio" name="grpType" value="Video"
+    <input type="radio" name="grpType" value="Video" <% if (media.media_type == "Video"){ %> checked <% } %>
            class="form-control  "> Video
     <br>
     <input type="text" placeholder="Media Url" name="txtMediaUrl" value="<%=media.media_url%>">
@@ -22,8 +21,7 @@
            class="form-control  input_insertstore">
     <br>
     <input type="submit" value="Lưu">
-    <a href="<%= media.media_id %>"><%= media.media_name %></a>
 </form>
-<% })}) %>
+<% }) %>
 </body>
 </html>
