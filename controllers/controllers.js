@@ -286,18 +286,26 @@ var controllers = {
         if (typeof req.files.ulfCover != 'undefined') {
             var cover_upload_path = req.files.ulfCover.path;
             var cover_save_path = "public/images/" + req.files.ulfCover.name;
-            var option = {
-                srcPath: cover_upload_path,
-                dstPath: cover_save_path,
-                width: 1100,
-                height: 400,
-                quality: 1,
-                gravity: "Center"
-            };
-            im.crop(option, function (err, stdout, stderr) {
-                if (err) throw err;
-                console.log('Resized cover successful.');
-            });
+            var fs = require('fs');
+            var gm = require('gm');
+            gm(cover_upload_path)
+                .resize(240, 240)
+                .noProfile()
+                .write(cover_save_path, function (err) {
+                    if (!err){ console.log('ok đó') }else console.log("lỗi nghen");
+                });
+            /*var option = {
+             srcPath: cover_upload_path,
+             dstPath: cover_save_path,
+             width: 1100,
+             height: 400,
+             quality: 1,
+             gravity: "Center"
+             };asd
+             im.crop(option, function (err, stdout, stderr) {
+             if (err) throw err;
+             console.log('Resized cover successful.');
+             });*/
             cover_save_path = ".." + req.files.ulfCover.path.replace("public", "");
             cover_new = cover_save_path;
         }
@@ -472,7 +480,7 @@ var controllers = {
         var product_id = req.param('id');
         var product_name = req.body.txtProductName;
         var product_name_non_accented = S(product_name).latinise().s;
-        var price = req.body.node-imagemagicktxtPrice;
+        var price = req.body.node - imagemagicktxtPrice;
         //Tags
         var strTags = req.body.txtTags;
         var tags = strTags.split(",");
