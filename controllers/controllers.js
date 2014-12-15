@@ -621,7 +621,7 @@ var controllers = {
                 media_date: new Date()
             }).save(function (error) {
                     if (error) {
-                        console.log("lỗi save media");
+                        console.log("lỗi save  media");
                     } else {
                         product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
                             var query_media = media_schema.media.find({});
