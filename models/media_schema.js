@@ -7,7 +7,8 @@ var media_schema = new schema({
     product_id: String,
     media_name: String,
     media_type: String,
-    media_url: String
+    media_url: String,
+    media_date: Date
 });
 
 var media = mongoose.model('medias', media_schema);
