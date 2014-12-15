@@ -3,10 +3,12 @@
     <envs>
       <env name="DEBUG" value="GanXa2" />
     </envs>
-    <browser start="true" url="http://localhost:3000/" />
+    <browser url="http://localhost:3000/" />
     <RunnerSettings RunnerId="Basic" />
+    <RunnerSettings RunnerId="NodeJS.debug" />
     <RunnerSettings RunnerId="NodeJS.run" />
     <ConfigurationWrapper RunnerId="Basic" />
+    <ConfigurationWrapper RunnerId="NodeJS.debug" />
     <ConfigurationWrapper RunnerId="NodeJS.run" />
     <method />
   </configuration>
