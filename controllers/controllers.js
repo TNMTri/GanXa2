@@ -138,6 +138,7 @@ var controllers = {
     },
 
     post_insert_store: function (req, res) {
+        console.log("vào post insert store");
         var id_user_facebook = "id_user_facebook";
         var store_name = req.body.txtStoreName;
         var store_name_non_accented = S(store_name).latinise().s;
@@ -168,7 +169,8 @@ var controllers = {
         var cover_save_path = "public/images/" + req.files.ulfCover.name;
         var logo_save_path = "public/images/" + req.files.ulfLogo.name;
         //Crop
-        /*var option = {
+        console.log("crop nè");
+        var option = {
             srcPath: cover_upload_path,
             dstPath: cover_save_path,
             width: 1100,
@@ -182,13 +184,14 @@ var controllers = {
             } else {
                 console.log('Resized cover successful.')
             }
-        });*/
-        gm(cover_upload_path)
+        });
+        console.log("xong crop");
+        /*gm(cover_upload_path)
             .resize(353, 257)
             .autoOrient()
             .write(cover_save_path, function (err) {
                 if (err) console.log(err);
-            });
+            });*/
         /*gm(cover_upload_path)
          .resize(500, 500)
          .autoOrient()
@@ -213,15 +216,15 @@ var controllers = {
          console.log(err)
          }
          });*/
-        /*im.resize({
+        im.resize({
          srcPath: logo_upload_path,
          dstPath: logo_save_path,
          width: 500
          }, function (err, stdout, stderr) {
          if (err) throw err;
          console.log('Resized logo successful.');
-         });*/
-        gm(logo_upload_path)
+         });
+        /*gm(logo_upload_path)
             .resize(500, 500)
             .noProfile()
             .write(logo_save_path, function (err) {
@@ -230,7 +233,7 @@ var controllers = {
                 } else {
                     console.log(err)
                 }
-            });
+            });*/
         //Xử lý path save:
         cover_save_path = ".." + cover_save_path.replace("public", "");
         logo_save_path = ".." + logo_save_path.replace("public", "");

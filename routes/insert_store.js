@@ -9,6 +9,7 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
+    console.log("hổng lẽ ở đây?");
     var id_user_facebook = "id_user_facebook";
     var store_name = req.body.txtStoreName;
     //Xử lý address:
