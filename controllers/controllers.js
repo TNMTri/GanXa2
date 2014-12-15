@@ -457,7 +457,7 @@ var controllers = {
         //Media
         var media = [];
         //for (var i = 1; i <= count_media; i++) {
-        var media_name = req.body.txtMediaName;
+        /*var media_name = req.body.txtMediaName;
         var media_url;
         var mongoose = require('mongoose');
         var id = new mongoose.Types.ObjectId;
@@ -477,7 +477,11 @@ var controllers = {
                 console.log('Resized media successful.');
             });
             media.push({"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
-        }
+        }*/
+        var product_image_upload_path = req.files.ulfProductImage.path;
+        var product_image_save_path = "public/images/" + req.files.ulfProductImage.name;
+        product_image_save_path = ".." + product_image_save_path.replace("public", "");
+        var product_image = product_image_save_path;
         var status = true;
         var date = new Date();
         new product_schema.product({
@@ -489,6 +493,7 @@ var controllers = {
             tags: tags,
             description: description,
             media: media,
+            product_image: product_image,
             status: status,
             rating: [],
             date: date
@@ -525,7 +530,7 @@ var controllers = {
         var product_id = req.param('id');
         var product_name = req.body.txtProductName;
         var product_name_non_accented = S(product_name).latinise().s;
-        var price = req.body.node - imagemagicktxtPrice;
+        var price = req.body.txtPrice;
         //Tags
         var strTags = req.body.txtTags;
         var tags = strTags.split(",");
@@ -615,7 +620,13 @@ var controllers = {
                     } else {
                         product_schema.product.find({id_store: req.session.store_id_recent}, function (product_error, product_array) {
                             console.log('ok');
-                            res.render('store_detail', {product_array: product_array, industry_array: req.session.industry_array, store_id: req.session.store_id_recent, store_array: req.session.store_array_recent});
+                            media_schema.media.find({product_id: req.session.product_id_recent}, function (media_error, media_array) {
+                                if (media_array && !media_error) {
+                                    req.session.media_array = media_array;
+                                    res.render('product_detail', {product_array: product_array, industry_array: req.session.industry_array, store_id: req.session.store_id_recent, store_array: req.session.store_array_recent, product_id: req.session.product_id_recent, media_array: media_array});
+                                }
+                            });
+
                         });
                     }
 
@@ -702,7 +713,7 @@ var controllers = {
                 product_schema.product.find({_id: req.session.product_id_recent}, function (product_error, product_array) {
                     if (product_array.length > 0) {
                         media_schema.media.find({product_id: req.session.product_id_recent}, function (media_error, media_array) {
-                            res.render('product_detail', {product_array: product_array, media_array: media_array});
+                            res.render('product_detail', {product_array: product_array, media_array: media_array, industry_array: req.session.industry_array});
                         });
                     } else {
                         console.log(product_array);

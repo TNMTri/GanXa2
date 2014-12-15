@@ -352,14 +352,8 @@
                             <tr>
                                 <td colspan="3">
                                     <center>
-                                        <a href="product_detail?id=<%= product._id %>">
-                                            <% if (product.media[0].media_type == "Image"){ %>
-                                            <img src="<%= product.media[0].media_url %>" class="img-up">
-                                        </a>
-                                        <% }else{ %>
-                                        <!--//Video-->
-                                        <iframe style="width: 12em;height: 12em;" src="//www.youtube.com/embed/<%= product.media[0].media_url%>" frameborder="0" allowfullscreen></iframe>
-                                        <% } %>
+                                        <a href="product_detail?id=<%= product._id %>"></a>
+                                            <img src="<%= product.product_image %>" class="img-up">
                                     </center>
                                 </td>
                             </tr>

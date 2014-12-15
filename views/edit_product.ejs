@@ -43,50 +43,18 @@
 
                         <div class="col-md-6 input_insertstore">
                             <label class="col-md-1 control-label  ">
-                                Media
+                                Product Image
                             </label>
-                            <% product.media.forEach(function(media){ %>
-                            <div class="col-md-12 input_insertstore">
-                                <input type="text" placeholder="Media name" name="txtMediaName"
-                                       class="form-control" value="<%=media.media_name%>">
-                            </div>
-                            <label class="col-md-6 control-label" style="margin-top: 40px;">
-                                Chọn thuộc tính bạn muốn
-                            </label>
-
-                            <div class="col-md-2 input_insertstore">
-
-                                <input type="radio" name="grpType" value="Image" checked
-                                       class="form-control input_insertstore"> Image
-                            </div>
-                            <div class="col-md-2 input_insertstore">
-
-                                <input type="radio" name="grpType" value="Video"
-                                       class="form-control  "> Video
-                            </div>
-                            <div class="col-md-12">
-
-                            </div>
                             <div class="col-md-5 input_insertstore">
-                                <input type="text"  name="txtMediaUrl" placeholder="Media url"
-                                       class="form-control input_insertstore" value="<%=media.media_url%>">
-                            </div>
-                            <label class="col-md-2 control-label input_insertstore">
-                                Or
-                            </label>
-
-                            <div class="col-md-5 input_insertstore">
-                                <input type="file"  name="ulfMediaUrl" placeholder=""
+                                <input type="file"  name="ulfProductImage" placeholder=""
                                        accept="image/*" alt="Product Image"
                                        class="form-control  input_insertstore">
                             </div>
                         </div>
-
-
                         <div class="col-md-12">
                             <input type="submit" value="Thêm" class="btn btn-primary btn-block input_insertstore">
                         </div>
-                        <% })}) %>
+                        <% }) %>
                     </form>
                 </div>
             </div>
