@@ -6,7 +6,9 @@ var media_schema = require('../models/media_schema');
 
 var S = require('string');
 var mongoose = require('mongoose');
-
+var fs = require('fs');
+var gm = require('gm').subClass({ imageMagick: true });
+var im = require('imagemagick');
 var controllers = {
     get_industry_array: function (req, res) {
         var query_industry = industry_schema.industry.find({});
@@ -159,7 +161,6 @@ var controllers = {
         var fanpage = req.body.txtFanpage;
 
         //Lấy hình, resize và chỉnh path:
-        var im = require('imagemagick');
         //Path upload:
         var cover_upload_path = req.files.ulfCover.path;
         var logo_upload_path = req.files.ulfLogo.path;
@@ -167,7 +168,7 @@ var controllers = {
         var cover_save_path = "public/images/" + req.files.ulfCover.name;
         var logo_save_path = "public/images/" + req.files.ulfLogo.name;
         //Crop
-        var option = {
+        /*var option = {
             srcPath: cover_upload_path,
             dstPath: cover_save_path,
             width: 1100,
@@ -176,18 +177,60 @@ var controllers = {
             gravity: "Center"
         };
         im.crop(option, function (err, stdout, stderr) {
-            if (err) throw err;
-            console.log('Resized cover successful.');
-        });
-
-        im.resize({
-            srcPath: logo_upload_path,
-            dstPath: logo_save_path,
-            width: 500
-        }, function (err, stdout, stderr) {
-            if (err) throw err;
-            console.log('Resized logo successful.');
-        });
+            if (err) {
+                throw err
+            } else {
+                console.log('Resized cover successful.')
+            }
+        });*/
+        gm(cover_upload_path)
+            .resize(353, 257)
+            .autoOrient()
+            .write(cover_save_path, function (err) {
+                if (err) console.log(err);
+            });
+        /*gm(cover_upload_path)
+         .resize(500, 500)
+         .autoOrient()
+         .write(cover_save_path, function (err) {
+         if (!err) {
+         console.log('resize cover ok')
+         } else {
+         console.log(err)
+         }
+         });*/
+        /*gm(cover_upload_path)
+         .flip()
+         .magnify()
+         .rotate('green', 45)
+         .blur(7, 3)
+         .crop(300, 300, 150, 130)
+         .edge(3)
+         .write(cover_save_path, function (err) {
+         if (!err) {
+         console.log('crazytown has arrived')
+         } else {
+         console.log(err)
+         }
+         });*/
+        /*im.resize({
+         srcPath: logo_upload_path,
+         dstPath: logo_save_path,
+         width: 500
+         }, function (err, stdout, stderr) {
+         if (err) throw err;
+         console.log('Resized logo successful.');
+         });*/
+        gm(logo_upload_path)
+            .resize(500, 500)
+            .noProfile()
+            .write(logo_save_path, function (err) {
+                if (!err) {
+                    console.log('resize logo ok')
+                } else {
+                    console.log(err)
+                }
+            });
         //Xử lý path save:
         cover_save_path = ".." + cover_save_path.replace("public", "");
         logo_save_path = ".." + logo_save_path.replace("public", "");
@@ -292,7 +335,9 @@ var controllers = {
                 .resize(240, 240)
                 .noProfile()
                 .write(cover_save_path, function (err) {
-                    if (!err){ console.log('ok đó') }else console.log("lỗi nghen");
+                    if (!err) {
+                        console.log('ok đó')
+                    } else console.log("lỗi nghen");
                 });
             /*var option = {
              srcPath: cover_upload_path,

@@ -10,7 +10,8 @@ var product_schema = new schema({
     price: String,
     tags: [],
     description: String,
-    media: [], //type, name, url, objectid
+    media: [], //media_id
+    product_image: String,
     status: String,
     rating: [], //{"user_id": (id of user), "rate": int (0-5)}
     date: Date
