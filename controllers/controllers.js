@@ -69,28 +69,26 @@ var controllers = {
     },
 
     get_index: function (req, res) {
-        //controllers.get_all(req, res);
-        //setTimeout(function(){console.log("hi");}, 10000);
-        var query_store = store_schema.store.find({});
-        query_store.limit(8);
-        query_store.sort({date: -1});
-        query_store.exec(function (store_error, store_array) {
-            if (store_array && store_array.length > 0) {
-                req.session.store_array = store_array;
-                var query_industry = industry_schema.industry.find({});
-                query_industry.sort({industry_name: 1});
-                query_industry.exec(function (industry_error, industry_array) {
-                    if (industry_array && industry_array.length > 0) {
-                        req.session.industry_array = industry_array;
+        var query_industry = industry_schema.industry.find({});
+        query_industry.sort({industry_name: 1});
+        query_industry.exec(function (industry_error, industry_array) {
+            if (industry_array && industry_array.length > 0) {
+                req.session.industry_array = industry_array;
+                var query_store = store_schema.store.find({});
+                query_store.limit(8);
+                query_store.sort({date: -1});
+                query_store.exec(function (store_error, store_array) {
+                    if (store_array && store_array.length > 0) {
+                        req.session.store_array = store_array;
                         res.render('index', {store_array: store_array, industry_array: industry_array});
                     } else {
-                        console.log(industry_error);
+                        console.log(store_error);
                     }
                 });
             } else {
-                console.log(store_error);
+                console.log(industry_error);
             }
-        })
+        });
     },
 
     get_store_detail: function (req, res) {
@@ -138,7 +136,6 @@ var controllers = {
     },
 
     post_insert_store: function (req, res) {
-        console.log("vào post insert store");
         var id_user_facebook = "id_user_facebook";
         var store_name = req.body.txtStoreName;
         var store_name_non_accented = S(store_name).latinise().s;
@@ -169,7 +166,6 @@ var controllers = {
         var cover_save_path = "public/images/" + req.files.ulfCover.name;
         var logo_save_path = "public/images/" + req.files.ulfLogo.name;
         //Crop
-        console.log("crop nè");
         var option = {
             srcPath: cover_upload_path,
             dstPath: cover_save_path,
@@ -185,13 +181,12 @@ var controllers = {
                 console.log('Resized cover successful.')
             }
         });
-        console.log("xong crop");
         /*gm(cover_upload_path)
-            .resize(353, 257)
-            .autoOrient()
-            .write(cover_save_path, function (err) {
-                if (err) console.log(err);
-            });*/
+         .resize(353, 257)
+         .autoOrient()
+         .write(cover_save_path, function (err) {
+         if (err) console.log(err);
+         });*/
         /*gm(cover_upload_path)
          .resize(500, 500)
          .autoOrient()
@@ -217,23 +212,23 @@ var controllers = {
          }
          });*/
         im.resize({
-         srcPath: logo_upload_path,
-         dstPath: logo_save_path,
-         width: 500
-         }, function (err, stdout, stderr) {
-         if (err) throw err;
-         console.log('Resized logo successful.');
-         });
+            srcPath: logo_upload_path,
+            dstPath: logo_save_path,
+            width: 500
+        }, function (err, stdout, stderr) {
+            if (err) throw err;
+            console.log('Resized logo successful.');
+        });
         /*gm(logo_upload_path)
-            .resize(500, 500)
-            .noProfile()
-            .write(logo_save_path, function (err) {
-                if (!err) {
-                    console.log('resize logo ok')
-                } else {
-                    console.log(err)
-                }
-            });*/
+         .resize(500, 500)
+         .noProfile()
+         .write(logo_save_path, function (err) {
+         if (!err) {
+         console.log('resize logo ok')
+         } else {
+         console.log(err)
+         }
+         });*/
         //Xử lý path save:
         cover_save_path = ".." + cover_save_path.replace("public", "");
         logo_save_path = ".." + logo_save_path.replace("public", "");
@@ -332,28 +327,28 @@ var controllers = {
         if (typeof req.files.ulfCover != 'undefined') {
             var cover_upload_path = req.files.ulfCover.path;
             var cover_save_path = "public/images/" + req.files.ulfCover.name;
-            var fs = require('fs');
-            var gm = require('gm');
-            gm(cover_upload_path)
-                .resize(240, 240)
-                .noProfile()
-                .write(cover_save_path, function (err) {
-                    if (!err) {
-                        console.log('ok đó')
-                    } else console.log("lỗi nghen");
-                });
-            /*var option = {
-             srcPath: cover_upload_path,
-             dstPath: cover_save_path,
-             width: 1100,
-             height: 400,
-             quality: 1,
-             gravity: "Center"
-             };asd
-             im.crop(option, function (err, stdout, stderr) {
-             if (err) throw err;
-             console.log('Resized cover successful.');
+            /*var fs = require('fs');
+             var gm = require('gm');
+             gm(cover_upload_path)
+             .resize(240, 240)
+             .noProfile()
+             .write(cover_save_path, function (err) {
+             if (!err) {
+             console.log('ok đó')
+             } else console.log("lỗi nghen");
              });*/
+            var option = {
+                srcPath: cover_upload_path,
+                dstPath: cover_save_path,
+                width: 1100,
+                height: 400,
+                quality: 1,
+                gravity: "Center"
+            };
+            im.crop(option, function (err, stdout, stderr) {
+                if (err) throw err;
+                console.log('Resized cover successful.');
+            });
             cover_save_path = ".." + req.files.ulfCover.path.replace("public", "");
             cover_new = cover_save_path;
         }
@@ -465,26 +460,26 @@ var controllers = {
         var media = [];
         //for (var i = 1; i <= count_media; i++) {
         /*var media_name = req.body.txtMediaName;
-        var media_url;
-        var mongoose = require('mongoose');
-        var id = new mongoose.Types.ObjectId;
-        if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
-            media_url = req.body.txtMediaUrl;
-            media.push({"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType});
-        } else {
-            var media_upload_path = req.files.ulfMediaUrl.path;
-            var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
-            var im = require('imagemagick');
-            im.resize({
-                srcPath: media_upload_path,
-                dstPath: media_save_path,
-                width: 600
-            }, function (err, stdout, stderr) {
-                if (err) throw err;
-                console.log('Resized media successful.');
-            });
-            media.push({"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
-        }*/
+         var media_url;
+         var mongoose = require('mongoose');
+         var id = new mongoose.Types.ObjectId;
+         if (req.body.txtMediaUrl != "" && typeof req.files.ulfMediaUrl == "undefined") {
+         media_url = req.body.txtMediaUrl;
+         media.push({"media_id": id, "media_name": media_name, "media_url": media_url, "media_type": req.body.grpType});
+         } else {
+         var media_upload_path = req.files.ulfMediaUrl.path;
+         var media_save_path = "public/images/" + req.files.ulfMediaUrl.name;
+         var im = require('imagemagick');
+         im.resize({
+         srcPath: media_upload_path,
+         dstPath: media_save_path,
+         width: 600
+         }, function (err, stdout, stderr) {
+         if (err) throw err;
+         console.log('Resized media successful.');
+         });
+         media.push({"media_id": id, "media_name": media_name, "media_url": ".." + media_save_path.replace("public", ""), "media_type": req.body.grpType});
+         }*/
         var product_image_upload_path = req.files.ulfProductImage.path;
         var product_image_save_path = "public/images/" + req.files.ulfProductImage.name;
         product_image_save_path = ".." + product_image_save_path.replace("public", "");
@@ -823,7 +818,7 @@ var controllers = {
             ]}, function (product_error, product_array) {
                 res.render('search', {product_array: product_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
             });
-        } else if(type = "store" && key == "" && disrtict == "-- Chọn Quận --") {
+        } else if (type = "store" && key == "" && disrtict == "-- Chọn Quận --") {
             console.log("3");
             store_schema.store.find({address: {$elemMatch: {district: disrtict}}}, function (store_error, store_array) {
                 res.render('search', {store_array: store_array, industry_array: req.session.industry_array, location_array: req.session.location_array});
@@ -836,7 +831,6 @@ var controllers = {
 
     get_tag: function (req, res) {
         var tag = req.param("tag");
-
         product_schema.product.find({tags: {$in: [tag]}}, function (product_error, product_array) {
             if (product_array && product_array.length > 0) {
                 res.render('tags', {product_array: product_array});
@@ -846,7 +840,63 @@ var controllers = {
                 })
             }
         });
+    },
+
+    get_location: function (req, res) {
+        location_schema.location.find(function (location_error, location_array) {
+            if (location_array && location_array.length > 0 && !location_error) {
+                req.session.location_array = location_array;
+                res.render('location', {location_array: location_array})
+            }
+        })
+    },
+
+    post_location: function (req, res) {
+
+    },
+
+    get_insert_location: function (req, res) {
+        res.render('insert_location');
+    },
+
+    post_insert_location: function (req, res) {
+        var city = req.body.txtCity;
+        var string_district = req.body.txtDistrict;
+        var districts = string_district.split(",");
+        for (i = 0; i < districts.length; i++) {
+            districts[i] = districts[i].trim();
+        }
+        new location_schema.location({
+            _id: null,
+            city: city,
+            district: districts
+        }).save(function (save_error) {
+                if (!save_error) {
+                    location_schema.location.find(function (location_error, location_array) {
+                        if (location_array && location_array.length > 0 && !location_error) {
+                            req.session.location_array = location_array;
+                            res.render('location', {location_array: req.session.location_array});
+                        }else{
+                            console.log(location_error);
+                        }
+                    });
+                }else{
+                    console.log(save_error);
+                }
+            });
+    },
+
+    get_edit_location: function (req, res) {
+        var id = req.param('id');
+        location_schema.location.find({_id: id}, function (location_error, location_array) {
+            res.render('edit_location', {location_array:location_array});
+        });
+    },
+
+    post_edit_location: function (req, res) {
+        res.render('edit_location');
     }
+
 };
 
 module.exports = function (router) {
@@ -885,6 +935,15 @@ module.exports = function (router) {
     router.post('/search', controllers.post_search);
     //tags
     router.get('/tags', controllers.get_tag);
+    //location
+    router.get('/location', controllers.get_location);
+    router.post('/location', controllers.post_location);
+    //insert_location
+    router.get('/insert_location', controllers.get_insert_location);
+    router.post('/insert_location', controllers.post_insert_location);
+    //edit_location
+    router.get('/edit_location', controllers.get_edit_location);
+    router.post('/edit_location', controllers.post_edit_location);
     //test
     /*router.get('/test', controllers.get_test);
      router.post('/test', controllers.post_test);*/
