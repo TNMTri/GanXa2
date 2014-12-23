@@ -10,56 +10,56 @@
 <div class="container">
     <div class="row">
         <center>
-            <div class="col-md-12">
-                <div class="row authors-list">
-                    <form action="" method="post" enctype="multipart/form-data">
+        <div class="col-md-12">
+            <div class="row authors-list">
+                <form action="" method="post" enctype="multipart/form-data">
 
-                        <% product_array.forEach(function (product) { %>
+                    <% product_array.forEach(function (product) { %>
+                    <div class="col-md-12 input_insertstore">
+                        <input type="text" id="a" name="txtProductName" placeholder="Tên sản phẩm"
+                               class="form-control" value="<%=product.product_name%>">
+                    </div>
+                    <div class="col-md-12 input_insertstore">
+                        <input type="text" id="o" name="txtPrice" placeholder="Giá"
+                               class="form-control" value="<%=product.price%>">
+                    </div>
+
+                    <div class="col-md-12">
+                        <input type="text" required name="txtTags" placeholder="Tags"
+                               class="form-control  input_insertstore" value="<%=product.tags%>">
+                    </div>
+
+
+
+                    <div class="col-md-6 input_insertstore">
+                        <!--Phần này cho description-->
+                        <label class="col-md-1 control-label ">
+                            Description
+                        </label>
                         <div class="col-md-12 input_insertstore">
-                            <input type="text" id="a" name="txtProductName" placeholder="Tên sản phẩm"
-                                   class="form-control" value="<%=product.product_name%>">
+                            <textarea name="txtDescription" rows="6" class="form-control"><%=product.description%></textarea>
                         </div>
-                        <div class="col-md-12 input_insertstore">
-                            <input type="text" id="o" name="txtPrice" placeholder="Giá"
-                                   class="form-control" value="<%=product.price%>">
-                        </div>
+                    </div>
 
-                        <div class="col-md-12">
-                            <input type="text" required name="txtTags" placeholder="Tags"
-                                   class="form-control  input_insertstore" value="<%=product.tags%>">
+                    <div class="col-md-6 input_insertstore">
+                        <label class="col-md-1 control-label  ">
+                            Product Image
+                        </label>
+                        <div class="col-md-5 input_insertstore">
+                            <input type="file"  name="ulfProductImage" placeholder=""
+                                   accept="image/*" alt="Product Image"
+                                   class="form-control  input_insertstore">
                         </div>
-
-
-
-                        <div class="col-md-6 input_insertstore">
-                            <!--Phần này cho description-->
-                            <label class="col-md-1 control-label ">
-                                Description
-                            </label>
-                            <div class="col-md-12 input_insertstore">
-                                <textarea name="txtDescription" rows="6" class="form-control"><%=product.description%></textarea>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 input_insertstore">
-                            <label class="col-md-1 control-label  ">
-                                Product Image
-                            </label>
-                            <div class="col-md-5 input_insertstore">
-                                <input type="file"  name="ulfProductImage" placeholder=""
-                                       accept="image/*" alt="Product Image"
-                                       class="form-control  input_insertstore">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <input type="submit" value="Thêm" class="btn btn-primary btn-block input_insertstore">
-                        </div>
-                        <% }) %>
-                    </form>
-                </div>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="submit" value="Thêm" class="btn btn-primary btn-block input_insertstore">
+                    </div>
+                    <% }) %>
+                </form>
             </div>
-        </center>
-    </div>
+        </div>
+    </center>
+</div>
 </div>
 <footer>
     <% include ./partial/footer %>
